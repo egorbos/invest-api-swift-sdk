@@ -1,19 +1,19 @@
 import Foundation
 
-enum ApiTargetType: String, CaseIterable {
-    case common, sandbox
-}
-
-public struct ApiTarget {
-    internal enum Wrapped {
+internal struct ApiTarget {
+    enum ApiTargetType: String, CaseIterable {
+        case common, sandbox
+    }
+    
+    enum Wrapped {
         case common(String, Int)
         case sandbox(String, Int)
     }
 
-    internal let wrapped: Wrapped
+    let wrapped: Wrapped
     
-    public let host: String
-    public let port: Int
+    let host: String
+    let port: Int
     
     private init(host: String, port: Int, wrapped: Wrapped) {
         self.host = host

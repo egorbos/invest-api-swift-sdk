@@ -1,12 +1,13 @@
 import Foundation
 
-protocol MarketDataStreamService {
+public protocol MarketDataStreamService {
     
 }
 
-final internal class GrpcMarketDataStreamService: GrpcService, MarketDataStreamService {
-    private lazy var client = MarketDataStreamServiceAsyncClient(
-        channel: self.channel,
-        defaultCallOptions: self.callOptions
-    )
+internal struct GrpcMarketDataStreamService: MarketDataStreamService {
+    let client: MarketDataStreamServiceAsyncClient
+    
+    init(_ client: MarketDataStreamServiceAsyncClient) {
+        self.client = client
+    }
 }

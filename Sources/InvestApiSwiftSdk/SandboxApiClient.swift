@@ -1,17 +1,51 @@
+import GRPC
+import NIOCore
 import Foundation
 
-protocol SandboxApiClient {
+/// Протокол для взаимодействия с Tinkoff API (канал песочницы).
+public protocol SandboxApiClient {
+    /// Сервис для работы со счетами песочницы.
     var sandbox: SandboxService { get }
+    
+    /// Сервис предоставления справочной информации о пользователе.
     var user: SandboxUsersService { get }
+    
+    /// Сервис предоставления справочной информации о ценных бумагах.
     var instruments: InstrumentsService { get }
+    
+    /// Сервис получения информации об операциях по счёту.
     var operations: SandboxOperationsService { get }
+    
+    /// Сервис котировок.
     var marketData: MarketDataService { get }
+    
+    /// Сервис получения биржевой информации в реальном времени.
     var marketDataStream: MarketDataStreamService { get }
+    
+    /// Сервис работы с торговыми поручениями.
     var orders: OrdersService { get }
+    
+    /// Отправляет запрос к Tinkoff API.
+    ///
+    /// ```
+    /// let result = try client.sendRequest(.getInfo) // Аналогично try client.user.getInfo()
+    /// ```
+    ///
+    ///  - parameters:
+    ///      - request: Запрос.
+    ///
+    ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
+    func sendRequest<T>(_ req: SandboxApiRequest<T>) throws -> EventLoopFuture<T>
 }
 
-internal final class InvestSandboxApiClient: SandboxApiClient {
-    private let target: ApiTarget
+public extension SandboxApiClient {
+    func sendRequest<T>(_ req: SandboxApiRequest<T>) throws -> EventLoopFuture<T> {
+        return try req.send(client: self)
+    }
+}
+
+internal final class SandboxInvestApiClient: SandboxApiClient {
+    private let connection: ApiConnection
     
     let sandbox: SandboxService
     let user: SandboxUsersService
@@ -21,15 +55,19 @@ internal final class InvestSandboxApiClient: SandboxApiClient {
     let marketDataStream: MarketDataStreamService
     let orders: OrdersService
     
-    init(target: ApiTarget, token: String, appName: String) {
-        self.target = target
-        let configBuilder = ConfigurationBuilder(target, token: token, appName: appName)
-        self.sandbox = GrpcSandboxService(configBuilder)
-        self.user = GrpcUsersService(configBuilder)
-        self.instruments = GrpcInstrumentsService(configBuilder)
-        self.operations = GrpcOperationsService(configBuilder)
-        self.marketData = GrpcMarketDataService(configBuilder)
-        self.marketDataStream = GrpcMarketDataStreamService(configBuilder)
-        self.orders = GrpcOrdersService(configBuilder)
+    init(_ target: ApiTarget, token: String, appName: String) throws {
+        self.connection = try ApiConnection(target: target)
+        let builder = ServicesBuilder(self.connection.channel, token: token, appName: appName)
+        self.sandbox = builder.makeSandboxService()
+        self.user = builder.makeUsersService()
+        self.instruments = builder.makeInstrumentsService()
+        self.operations = builder.makeOperationsService()
+        self.marketData = builder.makeMarketDataService()
+        self.marketDataStream = builder.makeMarketDataStreamService()
+        self.orders = builder.makeOrdersService()
+    }
+    
+    deinit {
+        self.connection.close()
     }
 }

@@ -1,19 +1,57 @@
+import GRPC
+import NIOCore
 import Foundation
 
-protocol CommonApiClient {
+/// Протокол для взаимодействия с Tinkoff API (основной канал).
+public protocol CommonApiClient {
+    /// Сервис предоставления справочной информации о пользователе.
     var user: CommonUsersService { get }
+    
+    /// Сервис предоставления справочной информации о ценных бумагах.
     var instruments: InstrumentsService { get }
+    
+    /// Сервис получения информации об операциях по счёту.
     var operations: CommonOperationsService { get }
+    
+    /// Сервис получения информации о позициях и доходности портфеля в реальном времени.
     var operationsStream: OperationsStreamService { get }
+    
+    /// Сервис котировок.
     var marketData: MarketDataService { get }
+    
+    /// Сервис получения биржевой информации в реальном времени.
     var marketDataStream: MarketDataStreamService { get }
+    
+    /// Сервис работы с торговыми поручениями.
     var orders: OrdersService { get }
+    
+    /// Сервис получения информации о торговых поручениях в реальном времени.
     var ordersStream: OrdersStreamService { get }
+    
+    /// Сервис работы со стоп-заявками.
     var stopOrders: StopOrdersService { get }
+    
+    /// Отправляет запрос к Tinkoff API.
+    ///
+    /// ```
+    /// let result = try client.sendRequest(.getInfo) // Аналогично try client.user.getInfo()
+    /// ```
+    ///
+    ///  - parameters:
+    ///      - request: Запрос.
+    ///
+    ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
+    func sendRequest<T>(_ request: CommonApiRequest<T>) throws -> EventLoopFuture<T>
 }
 
-internal final class InvestCommonApiClient: CommonApiClient {
-    private let target: ApiTarget
+public extension CommonApiClient {
+    func sendRequest<T>(_ request: CommonApiRequest<T>) throws -> EventLoopFuture<T> {
+        return try request.send(client: self)
+    }
+}
+
+internal final class CommonInvestApiClient: CommonApiClient {
+    private let connection: ApiConnection
     
     let user: CommonUsersService
     let instruments: InstrumentsService
@@ -25,17 +63,21 @@ internal final class InvestCommonApiClient: CommonApiClient {
     let ordersStream: OrdersStreamService
     let stopOrders: StopOrdersService
     
-    init(target: ApiTarget, token: String, appName: String) {
-        self.target = target
-        let configBuilder = ConfigurationBuilder(target, token: token, appName: appName)
-        self.user = GrpcUsersService(configBuilder)
-        self.instruments = GrpcInstrumentsService(configBuilder)
-        self.operations = GrpcOperationsService(configBuilder)
-        self.operationsStream = GrpcOperationsStreamService(configBuilder)
-        self.marketData = GrpcMarketDataService(configBuilder)
-        self.marketDataStream = GrpcMarketDataStreamService(configBuilder)
-        self.orders = GrpcOrdersService(configBuilder)
-        self.ordersStream = GrpcOrdersStreamService(configBuilder)
-        self.stopOrders = GrpcStopOrdersService(configBuilder)
+    init(_ target: ApiTarget, token: String, appName: String) throws {
+        self.connection = try ApiConnection(target: target)
+        let builder = ServicesBuilder(self.connection.channel, token: token, appName: appName)
+        self.user = builder.makeUsersService()
+        self.instruments = builder.makeInstrumentsService()
+        self.operations = builder.makeOperationsService()
+        self.operationsStream = builder.makeOperationsStreamService()
+        self.marketData = builder.makeMarketDataService()
+        self.marketDataStream = builder.makeMarketDataStreamService()
+        self.orders = builder.makeOrdersService()
+        self.ordersStream = builder.makeOrdersStreamService()
+        self.stopOrders = builder.makeStopOrdersService()
+    }
+    
+    deinit {
+        self.connection.close()
     }
 }

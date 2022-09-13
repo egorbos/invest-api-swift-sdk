@@ -1,15 +1,30 @@
 import GRPC
 import Foundation
 
-internal final class SandboxServiceAsyncClient: Tinkoff_Public_Invest_Api_Contract_V1_SandboxServiceAsyncClientProtocol {
-    public var channel: GRPCChannel
-    public var defaultCallOptions: CallOptions
-    public var interceptors: Tinkoff_Public_Invest_Api_Contract_V1_SandboxServiceClientInterceptorFactoryProtocol?
-
-    public init(
+public protocol SandboxServiceClient:
+    Tinkoff_Public_Invest_Api_Contract_V1_SandboxServiceClientProtocol {
+    var interceptors: SandboxServiceClientInterceptorFactory { get }
+    init(
       channel: GRPCChannel,
-      defaultCallOptions: CallOptions = CallOptions(),
-      interceptors: Tinkoff_Public_Invest_Api_Contract_V1_SandboxServiceClientInterceptorFactoryProtocol? = nil
+      defaultCallOptions: CallOptions,
+      interceptors: SandboxServiceClientInterceptorFactory
+    )
+}
+
+public protocol SandboxServiceAsyncClient:
+    SandboxServiceClient,
+    Tinkoff_Public_Invest_Api_Contract_V1_SandboxServiceAsyncClientProtocol {
+}
+
+internal struct DefaultSandboxServiceAsyncClient: SandboxServiceAsyncClient {
+    let channel: GRPCChannel
+    var defaultCallOptions: CallOptions
+    let interceptors: SandboxServiceClientInterceptorFactory
+
+    init(
+      channel: GRPCChannel,
+      defaultCallOptions: CallOptions,
+      interceptors: SandboxServiceClientInterceptorFactory
     ) {
       self.channel = channel
       self.defaultCallOptions = defaultCallOptions

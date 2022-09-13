@@ -1,12 +1,13 @@
 import Foundation
 
-protocol InstrumentsService {
+public protocol InstrumentsService {
     
 }
 
-final internal class GrpcInstrumentsService: GrpcService, InstrumentsService {
-    private lazy var client = InstrumentsServiceAsyncClient(
-        channel: self.channel,
-        defaultCallOptions: self.callOptions
-    )
+internal struct GrpcInstrumentsService: InstrumentsService {
+    let client: InstrumentsServiceAsyncClient
+    
+    init(_ client: InstrumentsServiceAsyncClient) {
+        self.client = client
+    }
 }

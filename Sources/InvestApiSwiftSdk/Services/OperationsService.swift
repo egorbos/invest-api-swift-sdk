@@ -1,16 +1,17 @@
 import Foundation
 
-protocol SandboxOperationsService {
+public protocol SandboxOperationsService {
     
 }
 
-protocol CommonOperationsService: SandboxOperationsService {
+public protocol CommonOperationsService: SandboxOperationsService {
     
 }
 
-final internal class GrpcOperationsService: GrpcService, CommonOperationsService {
-    private lazy var client = OperationsServiceAsyncClient(
-        channel: self.channel,
-        defaultCallOptions: self.callOptions
-    )
+internal struct GrpcOperationsService: CommonOperationsService {
+    let client: OperationsServiceAsyncClient
+    
+    init(_ client: OperationsServiceAsyncClient) {
+        self.client = client
+    }
 }

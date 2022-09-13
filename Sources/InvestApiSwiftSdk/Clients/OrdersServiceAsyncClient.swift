@@ -1,15 +1,30 @@
 import GRPC
 import Foundation
 
-internal final class OrdersServiceAsyncClient: Tinkoff_Public_Invest_Api_Contract_V1_OrdersServiceAsyncClientProtocol {
-    public var channel: GRPCChannel
-    public var defaultCallOptions: CallOptions
-    public var interceptors: Tinkoff_Public_Invest_Api_Contract_V1_OrdersServiceClientInterceptorFactoryProtocol?
-
-    public init(
+public protocol OrdersServiceClient:
+    Tinkoff_Public_Invest_Api_Contract_V1_OrdersServiceClientProtocol {
+    var interceptors: OrdersServiceClientInterceptorFactory { get }
+    init(
       channel: GRPCChannel,
-      defaultCallOptions: CallOptions = CallOptions(),
-      interceptors: Tinkoff_Public_Invest_Api_Contract_V1_OrdersServiceClientInterceptorFactoryProtocol? = nil
+      defaultCallOptions: CallOptions,
+      interceptors: OrdersServiceClientInterceptorFactory
+    )
+}
+
+public protocol OrdersServiceAsyncClient:
+    OrdersServiceClient,
+    Tinkoff_Public_Invest_Api_Contract_V1_OrdersServiceAsyncClientProtocol {
+}
+
+internal struct DefaultOrdersServiceAsyncClient: OrdersServiceAsyncClient {
+    let channel: GRPCChannel
+    var defaultCallOptions: CallOptions
+    let interceptors: OrdersServiceClientInterceptorFactory
+
+    init(
+      channel: GRPCChannel,
+      defaultCallOptions: CallOptions,
+      interceptors: OrdersServiceClientInterceptorFactory
     ) {
       self.channel = channel
       self.defaultCallOptions = defaultCallOptions

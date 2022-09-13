@@ -1,15 +1,30 @@
 import GRPC
 import Foundation
 
-internal final class StopOrdersServiceAsyncClient: Tinkoff_Public_Invest_Api_Contract_V1_StopOrdersServiceAsyncClientProtocol {
-    public var channel: GRPCChannel
-    public var defaultCallOptions: CallOptions
-    public var interceptors: Tinkoff_Public_Invest_Api_Contract_V1_StopOrdersServiceClientInterceptorFactoryProtocol?
-
-    public init(
+public protocol StopOrdersServiceClient:
+    Tinkoff_Public_Invest_Api_Contract_V1_StopOrdersServiceClientProtocol {
+    var interceptors: StopOrdersServiceClientInterceptorFactory { get }
+    init(
       channel: GRPCChannel,
-      defaultCallOptions: CallOptions = CallOptions(),
-      interceptors: Tinkoff_Public_Invest_Api_Contract_V1_StopOrdersServiceClientInterceptorFactoryProtocol? = nil
+      defaultCallOptions: CallOptions,
+      interceptors: StopOrdersServiceClientInterceptorFactory
+    )
+}
+
+public protocol StopOrdersServiceAsyncClient:
+    StopOrdersServiceClient,
+    Tinkoff_Public_Invest_Api_Contract_V1_StopOrdersServiceAsyncClientProtocol {
+}
+
+internal struct DefaultStopOrdersServiceAsyncClient: StopOrdersServiceAsyncClient {
+    let channel: GRPCChannel
+    var defaultCallOptions: CallOptions
+    let interceptors: StopOrdersServiceClientInterceptorFactory
+
+    init(
+      channel: GRPCChannel,
+      defaultCallOptions: CallOptions,
+      interceptors: StopOrdersServiceClientInterceptorFactory
     ) {
       self.channel = channel
       self.defaultCallOptions = defaultCallOptions

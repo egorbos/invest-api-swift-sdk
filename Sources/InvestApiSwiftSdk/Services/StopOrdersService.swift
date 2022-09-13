@@ -1,12 +1,13 @@
 import Foundation
 
-protocol StopOrdersService {
+public protocol StopOrdersService {
     
 }
 
-final internal class GrpcStopOrdersService: GrpcService, StopOrdersService {
-    private lazy var client = StopOrdersServiceAsyncClient(
-        channel: self.channel,
-        defaultCallOptions: self.callOptions
-    )
+internal struct GrpcStopOrdersService: StopOrdersService {
+    let client: StopOrdersServiceAsyncClient
+    
+    init(_ client: StopOrdersServiceAsyncClient) {
+        self.client = client
+    }
 }
