@@ -1,6 +1,5 @@
 import GRPC
 import NIOCore
-import Foundation
 
 /// Протокол для взаимодействия с Tinkoff API (основной канал).
 public protocol CommonApiClient {
@@ -42,6 +41,21 @@ public protocol CommonApiClient {
     ///
     ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
     func sendRequest<T>(_ request: CommonApiRequest<T>) throws -> EventLoopFuture<T>
+    
+#if compiler(>=5.5) && canImport(_Concurrency)
+    /// Отправляет запрос к Tinkoff API.
+    ///
+    /// ```
+    /// let result = try await client.sendRequest(.getInfo) // Аналогично try await client.user.getInfo()
+    /// ```
+    ///
+    ///  - parameters:
+    ///      - request: Запрос.
+    ///
+    ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
+    func sendRequest<T>(_ req: CommonAsyncApiRequest<T>) async throws -> T
+#endif
 }
 
 public extension CommonApiClient {

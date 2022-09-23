@@ -14,7 +14,7 @@ internal class ServicesBuilder {
     }
     
     func makeSandboxService() -> SandboxService {
-        let client = DefaultSandboxServiceAsyncClient(
+        let client = SandboxServiceClient(
             channel: self.channel,
             defaultCallOptions: self.callOptions,
             interceptors: SandboxServiceInterceptorFactory()
@@ -23,7 +23,7 @@ internal class ServicesBuilder {
     }
     
     func makeUsersService() -> CommonUsersService  {
-        let client = DefaultUsersServiceAsyncClient(
+        let client = UsersServiceClient(
             channel: self.channel,
             defaultCallOptions: self.callOptions,
             interceptors: UsersServiceInterceptorFactory()

@@ -25,7 +25,7 @@ public struct Account: Codable {
 }
 
 internal extension Account {
-    init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Account) throws {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Account) throws {
         self.id = grpcModel.id
         self.type = try AccountType(rawValue: grpcModel.type.rawValue) ?? { throw InvestApiError.valueOutOfRange }()
         self.name =  grpcModel.name
