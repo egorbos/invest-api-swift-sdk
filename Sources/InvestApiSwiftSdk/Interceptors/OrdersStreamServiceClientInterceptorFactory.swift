@@ -1,5 +1,4 @@
 import GRPC
-import Foundation
 
 public protocol OrdersStreamServiceClientInterceptorFactory:
     Tinkoff_Public_Invest_Api_Contract_V1_OrdersStreamServiceClientInterceptorFactoryProtocol {}

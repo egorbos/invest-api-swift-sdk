@@ -59,7 +59,7 @@ internal class ServicesBuilder {
     }
     
     func makeMarketDataService() -> MarketDataService  {
-        let client = DefaultMarketDataServiceAsyncClient(
+        let client = MarketDataServiceClient(
             channel: self.channel,
             defaultCallOptions: self.callOptions,
             interceptors: MarketDataServiceInterceptorFactory()

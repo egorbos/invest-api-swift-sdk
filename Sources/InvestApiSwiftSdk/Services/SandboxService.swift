@@ -5,32 +5,35 @@ import Foundation
 public protocol SandboxService {
     /// Регистрирует счёт в песочнице.
     ///
-    ///  - Returns: Идентификатор зарегистрированного счёта.
+    ///  - returns: Идентификатор зарегистрированного счёта.
     func openSandboxAccount() throws -> EventLoopFuture<String>
     
     /// Закрывает счёт в песочнице.
+    ///
+    ///  - parameters:
+    ///      - accountId: Идентификатор счёта песочницы.
     func closeSandboxAccount(accountId id: String) throws -> EventLoopFuture<Void>
     
     /// Пополняет счёт в песочнице.
     ///
-    ///  - Parameters:
+    ///  - parameters:
     ///      - accountId: Идентификатор счёта песочницы.
     ///      - amount: Сумма пополнения счёта в рублях.
     ///
-    ///  - Returns: Текущий баланс счёта `MoneyValue`.
+    ///  - returns: Текущий баланс счёта `MoneyValue`.
     func sandboxPayIn(accountId id: String, amount: MoneyValue) throws -> EventLoopFuture<MoneyValue>
     
     /// Получает доступный остаток для вывода средств в песочнице.
     ///
-    ///  - Parameter accountId: Идентификатор счёта песочницы.
+    ///  - parameter accountId: Идентификатор счёта песочницы.
     ///
-    ///  - Returns: Доступный остаток для вывода средств `WithdrawLimits`.
+    ///  - returns: Доступный остаток для вывода средств `WithdrawLimits`.
     func getSandboxWithdrawLimits(accountId id: String) throws -> EventLoopFuture<WithdrawLimits>
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Регистрирует счёт в песочнице.
     ///
-    ///  - Returns: Идентификатор зарегистрированного счёта.
+    ///  - returns: Идентификатор зарегистрированного счёта.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func openSandboxAccount() async throws -> String
     
@@ -40,19 +43,19 @@ public protocol SandboxService {
     
     /// Пополняет счёт в песочнице.
     ///
-    ///  - Parameters:
+    ///  - parameters:
     ///      - accountId: Идентификатор счёта песочницы.
     ///      - amount: Сумма пополнения счёта в рублях.
     ///
-    ///  - Returns: Текущий баланс счёта `MoneyValue`.
+    ///  - returns: Текущий баланс счёта `MoneyValue`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func sandboxPayIn(accountId id: String, amount: MoneyValue) async throws -> MoneyValue
     
     /// Получает доступный остаток для вывода средств в песочнице.
     ///
-    ///  - Parameter accountId: Идентификатор счёта песочницы.
+    ///  - parameter accountId: Идентификатор счёта песочницы.
     ///
-    ///  - Returns: Доступный остаток для вывода средств `WithdrawLimits`.
+    ///  - returns: Доступный остаток для вывода средств `WithdrawLimits`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxWithdrawLimits(accountId id: String) async throws -> WithdrawLimits
 #endif
@@ -69,9 +72,7 @@ internal struct GrpcSandboxService: SandboxService {
         self.client
             .openSandboxAccount(Requests.SandboxServiceRequests.openSandboxAccountRequest)
             .response
-            .map { response in
-                response.accountID
-            }
+            .map { $0.accountID }
     }
     
     func closeSandboxAccount(accountId id: String) throws -> EventLoopFuture<Void> {
@@ -89,9 +90,7 @@ internal struct GrpcSandboxService: SandboxService {
                 try Requests.SandboxServiceRequests.sandboxPayInRequest.with(accountId: id, amount: amount)
             )
             .response
-            .map { response in
-                response.balance.toModel()
-            }
+            .map { $0.balance.toModel() }
     }
     
     func getSandboxWithdrawLimits(accountId id: String) throws -> EventLoopFuture<WithdrawLimits> {
@@ -100,9 +99,7 @@ internal struct GrpcSandboxService: SandboxService {
                 Requests.SandboxServiceRequests.withdrawLimitsRequest.with(accountId: id)
             )
             .response
-            .map { response in
-                response.toModel()
-            }
+            .map { $0.toModel() }
     }
     
 #if compiler(>=5.5) && canImport(_Concurrency)

@@ -1,5 +1,3 @@
-import Foundation
-
 /// Лимит unary-методов.
 public struct UnaryLimit: Codable {
     /// Количество unary-запросов в минуту.
@@ -10,7 +8,7 @@ public struct UnaryLimit: Codable {
 }
 
 internal extension UnaryLimit {
-    init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_UnaryLimit) {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_UnaryLimit) {
         self.limitPerMinute = grpcModel.limitPerMinute
         self.methods = grpcModel.methods
     }

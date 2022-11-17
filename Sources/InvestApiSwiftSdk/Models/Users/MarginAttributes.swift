@@ -1,5 +1,4 @@
-import Foundation
-
+/// Маржинальные показатели.
 public struct MarginAttributes: Codable {
     /// Ликвидная стоимость портфеля.
     let liquidPortfolio: MoneyValue
@@ -18,7 +17,7 @@ public struct MarginAttributes: Codable {
 }
 
 internal extension MarginAttributes {
-    init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesResponse) {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesResponse) {
         self.liquidPortfolio = grpcModel.liquidPortfolio.toModel()
         self.startingMargin = grpcModel.startingMargin.toModel()
         self.minimalMargin = grpcModel.minimalMargin.toModel()

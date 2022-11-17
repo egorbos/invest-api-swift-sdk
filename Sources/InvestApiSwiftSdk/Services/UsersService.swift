@@ -70,8 +70,8 @@ internal struct GrpcUsersService: CommonUsersService {
         self.client
             .getAccounts(Requests.UsersServiceRequests.getAccountsRequest)
             .response
-            .flatMapThrowing { response in
-                try response.accounts.map { account in try account.toModel() }
+            .flatMapThrowing {
+                try $0.accounts.map { account in try account.toModel() }
             }
     }
        
@@ -79,18 +79,14 @@ internal struct GrpcUsersService: CommonUsersService {
         self.client
             .getUserTariff(Requests.UsersServiceRequests.getUserTariffRequest)
             .response
-            .map { response in
-                response.toModel()
-            }
+            .map { $0.toModel() }
     }
     
     func getInfo() throws -> EventLoopFuture<UserInfo> {
         self.client
             .getInfo(Requests.UsersServiceRequests.getInfoRequest)
             .response
-            .map { response in
-                response.toModel()
-            }
+            .map { $0.toModel() }
     }
     
     func getMarginAttributes(accountId id: String) throws -> EventLoopFuture<MarginAttributes> {
@@ -99,9 +95,7 @@ internal struct GrpcUsersService: CommonUsersService {
                 Requests.UsersServiceRequests.getMarginAttributesRequest.with(accountId: id)
             )
             .response
-            .map { response in
-                response.toModel()
-            }
+            .map { $0.toModel() }
     }
     
 #if compiler(>=5.5) && canImport(_Concurrency)
@@ -109,7 +103,7 @@ internal struct GrpcUsersService: CommonUsersService {
         try await self.client
             .getAccounts(Requests.UsersServiceRequests.getAccountsRequest)
             .accounts
-            .map { account in try account.toModel() }
+            .map { try $0.toModel() }
     }
 
     func getUserTariff() async throws -> UserTariff {

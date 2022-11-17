@@ -1,5 +1,3 @@
-import Foundation
-
 /// Котировка - денежная сумма без указания валюты.
 public struct Quotation: Codable {
     /// Целая часть суммы, может быть отрицательным числом.
@@ -10,7 +8,7 @@ public struct Quotation: Codable {
 }
 
 internal extension Quotation {
-    init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Quotation) {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Quotation) {
         self.units = grpcModel.units
         self.nano = grpcModel.nano
     }

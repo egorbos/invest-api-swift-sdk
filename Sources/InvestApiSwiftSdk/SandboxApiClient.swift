@@ -34,7 +34,7 @@ public protocol SandboxApiClient {
     ///      - request: Запрос.
     ///
     ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
-    func sendRequest<T>(_ req: SandboxApiRequest<T>) throws -> EventLoopFuture<T>
+    func sendRequest<T>(_ request: SandboxApiRequest<T>) throws -> EventLoopFuture<T>
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Отправляет запрос к Tinkoff API.
@@ -48,13 +48,13 @@ public protocol SandboxApiClient {
     ///
     ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-    func sendRequest<T>(_ req: SandboxAsyncApiRequest<T>) async throws -> T
+    func sendRequest<T>(_ request: SandboxAsyncApiRequest<T>) async throws -> T
 #endif
 }
 
 public extension SandboxApiClient {
-    func sendRequest<T>(_ req: SandboxApiRequest<T>) throws -> EventLoopFuture<T> {
-        return try req.send(client: self)
+    func sendRequest<T>(_ request: SandboxApiRequest<T>) throws -> EventLoopFuture<T> {
+        return try request.send(client: self)
     }
 }
 

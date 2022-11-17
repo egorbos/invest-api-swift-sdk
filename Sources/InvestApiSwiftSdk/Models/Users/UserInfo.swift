@@ -1,5 +1,3 @@
-import Foundation
-
 /// Информация о пользователе.
 public struct UserInfo: Codable {
     /// Признак премиум клиента.
@@ -16,7 +14,7 @@ public struct UserInfo: Codable {
 }
 
 internal extension UserInfo {
-    init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetInfoResponse) {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetInfoResponse) {
         self.premStatus = grpcModel.premStatus
         self.qualStatus = grpcModel.qualStatus
         self.qualifiedForWorkWith = grpcModel.qualifiedForWorkWith

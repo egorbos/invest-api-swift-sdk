@@ -1,5 +1,4 @@
 import NIOCore
-import Foundation
 
 public class ApiRequest<Client, Result> {
     private let closure: (Client) throws -> EventLoopFuture<Result>

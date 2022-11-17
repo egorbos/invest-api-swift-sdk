@@ -1,5 +1,4 @@
 import GRPC
-import Foundation
 
 public protocol SandboxServiceClientInterceptorFactory:
     Tinkoff_Public_Invest_Api_Contract_V1_SandboxServiceClientInterceptorFactoryProtocol {}

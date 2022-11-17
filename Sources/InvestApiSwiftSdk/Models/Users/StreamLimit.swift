@@ -1,5 +1,3 @@
-import Foundation
-
 /// Лимит stream-соединений.
 public struct StreamLimit: Codable {
     /// Максимальное количество stream-соединений.
@@ -10,7 +8,7 @@ public struct StreamLimit: Codable {
 }
 
 internal extension StreamLimit {
-    init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_StreamLimit) {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_StreamLimit) {
         self.limit = grpcModel.limit
         self.streams = grpcModel.streams
     }

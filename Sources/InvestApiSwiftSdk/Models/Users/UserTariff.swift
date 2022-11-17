@@ -1,5 +1,3 @@
-import Foundation
-
 /// Текущие лимиты пользователя.
 public struct UserTariff: Codable {
     /// Лимиты пользователя по unary-запросам.
@@ -10,9 +8,9 @@ public struct UserTariff: Codable {
 }
 
 internal extension UserTariff {
-    init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetUserTariffResponse) {
-        self.unaryLimits = grpcModel.unaryLimits.map({ unaryLimit in unaryLimit.toModel() })
-        self.streamLimits = grpcModel.streamLimits.map({ streamLimit in streamLimit.toModel() })
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetUserTariffResponse) {
+        self.unaryLimits = grpcModel.unaryLimits.map { $0.toModel() }
+        self.streamLimits = grpcModel.streamLimits.map { $0.toModel() }
     }
 }
 

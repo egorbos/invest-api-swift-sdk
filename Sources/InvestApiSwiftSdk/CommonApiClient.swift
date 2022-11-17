@@ -54,7 +54,7 @@ public protocol CommonApiClient {
     ///
     ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-    func sendRequest<T>(_ req: CommonAsyncApiRequest<T>) async throws -> T
+    func sendRequest<T>(_ request: CommonAsyncApiRequest<T>) async throws -> T
 #endif
 }
 
