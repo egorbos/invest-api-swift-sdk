@@ -1,9 +1,6 @@
 import GRPC
 
-public protocol StopOrdersServiceClientInterceptorFactory:
-    Tinkoff_Public_Invest_Api_Contract_V1_StopOrdersServiceClientInterceptorFactoryProtocol {}
-
-internal struct StopOrdersServiceInterceptorFactory: StopOrdersServiceClientInterceptorFactory {
+internal struct StopOrdersServiceClientInterceptorFactory: Tinkoff_Public_Invest_Api_Contract_V1_StopOrdersServiceClientInterceptorFactoryProtocol {
     func makePostStopOrderInterceptors() -> [ClientInterceptor<Tinkoff_Public_Invest_Api_Contract_V1_PostStopOrderRequest, Tinkoff_Public_Invest_Api_Contract_V1_PostStopOrderResponse>] {
         return []
     }

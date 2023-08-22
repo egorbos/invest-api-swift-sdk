@@ -5,9 +5,9 @@ public protocol MarketDataStreamService {
 }
 
 internal struct GrpcMarketDataStreamService: MarketDataStreamService {
-    let client: MarketDataStreamServiceAsyncClient
+    let client: MarketDataStreamServiceClient
     
-    init(_ client: MarketDataStreamServiceAsyncClient) {
+    init(_ client: MarketDataStreamServiceClient) {
         self.client = client
     }
 }

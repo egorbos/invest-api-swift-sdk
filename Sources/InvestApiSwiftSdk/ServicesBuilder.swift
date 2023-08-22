@@ -16,8 +16,7 @@ internal class ServicesBuilder {
     func makeSandboxService() -> SandboxService {
         let client = SandboxServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: SandboxServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcSandboxService(client)
     }
@@ -25,35 +24,31 @@ internal class ServicesBuilder {
     func makeUsersService() -> CommonUsersService  {
         let client = UsersServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: UsersServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcUsersService(client)
     }
     
     func makeInstrumentsService() -> InstrumentsService  {
-        let client = DefaultInstrumentsServiceAsyncClient(
+        let client = InstrumentsServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: InstrumentsServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcInstrumentsService(client)
     }
     
-    func makeOperationsService() -> CommonOperationsService  {
-        let client = DefaultOperationsServiceAsyncClient(
+    func makeOperationsService() -> OperationsService  {
+        let client = OperationsServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: OperationsServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcOperationsService(client)
     }
     
     func makeOperationsStreamService() -> OperationsStreamService  {
-        let client = DefaultOperationsStreamServiceAsyncClient(
+        let client = OperationsStreamServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: OperationsStreamServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcOperationsStreamService(client)
     }
@@ -61,44 +56,39 @@ internal class ServicesBuilder {
     func makeMarketDataService() -> MarketDataService  {
         let client = MarketDataServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: MarketDataServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcMarketDataService(client)
     }
     
     func makeMarketDataStreamService() -> MarketDataStreamService  {
-        let client = DefaultMarketDataStreamServiceAsyncClient(
+        let client = MarketDataStreamServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: MarketDataStreamServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcMarketDataStreamService(client)
     }
 
     func makeOrdersService() -> OrdersService  {
-        let client = DefaultOrdersServiceAsyncClient(
+        let client = OrdersServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: OrdersServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcOrdersService(client)
     }
     
     func makeOrdersStreamService() -> OrdersStreamService  {
-        let client = DefaultOrdersStreamServiceAsyncClient(
+        let client = OrdersStreamServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: OrdersStreamServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcOrdersStreamService(client)
     }
     
     func makeStopOrdersService() -> StopOrdersService  {
-        let client = DefaultStopOrdersServiceAsyncClient(
+        let client = StopOrdersServiceClient(
             channel: self.channel,
-            defaultCallOptions: self.callOptions,
-            interceptors: StopOrdersServiceInterceptorFactory()
+            defaultCallOptions: self.callOptions
         )
         return GrpcStopOrdersService(client)
     }

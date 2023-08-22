@@ -16,6 +16,14 @@ public extension MoneyValue {
     static func russianRuble(units: Int64, nano: Int32 = 0) -> MoneyValue {
         MoneyValue(currency: "RUB", units: units, nano: nano)
     }
+    
+    static func usDollar(units: Int64, nano: Int32 = 0) -> MoneyValue {
+        MoneyValue(currency: "USD", units: units, nano: nano)
+    }
+    
+    static func euro(units: Int64, nano: Int32 = 0) -> MoneyValue {
+        MoneyValue(currency: "EUR", units: units, nano: nano)
+    }
 }
 
 internal extension MoneyValue {

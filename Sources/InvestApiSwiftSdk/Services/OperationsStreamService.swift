@@ -5,9 +5,9 @@ public protocol OperationsStreamService {
 }
 
 internal struct GrpcOperationsStreamService: OperationsStreamService {
-    let client: OperationsStreamServiceAsyncClient
+    let client: OperationsStreamServiceClient
     
-    init(_ client: OperationsStreamServiceAsyncClient) {
+    init(_ client: OperationsStreamServiceClient) {
         self.client = client
     }
 }

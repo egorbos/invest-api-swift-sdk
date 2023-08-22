@@ -3,7 +3,7 @@ git submodule init
 git submodule update
 mkdir Sources/InvestApiSwiftSdk/Contracts
 cd InvestApi
-git checkout v1.0.12
+git checkout v1.1
 protoc $(find src/docs/contracts -iname "*.proto") \
        --proto_path=src/docs/contracts \
        --plugin=../protoc-plugins/protoc-gen-swift \

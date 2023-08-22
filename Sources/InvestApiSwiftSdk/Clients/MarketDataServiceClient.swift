@@ -1,17 +1,22 @@
 import GRPC
 
-internal struct MarketDataServiceClient: Tinkoff_Public_Invest_Api_Contract_V1_MarketDataServiceClientProtocol {    
+internal struct MarketDataServiceClient: Tinkoff_Public_Invest_Api_Contract_V1_MarketDataServiceClientProtocol {
     let channel: GRPCChannel
     var defaultCallOptions: CallOptions
-    let interceptors: MarketDataServiceClientInterceptorFactory
+    var interceptors: Tinkoff_Public_Invest_Api_Contract_V1_MarketDataServiceClientInterceptorFactoryProtocol? {
+        get {
+            return interceptorFactory
+        }
+    }
+    
+    private let interceptorFactory: MarketDataServiceClientInterceptorFactory
 
     init(
       channel: GRPCChannel,
-      defaultCallOptions: CallOptions,
-      interceptors: MarketDataServiceClientInterceptorFactory
+      defaultCallOptions: CallOptions
     ) {
-      self.channel = channel
-      self.defaultCallOptions = defaultCallOptions
-      self.interceptors = interceptors
+        self.channel = channel
+        self.defaultCallOptions = defaultCallOptions
+        self.interceptorFactory = MarketDataServiceClientInterceptorFactory()
     }
 }

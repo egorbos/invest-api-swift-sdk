@@ -1,9 +1,6 @@
 import GRPC
 
-public protocol InstrumentsServiceClientInterceptorFactory:
-    Tinkoff_Public_Invest_Api_Contract_V1_InstrumentsServiceClientInterceptorFactoryProtocol {}
-
-internal struct InstrumentsServiceInterceptorFactory: InstrumentsServiceClientInterceptorFactory {
+internal struct InstrumentsServiceClientInterceptorFactory: Tinkoff_Public_Invest_Api_Contract_V1_InstrumentsServiceClientInterceptorFactoryProtocol {
     func makeTradingSchedulesInterceptors() -> [ClientInterceptor<Tinkoff_Public_Invest_Api_Contract_V1_TradingSchedulesRequest, Tinkoff_Public_Invest_Api_Contract_V1_TradingSchedulesResponse>] {
         return []
     }

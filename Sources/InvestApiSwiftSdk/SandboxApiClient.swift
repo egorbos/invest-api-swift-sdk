@@ -13,7 +13,7 @@ public protocol SandboxApiClient {
     var instruments: InstrumentsService { get }
     
     /// Сервис получения информации об операциях по счёту.
-    var operations: SandboxOperationsService { get }
+    var operations: OperationsService { get }
     
     /// Сервис котировок.
     var marketData: MarketDataService { get }
@@ -64,7 +64,7 @@ internal final class SandboxInvestApiClient: SandboxApiClient {
     let sandbox: SandboxService
     let user: SandboxUsersService
     let instruments: InstrumentsService
-    let operations: SandboxOperationsService
+    let operations: OperationsService
     let marketData: MarketDataService
     let marketDataStream: MarketDataStreamService
     let orders: OrdersService

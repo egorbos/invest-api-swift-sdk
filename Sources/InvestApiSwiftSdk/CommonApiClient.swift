@@ -10,7 +10,7 @@ public protocol CommonApiClient {
     var instruments: InstrumentsService { get }
     
     /// Сервис получения информации об операциях по счёту.
-    var operations: CommonOperationsService { get }
+    var operations: OperationsService { get }
     
     /// Сервис получения информации о позициях и доходности портфеля в реальном времени.
     var operationsStream: OperationsStreamService { get }
@@ -69,7 +69,7 @@ internal final class CommonInvestApiClient: CommonApiClient {
     
     let user: CommonUsersService
     let instruments: InstrumentsService
-    let operations: CommonOperationsService
+    let operations: OperationsService
     let operationsStream: OperationsStreamService
     let marketData: MarketDataService
     let marketDataStream: MarketDataStreamService

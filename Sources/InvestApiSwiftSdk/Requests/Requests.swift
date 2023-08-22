@@ -25,6 +25,16 @@ internal struct Requests {
         static let getLastTradesRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetLastTradesRequest()
         static let getClosePricesRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetClosePricesRequest()
     }
+    
+    struct OperationsServiceRequests {
+        static let getOperationsRequest = Tinkoff_Public_Invest_Api_Contract_V1_OperationsRequest()
+        static let getPortfolioRequest = Tinkoff_Public_Invest_Api_Contract_V1_PortfolioRequest()
+        static let getPositionsRequest = Tinkoff_Public_Invest_Api_Contract_V1_PositionsRequest()
+        static let getWithdrawLimitsRequest = Tinkoff_Public_Invest_Api_Contract_V1_WithdrawLimitsRequest()
+        static let brokerReportRequest = Tinkoff_Public_Invest_Api_Contract_V1_BrokerReportRequest()
+        static let divForeignIssuerReportRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetDividendsForeignIssuerRequest()
+        static let getOperationsByCursorRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorRequest()
+    }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesRequest {
@@ -61,12 +71,7 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_WithdrawLimitsRequest {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetCandlesRequest {
-    func with(
-        figi: String,
-        from: Date,
-        to: Date,
-        interval: CandleInterval
-    ) throws -> Self {
+    func with(figi: String, from: Date, to: Date, interval: CandleInterval) throws -> Self {
         var request = self
         request.figi = figi
         request.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
@@ -103,11 +108,7 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetTradingStatusRequest
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetLastTradesRequest {
-    func with(
-        figi: String,
-        from: Date,
-        to: Date
-    ) throws -> Self {
+    func with(figi: String, from: Date, to: Date) -> Self {
         var request = self
         request.figi = figi
         request.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
@@ -128,6 +129,97 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetClosePricesRequest {
         request.instruments = figi.map {
             Tinkoff_Public_Invest_Api_Contract_V1_InstrumentClosePriceRequest(figi: $0)
         }
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_OperationsRequest {
+    func with(accountId id: String, from: Date, to: Date, state: OperationState, figi: String) throws -> Self {
+        var request = self
+        request.accountID = id
+        request.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        request.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+        request.state = try Tinkoff_Public_Invest_Api_Contract_V1_OperationState(rawValue: state.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        request.figi = figi
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_PortfolioRequest {
+    func with(accountId id: String, currency: CurrencyType) throws -> Self {
+        var request = self
+        request.accountID = id
+        request.currency = try CurrencyRequest(rawValue: currency.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionsRequest {
+    func with(accountId id: String) -> Self {
+        var request = self
+        request.accountID = id
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_BrokerReportRequest {
+    func generate(accountId id: String, from: Date, to: Date) -> Self {
+        var request = self
+        request.generateBrokerReportRequest.accountID = id
+        request.generateBrokerReportRequest.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        request.generateBrokerReportRequest.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+        return request
+    }
+    
+    func get(taskId id: String, page: Int32) -> Self {
+        var request = self
+        request.getBrokerReportRequest.taskID = id
+        request.getBrokerReportRequest.page = page
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetDividendsForeignIssuerRequest {
+    func generate(accountId id: String, from: Date, to: Date) -> Self {
+        var request = self
+        request.generateDivForeignIssuerReport.accountID = id
+        request.generateDivForeignIssuerReport.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        request.generateDivForeignIssuerReport.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+        return request
+    }
+    
+    func get(taskId id: String, page: Int32) -> Self {
+        var request = self
+        request.getDivForeignIssuerReport.taskID = id
+        request.getDivForeignIssuerReport.page = page
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorRequest {
+    func with(
+        accountId id: String, instrumentId: String, from: Date, to: Date, cursor: String,
+        limit: Int32, types: [OperationType], state: OperationState, withCommissions: Bool,
+        withTrades: Bool, withOvernights: Bool
+    ) throws -> Self {
+        var request = self
+        request.accountID = id
+        request.instrumentID = instrumentId
+        request.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        request.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+        request.cursor = cursor
+        request.limit = limit
+        request.operationTypes = try types.map {
+            try Tinkoff_Public_Invest_Api_Contract_V1_OperationType(rawValue: $0.rawValue)
+                ?? { throw InvestApiError.valueOutOfRange }()
+        }
+        request.state = try Tinkoff_Public_Invest_Api_Contract_V1_OperationState(rawValue: state.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        request.withoutCommissions = !withCommissions
+        request.withoutTrades = !withTrades
+        request.withoutOvernights = !withOvernights
         return request
     }
 }

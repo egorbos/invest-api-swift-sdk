@@ -5,9 +5,9 @@ public protocol StopOrdersService {
 }
 
 internal struct GrpcStopOrdersService: StopOrdersService {
-    let client: StopOrdersServiceAsyncClient
+    let client: StopOrdersServiceClient
     
-    init(_ client: StopOrdersServiceAsyncClient) {
+    init(_ client: StopOrdersServiceClient) {
         self.client = client
     }
 }

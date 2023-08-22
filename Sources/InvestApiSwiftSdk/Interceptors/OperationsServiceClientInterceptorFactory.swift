@@ -1,9 +1,6 @@
 import GRPC
 
-public protocol OperationsServiceClientInterceptorFactory:
-    Tinkoff_Public_Invest_Api_Contract_V1_OperationsServiceClientInterceptorFactoryProtocol {}
-
-internal struct OperationsServiceInterceptorFactory: OperationsServiceClientInterceptorFactory {
+internal struct OperationsServiceClientInterceptorFactory: Tinkoff_Public_Invest_Api_Contract_V1_OperationsServiceClientInterceptorFactoryProtocol {
     func makeGetOperationsInterceptors() -> [ClientInterceptor<Tinkoff_Public_Invest_Api_Contract_V1_OperationsRequest, Tinkoff_Public_Invest_Api_Contract_V1_OperationsResponse>] {
         return []
     }

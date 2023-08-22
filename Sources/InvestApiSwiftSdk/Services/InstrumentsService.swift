@@ -5,9 +5,9 @@ public protocol InstrumentsService {
 }
 
 internal struct GrpcInstrumentsService: InstrumentsService {
-    let client: InstrumentsServiceAsyncClient
+    let client: InstrumentsServiceClient
     
-    init(_ client: InstrumentsServiceAsyncClient) {
+    init(_ client: InstrumentsServiceClient) {
         self.client = client
     }
 }

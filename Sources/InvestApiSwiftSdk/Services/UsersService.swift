@@ -38,6 +38,7 @@ public protocol SandboxUsersService {
 #endif
 }
 
+/// Сервис предоставления справочной информации о пользователе.
 public protocol CommonUsersService: SandboxUsersService {
     /// Получает маржинальные показатели по счёту пользователя.
     ///

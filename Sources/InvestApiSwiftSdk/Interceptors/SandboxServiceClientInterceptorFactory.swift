@@ -1,9 +1,6 @@
 import GRPC
 
-public protocol SandboxServiceClientInterceptorFactory:
-    Tinkoff_Public_Invest_Api_Contract_V1_SandboxServiceClientInterceptorFactoryProtocol {}
-
-internal struct SandboxServiceInterceptorFactory: SandboxServiceClientInterceptorFactory {
+internal struct SandboxServiceClientInterceptorFactory: Tinkoff_Public_Invest_Api_Contract_V1_SandboxServiceClientInterceptorFactoryProtocol {
     func makeOpenSandboxAccountInterceptors() -> [ClientInterceptor<Tinkoff_Public_Invest_Api_Contract_V1_OpenSandboxAccountRequest, Tinkoff_Public_Invest_Api_Contract_V1_OpenSandboxAccountResponse>] {
         return []
     }
@@ -41,6 +38,10 @@ internal struct SandboxServiceInterceptorFactory: SandboxServiceClientIntercepto
     }
     
     func makeGetSandboxOperationsInterceptors() -> [ClientInterceptor<Tinkoff_Public_Invest_Api_Contract_V1_OperationsRequest, Tinkoff_Public_Invest_Api_Contract_V1_OperationsResponse>] {
+        return []
+    }
+    
+    func makeGetSandboxOperationsByCursorInterceptors() -> [ClientInterceptor<Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorRequest, Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorResponse>] {
         return []
     }
     
