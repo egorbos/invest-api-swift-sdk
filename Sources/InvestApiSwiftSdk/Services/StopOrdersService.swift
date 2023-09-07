@@ -6,90 +6,79 @@ public protocol StopOrdersService {
     /// Выставляет стоп-заявку.
     ///
     /// - Parameters:
+    ///     - accountId: Идентификатор счёта пользователя.
+    ///     - instrumentId: Идентификатор инструмента (figi инструмента или uid инструмента).
+    ///     - quantity: Количество лотов.
+    ///     - price: Цена за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
+    ///     - stopPrice: Стоп-цена заявки за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
+    ///     - direction: Направление операции.
+    ///     - stopOrderType: Тип заявки.
+    ///     - expirationType: Тип экспирации заявки.
+    ///     - expireDate: Дата и время окончания действия стоп-заявки в часовом поясе UTC (для expirationType = .goodTillDate заполнение обязательно).
     ///
-    /// - Returns:
-    func PostStopOrder() throws -> Void
+    /// - Returns: Уникальный идентификатор стоп-заявки `String`.
+    func postStopOrder(
+        accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
+        stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
+        expirationType: StopOrderExpirationType, expireDate: Date
+    ) throws -> EventLoopFuture<String>
     
-    - PostStopOrderRequest
-    Запрос выставления стоп-заявки.
-
-    Field    Type    Description
-    figi    string    Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
-    quantity    int64    Количество лотов.
-    price    Quotation    Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.
-    stop_price    Quotation    Стоп-цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.
-    direction    StopOrderDirection    Направление операции.
-    account_id    string    Номер счёта.
-    expiration_type    StopOrderExpirationType    Тип экспирации заявки.
-    stop_order_type    StopOrderType    Тип заявки.
-    expire_date    google.protobuf.Timestamp    Дата и время окончания действия стоп-заявки в часовом поясе UTC. Для ExpirationType = GoodTillDate заполнение обязательно.
-    instrument_id    string    Идентификатор инструмента, принимает значения Figi или instrument_uid.
-    
-    - PostStopOrderResponse
-    Результат выставления стоп-заявки.
-
-    Field    Type    Description
-    stop_order_id    string    Уникальный идентификатор стоп-заявки.
-    
-    
-    
-    /// Получает список активных стоп заявок по счёту.
+    /// Получает список активных стоп-заявок по счёту.
     ///
-    /// - Parameters:
+    /// - Parameter accountId: Идентификатор счёта пользователя.
     ///
-    /// - Returns:
-    func GetStopOrders() throws -> Void
-    
-    - GetStopOrdersRequest
-    Запрос получения списка активных стоп-заявок.
-
-    Field    Type    Description
-    account_id    string    Идентификатор счёта клиента.
-
-    - GetStopOrdersResponse
-    Список активных стоп-заявок.
-
-    Field    Type    Description
-    stop_orders    Массив объектов StopOrder    Массив стоп-заявок по счёту.
-    
-    - StopOrder
-    Информация о стоп-заявке.
-
-    Field    Type    Description
-    stop_order_id    string    Идентификатор-идентификатор стоп-заявки.
-    lots_requested    int64    Запрошено лотов.
-    figi    string    Figi-идентификатор инструмента.
-    direction    StopOrderDirection    Направление операции.
-    currency    string    Валюта стоп-заявки.
-    order_type    StopOrderType    Тип стоп-заявки.
-    create_date    google.protobuf.Timestamp    Дата и время выставления заявки в часовом поясе UTC.
-    activation_date_time    google.protobuf.Timestamp    Дата и время конвертации стоп-заявки в биржевую в часовом поясе UTC.
-    expiration_time    google.protobuf.Timestamp    Дата и время снятия заявки в часовом поясе UTC.
-    price    MoneyValue    Цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.
-    stop_price    MoneyValue    Цена активации стоп-заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.
-    instrument_uid    string    instrument_uid идентификатор инструмента.
-    
-    
+    /// - Returns: Список активных стоп-заявок `[StopOrder]`.
+    func getStopOrders(accountId: String) throws -> EventLoopFuture<[StopOrder]>
     
     /// Отменяет стоп-заявку.
     ///
     /// - Parameters:
+    ///     - accountId: Идентификатор счёта пользователя.
+    ///     - stopOrderId: Идентификатор стоп-заявки.
     ///
-    /// - Returns:
-    func CancelStopOrder() throws -> Void
+    /// - Returns: Время отмены заявки в часовом поясе UTC `Date`.
+    func cancelStopOrder(accountId: String, stopOrderId: String) throws -> EventLoopFuture<Date>
     
-    - CancelStopOrderRequest
-    Запрос отмены выставленной стоп-заявки.
-
-    Field    Type    Description
-    account_id    string    Идентификатор счёта клиента.
-    stop_order_id    string    Уникальный идентификатор стоп-заявки.
-
-    - CancelStopOrderResponse
-    Результат отмены выставленной стоп-заявки.
-
-    Field    Type    Description
-    time    google.protobuf.Timestamp    Время отмены заявки в часовом поясе UTC.
+#if compiler(>=5.5) && canImport(_Concurrency)
+    /// Выставляет стоп-заявку.
+    ///
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта пользователя.
+    ///     - instrumentId: Идентификатор инструмента (figi инструмента или uid инструмента).
+    ///     - quantity: Количество лотов.
+    ///     - price: Цена за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
+    ///     - stopPrice: Стоп-цена заявки за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
+    ///     - direction: Направление операции.
+    ///     - stopOrderType: Тип заявки.
+    ///     - expirationType: Тип экспирации заявки.
+    ///     - expireDate: Дата и время окончания действия стоп-заявки в часовом поясе UTC (для expirationType = .goodTillDate заполнение обязательно).
+    ///
+    /// - Returns: Уникальный идентификатор стоп-заявки `String`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
+    func postStopOrder(
+        accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
+        stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
+        expirationType: StopOrderExpirationType, expireDate: Date
+    ) async throws -> String
+    
+    /// Получает список активных стоп-заявок по счёту.
+    ///
+    /// - Parameter accountId: Идентификатор счёта пользователя.
+    ///
+    /// - Returns: Список активных стоп-заявок `[StopOrder]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
+    func getStopOrders(accountId: String) async throws -> [StopOrder]
+    
+    /// Отменяет стоп-заявку.
+    ///
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта пользователя.
+    ///     - stopOrderId: Идентификатор стоп-заявки.
+    ///
+    /// - Returns: Время отмены заявки в часовом поясе UTC `Date`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
+    func cancelStopOrder(accountId: String, stopOrderId: String) async throws -> Date
+#endif
 }
 
 internal struct GrpcStopOrdersService: StopOrdersService {
@@ -98,4 +87,93 @@ internal struct GrpcStopOrdersService: StopOrdersService {
     init(_ client: StopOrdersServiceClient) {
         self.client = client
     }
+    
+    func postStopOrder(
+        accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
+        stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
+        expirationType: StopOrderExpirationType, expireDate: Date
+    ) throws -> EventLoopFuture<String> {
+        self.client
+            .postStopOrder(
+                try Requests
+                    .StopOrdersServiceRequests
+                    .postStopOrderRequest
+                    .with(
+                        accountId: accountId, instrumentId: instrumentId, quantity: quantity,
+                        price: price, stopPrice: stopPrice, direction: direction,
+                        stopOrderType: stopOrderType, expirationType: expirationType, expireDate: expireDate
+                    )
+            )
+            .response
+            .map { $0.stopOrderID }
+    }
+    
+    func getStopOrders(accountId: String) throws -> EventLoopFuture<[StopOrder]> {
+        self.client
+            .getStopOrders(
+                Requests
+                    .StopOrdersServiceRequests
+                    .getStopOrdersRequest
+                    .with(accountId: accountId)
+            )
+            .response
+            .flatMapThrowing { try $0.stopOrders.map { try $0.toModel() } }
+    }
+    
+    func cancelStopOrder(accountId: String, stopOrderId: String) throws -> EventLoopFuture<Date> {
+        self.client
+            .cancelStopOrder(
+                Requests
+                    .StopOrdersServiceRequests
+                    .cancelStopOrderRequest
+                    .with(accountId: accountId, stopOrderId: stopOrderId)
+            )
+            .response
+            .map { $0.time.date }
+    }
+    
+#if compiler(>=5.5) && canImport(_Concurrency)
+    func postStopOrder(
+        accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
+        stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
+        expirationType: StopOrderExpirationType, expireDate: Date
+    ) async throws -> String {
+        try await self.client
+            .postStopOrder(
+                try Requests
+                    .StopOrdersServiceRequests
+                    .postStopOrderRequest
+                    .with(
+                        accountId: accountId, instrumentId: instrumentId, quantity: quantity,
+                        price: price, stopPrice: stopPrice, direction: direction,
+                        stopOrderType: stopOrderType, expirationType: expirationType, expireDate: expireDate
+                    )
+            )
+            .stopOrderID
+    }
+    
+    func getStopOrders(accountId: String) async throws -> [StopOrder] {
+        try await self.client
+            .getStopOrders(
+                Requests
+                    .StopOrdersServiceRequests
+                    .getStopOrdersRequest
+                    .with(accountId: accountId)
+            )
+            .stopOrders
+            .map { try $0.toModel() }
+    }
+    
+    func cancelStopOrder(accountId: String, stopOrderId: String) async throws -> Date {
+        try await self.client
+            .cancelStopOrder(
+                Requests
+                    .StopOrdersServiceRequests
+                    .cancelStopOrderRequest
+                    .with(accountId: accountId, stopOrderId: stopOrderId)
+            )
+            .time
+            .date
+    }
+#endif
 }

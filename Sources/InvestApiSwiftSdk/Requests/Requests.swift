@@ -43,6 +43,12 @@ internal struct Requests {
         static let getOrdersRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOrdersRequest()
         static let replaceOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_ReplaceOrderRequest()
     }
+    
+    struct StopOrdersServiceRequests {
+        static let postStopOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_PostStopOrderRequest()
+        static let getStopOrdersRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetStopOrdersRequest()
+        static let cancelStopOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_CancelStopOrderRequest()
+    }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesRequest {
@@ -290,6 +296,46 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_ReplaceOrderRequest {
         request.priceType = try Tinkoff_Public_Invest_Api_Contract_V1_PriceType(rawValue: priceType.rawValue)
             ?? { throw InvestApiError.valueOutOfRange }()
         request.quantity = quantity
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostStopOrderRequest {
+    func with(
+        accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
+        stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
+        expirationType: StopOrderExpirationType, expireDate: Date
+    ) throws -> Self {
+        var request = self
+        request.accountID = accountId
+        request.instrumentID = instrumentId
+        request.quantity = quantity
+        request.price = try price.forRequest()
+        request.stopPrice = try stopPrice.forRequest()
+        request.direction = try Tinkoff_Public_Invest_Api_Contract_V1_StopOrderDirection(rawValue: direction.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        request.stopOrderType = try Tinkoff_Public_Invest_Api_Contract_V1_StopOrderType(rawValue: stopOrderType.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        request.expirationType = try Tinkoff_Public_Invest_Api_Contract_V1_StopOrderExpirationType(rawValue: expirationType.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        request.expireDate = SwiftProtobuf.Google_Protobuf_Timestamp(date: expireDate)
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetStopOrdersRequest {
+    func with(accountId: String) -> Self {
+        var request = self
+        request.accountID = accountId
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_CancelStopOrderRequest {
+    func with(accountId: String, stopOrderId: String) -> Self {
+        var request = self
+        request.accountID = accountId
+        request.stopOrderID = stopOrderId
         return request
     }
 }
