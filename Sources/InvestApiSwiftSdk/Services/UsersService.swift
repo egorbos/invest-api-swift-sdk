@@ -4,35 +4,35 @@ import NIOCore
 public protocol SandboxUsersService {
     /// Получает счета пользователя.
     ///
-    ///  - returns: Массив счетов пользователя `[Account]`.
+    ///  - Returns: Массив счетов пользователя `[Account]`.
     func getAccounts() throws -> EventLoopFuture<[Account]>
     
     /// Получает текущие лимиты запросов пользователя.
     ///
-    ///  - returns: Лимиты запросов пользователя `UserTariff`.
+    ///  - Returns: Лимиты запросов пользователя `UserTariff`.
     func getUserTariff() throws -> EventLoopFuture<UserTariff>
     
     /// Получает информацию о статусе пользователя.
     ///
-    ///  - returns: Информация о статусе  пользователя `UserInfo`.
+    ///  - Returns: Информация о статусе  пользователя `UserInfo`.
     func getInfo() throws -> EventLoopFuture<UserInfo>
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Получает счета пользователя.
     ///
-    ///  - returns: Массив счетов пользователя `[Account]`.
+    ///  - Returns: Массив счетов пользователя `[Account]`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getAccounts() async throws -> [Account]
 
     /// Получает текущие лимиты запросов пользователя.
     ///
-    ///  - returns: Лимиты запросов пользователя `UserTariff`.
+    ///  - Returns: Лимиты запросов пользователя `UserTariff`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getUserTariff() async throws -> UserTariff
 
     /// Получает информацию о статусе пользователя.
     ///
-    ///  - returns: Информация о статусе  пользователя `UserInfo`
+    ///  - Returns: Информация о статусе  пользователя `UserInfo`
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getInfo() async throws -> UserInfo
 #endif
@@ -42,19 +42,19 @@ public protocol SandboxUsersService {
 public protocol CommonUsersService: SandboxUsersService {
     /// Получает маржинальные показатели по счёту пользователя.
     ///
-    ///  - parameters:
+    ///  - Parameters:
     ///      - accountId: Идентификатор счёта пользователя.
     ///
-    ///  - returns: Информация о статусе  пользователя `UserInfo`.
+    ///  - Returns: Информация о статусе  пользователя `UserInfo`.
     func getMarginAttributes(accountId id: String) throws -> EventLoopFuture<MarginAttributes>
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Получает маржинальные показатели по счёту пользователя.
     ///
-    ///  - parameters:
+    ///  - Parameters:
     ///      - accountId: Идентификатор счёта пользователя.
     ///
-    ///  - returns: Информация о статусе  пользователя `UserInfo`.
+    ///  - Returns: Информация о статусе  пользователя `UserInfo`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getMarginAttributes(accountId id: String) async throws -> MarginAttributes
 #endif

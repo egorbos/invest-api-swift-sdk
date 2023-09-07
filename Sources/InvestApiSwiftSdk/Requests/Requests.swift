@@ -35,6 +35,14 @@ internal struct Requests {
         static let divForeignIssuerReportRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetDividendsForeignIssuerRequest()
         static let getOperationsByCursorRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorRequest()
     }
+    
+    struct OrdersServiceRequests {
+        static let postOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_PostOrderRequest()
+        static let cancelOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_CancelOrderRequest()
+        static let getOrderStateRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOrderStateRequest()
+        static let getOrdersRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOrdersRequest()
+        static let replaceOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_ReplaceOrderRequest()
+    }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesRequest {
@@ -220,6 +228,68 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorRe
         request.withoutCommissions = !withCommissions
         request.withoutTrades = !withTrades
         request.withoutOvernights = !withOvernights
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostOrderRequest {
+    func with(
+        accountId: String, instrumentId: String, orderRequestId: String?,
+        type: OrderType, direction: OrderDirection, price: Quotation, quantity: Int64
+    ) throws -> Self {
+        var request = self
+        request.accountID = accountId
+        request.instrumentID = instrumentId
+        // request.orderRequestId = orderRequestId
+        request.orderType = try Tinkoff_Public_Invest_Api_Contract_V1_OrderType(rawValue: type.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        request.direction = try Tinkoff_Public_Invest_Api_Contract_V1_OrderDirection(rawValue: direction.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        request.price = try price.forRequest()
+        request.quantity = quantity
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_CancelOrderRequest {
+    func with(accountId: String, orderId: String) -> Self {
+        var request = self
+        request.accountID = accountId
+        request.orderID = orderId
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOrderStateRequest {
+    func with(accountId: String, orderId: String) -> Self {
+        var request = self
+        request.accountID = accountId
+        request.orderID = orderId
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOrdersRequest {
+    func with(accountId: String) -> Self {
+        var request = self
+        request.accountID = accountId
+        return request
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_ReplaceOrderRequest {
+    func with(
+        accountId: String, orderId: String, orderRequestId: String?,
+        price: Quotation, priceType: PriceType, quantity: Int64
+    ) throws -> Self {
+        var request = self
+        request.accountID = accountId
+        request.orderID = orderId
+        // request.orderRequestId = orderRequestId
+        request.price = try price.forRequest()
+        request.priceType = try Tinkoff_Public_Invest_Api_Contract_V1_PriceType(rawValue: priceType.rawValue)
+            ?? { throw InvestApiError.valueOutOfRange }()
+        request.quantity = quantity
         return request
     }
 }

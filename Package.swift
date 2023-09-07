@@ -1,4 +1,4 @@
-// swift-tools-version: 5.6
+// swift-tools-version: 5.8
 import PackageDescription
 
 let package = Package(
@@ -16,7 +16,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.8.0"),
+        .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.19.0"),
     ],
     targets: [
         .target(
