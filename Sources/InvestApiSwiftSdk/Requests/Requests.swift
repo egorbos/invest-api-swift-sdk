@@ -246,7 +246,7 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostOrderRequest {
         var request = self
         request.accountID = accountId
         request.instrumentID = instrumentId
-        // request.orderRequestId = orderRequestId
+        if let orderRequestId = orderRequestId { request.orderID = orderRequestId }
         request.orderType = try Tinkoff_Public_Invest_Api_Contract_V1_OrderType(rawValue: type.rawValue)
             ?? { throw InvestApiError.valueOutOfRange }()
         request.direction = try Tinkoff_Public_Invest_Api_Contract_V1_OrderDirection(rawValue: direction.rawValue)
@@ -291,7 +291,7 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_ReplaceOrderRequest {
         var request = self
         request.accountID = accountId
         request.orderID = orderId
-        // request.orderRequestId = orderRequestId
+        if let orderRequestId = orderRequestId { request.idempotencyKey = orderRequestId }
         request.price = try price.forRequest()
         request.priceType = try Tinkoff_Public_Invest_Api_Contract_V1_PriceType(rawValue: priceType.rawValue)
             ?? { throw InvestApiError.valueOutOfRange }()
@@ -337,5 +337,177 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_CancelStopOrderRequest 
         request.accountID = accountId
         request.stopOrderID = stopOrderId
         return request
+    }
+}
+
+// MARK: - InstrumentsServiceRequests
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_TradingSchedulesRequest {
+    init(exchange: String, from: Date, to: Date) {
+        self.exchange = exchange
+        self.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+    }
+
+    static func new(exchange: String, from: Date, to: Date) -> Self {
+        .init(exchange: exchange, from: from, to: to)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_InstrumentRequest {
+    init(idType: InstrumentIdType, classCode: String, id: String) throws {
+        self.id = id
+        self.classCode = classCode
+        self.idType = try .new(rawValue: idType.rawValue)
+    }
+
+    static func new(idType: InstrumentIdType, classCode: String, id: String) throws -> Self {
+        try .init(idType: idType, classCode: classCode, id: id)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_InstrumentsRequest {
+    init(instrumentStatus: InstrumentStatus) throws {
+        self.instrumentStatus = try .new(rawValue: instrumentStatus.rawValue)
+    }
+
+    static func new(instrumentStatus: InstrumentStatus) throws -> Self {
+        try .init(instrumentStatus: instrumentStatus)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetBondCouponsRequest {
+    init(figi: String, from: Date, to: Date) {
+        self.figi = figi
+        self.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+    }
+
+    static func new(figi: String, from: Date, to: Date) -> Self {
+        .init(figi: figi, from: from, to: to)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_FilterOptionsRequest {
+    init(basicAssetUid: String, basicAssetPositionUid: String) {
+        self.basicAssetUid = basicAssetUid
+        self.basicAssetPositionUid = basicAssetPositionUid
+    }
+
+    static func new(basicAssetUid: String, basicAssetPositionUid: String) -> Self {
+        .init(basicAssetUid: basicAssetUid, basicAssetPositionUid: basicAssetPositionUid)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetAccruedInterestsRequest {
+    init(figi: String, from: Date, to: Date) {
+        self.figi = figi
+        self.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+    }
+
+    static func new(figi: String, from: Date, to: Date) -> Self {
+        .init(figi: figi, from: from, to: to)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetFuturesMarginRequest {
+    init(figi: String) {
+        self.figi = figi
+    }
+
+    static func new(figi: String) -> Self {
+        .init(figi: figi)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetDividendsRequest {
+    init(figi: String, from: Date, to: Date) {
+        self.figi = figi
+        self.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+    }
+
+    static func new(figi: String, from: Date, to: Date) -> Self {
+        .init(figi: figi, from: from, to: to)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetRequest {
+    init(uid: String) {
+        self.id = uid
+    }
+
+    static func new(uid: String) -> Self {
+        .init(uid: uid)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetsRequest {
+    init(kind: InstrumentKind) throws {
+        self.instrumentType = try .new(rawValue: kind.rawValue)
+    }
+
+    static func new(kind: InstrumentKind) throws -> Self {
+        try .init(kind: kind)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetFavoritesRequest {
+    static func new() -> Self {
+        .init()
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_EditFavoritesRequest {
+    init(figis: [String], action: FavoriteActionType) throws {
+        self.instruments = figis.map {
+            Tinkoff_Public_Invest_Api_Contract_V1_EditFavoritesRequestInstrument(figi: $0)
+        }
+        self.actionType = try .new(rawValue: action.rawValue)
+    }
+
+    static func new(figis: [String], action: FavoriteActionType) throws -> Self {
+        try .init(figis: figis, action: action)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_EditFavoritesRequestInstrument {
+    init(figi: String) {
+        self.figi = figi
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetCountriesRequest {
+    static func new() -> Self {
+        .init()
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_FindInstrumentRequest {
+    init(query: String, kind: InstrumentKind, apiTradeAvailableFlag: Bool) throws {
+        self.query = query
+        self.instrumentKind = try .new(rawValue: kind.rawValue)
+        self.apiTradeAvailableFlag = apiTradeAvailableFlag
+    }
+
+    static func new(query: String, kind: InstrumentKind, apiTradeAvailableFlag: Bool) throws -> Self {
+        try .init(query: query, kind: kind, apiTradeAvailableFlag: apiTradeAvailableFlag)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetBrandRequest {
+    init(uid: String) {
+        self.id = uid
+    }
+
+    static func new(uid: String) -> Self {
+        .init(uid: uid)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetBrandsRequest {
+    static func new() -> Self {
+        .init()
     }
 }

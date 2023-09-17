@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "InvestApiSwiftSdk",
+    name: "invest-api-swift-sdk",
     platforms: [
         .macOS(.v10_15),
         .iOS(.v13),

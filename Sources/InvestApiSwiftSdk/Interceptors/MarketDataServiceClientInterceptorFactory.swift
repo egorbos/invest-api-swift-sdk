@@ -1,6 +1,10 @@
 import GRPC
 
 internal struct MarketDataServiceClientInterceptorFactory: Tinkoff_Public_Invest_Api_Contract_V1_MarketDataServiceClientInterceptorFactoryProtocol {
+    func makeGetTradingStatusesInterceptors() -> [ClientInterceptor<Tinkoff_Public_Invest_Api_Contract_V1_GetTradingStatusesRequest, Tinkoff_Public_Invest_Api_Contract_V1_GetTradingStatusesResponse>] {
+        return []
+    }
+    
     func makeGetCandlesInterceptors() -> [ClientInterceptor<Tinkoff_Public_Invest_Api_Contract_V1_GetCandlesRequest, Tinkoff_Public_Invest_Api_Contract_V1_GetCandlesResponse>] {
         return []
     }

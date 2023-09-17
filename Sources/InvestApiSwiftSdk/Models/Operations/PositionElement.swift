@@ -4,7 +4,7 @@ public struct PositionElement: Codable {
     let figi: String
     
     /// Тип инструмента.
-    let instrumentType: InstrumentType
+    let type: InstrumentType
     
     ///Уникальный идентификатор  инструмента.
     let instrumentUid: String
@@ -22,11 +22,11 @@ public struct PositionElement: Codable {
     let exchangeBlocked: Bool
 }
 
-internal extension PositionElement {
+internal extension PositionElement {    
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionsSecurities) {
         self.init(
             figi: grpcModel.figi,
-            instrumentType: InstrumentType.share,
+            type: InstrumentType.share,
             instrumentUid: grpcModel.instrumentUid,
             positionUid: grpcModel.positionUid,
             balance: grpcModel.balance,
@@ -38,7 +38,7 @@ internal extension PositionElement {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionsFutures) {
         self.init(
             figi: grpcModel.figi,
-            instrumentType: InstrumentType.futures,
+            type: InstrumentType.futures,
             instrumentUid: grpcModel.instrumentUid,
             positionUid: grpcModel.positionUid,
             balance: grpcModel.balance,
@@ -50,7 +50,7 @@ internal extension PositionElement {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionsOptions) {
         self.init(
             figi: "",
-            instrumentType: InstrumentType.option,
+            type: InstrumentType.option,
             instrumentUid: grpcModel.instrumentUid,
             positionUid: grpcModel.positionUid,
             balance: grpcModel.balance,

@@ -10,6 +10,12 @@ public struct Quotation: Codable {
 }
 
 internal extension Quotation {
+    static func zero() -> Self {
+        Quotation(units: 0, nano: 0)
+    }
+}
+
+internal extension Quotation {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Quotation) {
         self.units = grpcModel.units
         self.nano = grpcModel.nano

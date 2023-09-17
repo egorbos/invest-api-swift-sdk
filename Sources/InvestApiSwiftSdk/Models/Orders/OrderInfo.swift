@@ -95,9 +95,17 @@ internal extension OrderInfo {
         self.initialCommission = grpcModel.initialCommission.toModel()
         self.executedCommission = grpcModel.executedCommission.toModel()
         self.initialSecurityPrice = grpcModel.initialSecurityPrice.toModel()
+        
         self.initialOrderPricePt = grpcModel.initialOrderPricePt.toModel()
         self.accumCouponValue = grpcModel.aciValue.toModel()
         self.message = grpcModel.message
+        
+        self.averagePositionPrice = MoneyValue.null()
+        self.stages = []
+        self.serviceCommission = MoneyValue.null()
+        self.currency = ""
+        self.date = Date()
+        self.orderRequestId = nil
     }
     
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OrderState) throws {
@@ -115,12 +123,17 @@ internal extension OrderInfo {
         self.initialCommission = grpcModel.initialCommission.toModel()
         self.executedCommission = grpcModel.executedCommission.toModel()
         self.initialSecurityPrice = grpcModel.initialSecurityPrice.toModel()
+        
+        self.initialOrderPricePt = Quotation.zero()
+        self.accumCouponValue = MoneyValue.null()
+        self.message = ""
+        
         self.averagePositionPrice = grpcModel.averagePositionPrice.toModel()
         self.stages = grpcModel.stages.map { $0.toModel() }
         self.serviceCommission = grpcModel.serviceCommission.toModel()
         self.currency = grpcModel.currency
         self.date = grpcModel.orderDate.date
-        // self.orderRequestId = grpcModel.orderRequestId
+        self.orderRequestId = grpcModel.orderRequestID
     }
 }
 

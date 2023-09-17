@@ -13,16 +13,20 @@ public struct MoneyValue: Codable {
 }
 
 public extension MoneyValue {
-    static func russianRuble(units: Int64, nano: Int32 = 0) -> MoneyValue {
+    static func russianRuble(units: Int64, nano: Int32 = 0) -> Self {
         MoneyValue(currency: "RUB", units: units, nano: nano)
     }
     
-    static func usDollar(units: Int64, nano: Int32 = 0) -> MoneyValue {
+    static func usDollar(units: Int64, nano: Int32 = 0) -> Self {
         MoneyValue(currency: "USD", units: units, nano: nano)
     }
     
-    static func euro(units: Int64, nano: Int32 = 0) -> MoneyValue {
+    static func euro(units: Int64, nano: Int32 = 0) -> Self {
         MoneyValue(currency: "EUR", units: units, nano: nano)
+    }
+    
+    static func null() -> Self {
+        MoneyValue(currency: "NULL", units: 0, nano: 0)
     }
 }
 
