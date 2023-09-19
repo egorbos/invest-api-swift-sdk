@@ -21,8 +21,7 @@ public struct Trade: Codable {
 internal extension Trade {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Trade) throws {
         self.figi = grpcModel.figi
-        self.direction = try TradeDirection(rawValue: grpcModel.direction.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.direction = try .new(rawValue: grpcModel.direction.rawValue)
         self.price = grpcModel.price.toModel()
         self.quantity = grpcModel.quantity
         self.time = grpcModel.time.date

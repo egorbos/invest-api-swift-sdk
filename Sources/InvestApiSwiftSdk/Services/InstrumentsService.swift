@@ -190,7 +190,7 @@ public protocol InstrumentsService {
     ///     - action: Тип действия со списком.
     ///
     /// - Returns: Результат редактирования списка избранных инструментов `[FavoriteInstrument]`.
-    func editFavorites(figis: String..., action: FavoriteActionType) throws -> EventLoopFuture<[FavoriteInstrument]>
+    func editFavorites(figis: [String], action: FavoriteActionType) throws -> EventLoopFuture<[FavoriteInstrument]>
 
     /// Получает список стран.
     ///
@@ -222,7 +222,223 @@ public protocol InstrumentsService {
     func getBrands() throws -> EventLoopFuture<[Brand]>
     
 #if compiler(>=5.5) && canImport(_Concurrency)
+    /// Получает расписание работы торговых площадок.
+    ///
+    /// - Parameters:
+    ///     - exchange: Наименование биржи или расчетного календаря.
+    ///     - from: Начало периода по часовому поясу UTC.
+    ///     - to: Окончание периода по часовому поясу UTC.
+    ///
+    /// - Returns: Список торговых площадок и режимов торгов `OrderInfo`.
+    func tradingSchedules(exchange: String, from: Date, to: Date) async throws -> [TradingSchedule]
+
+    /// Получает облигацию по её идентификатору.
+    ///
+    /// - Parameters:
+    ///     - idType: Тип идентификатора инструмента (возможные значения: figi, ticker).
+    ///     - classCode: Идентификатор class_code (обязателен при idType = .ticker).
+    ///     - id: Идентификатор запрашиваемого инструмента.
+    ///
+    /// - Returns: Информация об облигации `Bond`.
+    func bondBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Bond
+
+    /// Получает список облигаций.
+    ///
+    /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
+    ///
+    /// - Returns: Список облигаций `[Bond]`.
+    func bonds(instrumentStatus: InstrumentStatus) async throws -> [Bond]
+
+    /// Получает график выплат купонов по облигации.
+    ///
+    /// - Parameters:
+    ///     - figi: Figi-идентификатор инструмента.
+    ///     - from: Начало запрашиваемого периода в часовом поясе UTC. Фильтрация по couponDate (дата выплаты купона).
+    ///     - to: Окончание запрашиваемого периода в часовом поясе UTC. Фильтрация по couponDate (дата выплаты купона).
+    ///
+    /// - Returns: Массив объектов содержащих информацию о купоне облигации `[Coupon]`.
+    func getBondCoupons(figi: String, from: Date, to: Date) async throws -> [Coupon]
+
+    /// Получает валюту по её идентификатору.
+    ///
+    /// - Parameters:
+    ///     - idType: Тип идентификатора инструмента (возможные значения: figi, ticker).
+    ///     - classCode: Идентификатор class_code (обязателен при idType = .ticker).
+    ///     - id: Идентификатор запрашиваемого инструмента.
+    ///
+    /// - Returns: Информация о валюте `Currency`.
+    func currencyBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Currency
+
+    /// Получает список валют.
+    ///
+    /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
+    ///
+    /// - Returns: Список валют `[Currency]`.
+    func currencies(instrumentStatus: InstrumentStatus) async throws -> [Currency]
+
+    /// Получает инвестиционный фонд по его идентификатору.
+    ///
+    /// - Parameters:
+    ///     - idType: Тип идентификатора инструмента (возможные значения: figi, ticker).
+    ///     - classCode: Идентификатор class_code (обязателен при idType = .ticker).
+    ///     - id: Идентификатор запрашиваемого инструмента.
+    ///
+    /// - Returns: Информация об инвестиционном фонде `Etf`.
+    func etfBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Etf
+
+    /// Получает список инвестиционных фондов.
+    ///
+    /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
+    ///
+    /// - Returns: Список инвестиционных фондов `[Etf]`.
+    func etfs(instrumentStatus: InstrumentStatus) async throws -> [Etf]
+
+    /// Получает фьючерсный контракт по его идентификатору.
+    ///
+    /// - Parameters:
+    ///     - idType: Тип идентификатора инструмента (возможные значения: figi, ticker).
+    ///     - classCode: Идентификатор class_code (обязателен при idType = .ticker).
+    ///     - id: Идентификатор запрашиваемого инструмента.
+    ///
+    /// - Returns: Информация о фьючерсном контракте `Future`.
+    func futureBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Future
+
+    /// Получает список фьючерсных контрактов.
+    ///
+    /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
+    ///
+    /// - Returns: Список фьючерсных контрактов `[Future]`.
+    func futures(instrumentStatus: InstrumentStatus) async throws -> [Future]
+
+    /// Получает опционный контракт по его идентификатору.
+    ///
+    /// - Parameters:
+    ///     - idType: Тип идентификатора инструмента (возможные значения: figi, ticker).
+    ///     - classCode: Идентификатор class_code (обязателен при idType = .ticker).
+    ///     - id: Идентификатор запрашиваемого инструмента.
+    ///
+    /// - Returns: Информация об опционном контракте `Option`.
+    func optionBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Option
     
+    /// Получает список опционных контрактов.
+    ///
+    /// - Parameters:
+    ///     - basicAssetUid: Идентификатор базового актива опциона (обязательный параметр).
+    ///     - basicAssetPositionUid: Идентификатор позиции базового актива опционного контракта.
+    ///
+    /// - Returns: Список опционных контрактов `[Option]`.
+    func optionsBy(basicAssetUid: String, basicAssetPositionUid: String) async throws -> [Option]
+
+    /// Получает акцию по её идентификатору.
+    ///
+    /// - Parameters:
+    ///     - idType: Тип идентификатора инструмента (возможные значения: figi, ticker).
+    ///     - classCode: Идентификатор class_code (обязателен при idType = .ticker).
+    ///     - id: Идентификатор запрашиваемого инструмента.
+    ///
+    /// - Returns: Информация об акции `Share`.
+    func shareBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Share
+    
+    /// Получает список акций.
+    ///
+    /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
+    ///
+    /// - Returns: Список акциий `[Share]`.
+    func shares(instrumentStatus: InstrumentStatus) async throws -> [Share]
+
+    /// Получает накопленный купонный доход по облигации.
+    ///
+    /// - Parameters:
+    ///     - figi: Figi-идентификатор инструмента.
+    ///     - from: Начало запрашиваемого периода в часовом поясе UTC.
+    ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
+    ///
+    /// - Returns: Список операций начисления купона `[AccruedInterest]`.
+    func getAccruedInterests(figi: String, from: Date, to: Date) async throws -> [AccruedInterest]
+
+    /// Получает размер гарантийного обеспечения по фьючерсному контракту.
+    ///
+    /// - Parameter figi: Figi-идентификатор инструмента.
+    ///
+    /// - Returns: Размер гарантийного обеспечения по фьючерсному контракту `FutureContractMargin`.
+    func getFutureContractMargin(figi: String) async throws -> FutureContractMargin
+
+    /// Получает основную информацию об инструменте.
+    ///
+    /// - Parameters:
+    ///     - idType: Тип идентификатора инструмента (возможные значения: figi, ticker).
+    ///     - classCode: Идентификатор class_code (обязателен при idType = .ticker).
+    ///     - id: Идентификатор запрашиваемого инструмента.
+    ///
+    /// - Returns: Основная информация об инструменте `Instrument`.
+    func getInstrumentBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Instrument
+    
+    /// Получает события выплаты дивидендов по инструменту.
+    ///
+    /// - Parameters:
+    ///     - figi: Figi-идентификатор инструмента.
+    ///     - from: Начало запрашиваемого периода в часовом поясе UTC (фильтрация происходит по параметру recordDate - дата фиксации реестра).
+    ///     - to: Окончание запрашиваемого периода в часовом поясе UTC (фильтрация происходит по параметру recordDate - дата фиксации реестра).
+    ///
+    /// - Returns: Список операций выплаты дивидендов `[Dividend]`.
+    func getDividends(figi: String, from: Date, to: Date) async throws -> [Dividend]
+
+    /// Получает актив по его идентификатору.
+    ///
+    /// - Parameter uid: Uid идентификатор актива.
+    ///
+    /// - Returns: Информация об активе `AssetFull`.
+    func getAssetBy(uid: String) async throws -> AssetFull
+
+    /// Получает список активов (метод работает для всех инструментов, за исключением срочных - опционов и фьючерсов).
+    ///
+    /// - Parameter kind: Вид запрашиваемых инструментов.
+    ///
+    /// - Returns: Список активов `[Asset]`.
+    func getAssets(kind: InstrumentKind) async throws -> [Asset]
+
+    /// Получает список избранных инструментов.
+    ///
+    /// - Returns: Список избранных инструментов `[FavoriteInstrument]`.
+    func getFavorites() async throws -> [FavoriteInstrument]
+
+    /// Редактирует список избранных инструментов.
+    ///
+    /// - Parameters:
+    ///     - figis: Список figi идентификаторов инструментов.
+    ///     - action: Тип действия со списком.
+    ///
+    /// - Returns: Результат редактирования списка избранных инструментов `[FavoriteInstrument]`.
+    func editFavorites(figis: [String], action: FavoriteActionType) async throws -> [FavoriteInstrument]
+
+    /// Получает список стран.
+    ///
+    /// - Returns: Список стран `[Country]`.
+    func getCountries() async throws -> [Country]
+
+    /// Поиск инструмента.
+    ///
+    /// - Parameters:
+    ///     - query: Строка поиска.
+    ///     - kind: Фильтр по виду инструмента.
+    ///     - apiTradeAvailableFlag: Фильтр для отображения только торговых инструментов.
+    ///
+    /// - Returns: Список инструментов `[InstrumentShort]`.
+    func findInstrument(query: String, kind: InstrumentKind, apiTradeAvailableFlag: Bool) async throws -> [InstrumentShort]
+    
+    /// Получает бренд по его идентификатору.
+    ///
+    /// - Parameter uid: Uid идентификатор бренда.
+    ///
+    /// - Returns: Бренд `Brand`.
+    func getBrandBy(uid: String) async throws -> Brand
+
+    /// Получает список брендов.
+    ///
+    /// - Parameters:
+    ///
+    /// - Returns: Список брендов `[Brand]`.
+    func getBrands() async throws -> [Brand]
 #endif
 }
 
@@ -238,7 +454,7 @@ internal struct GrpcInstrumentsService: InstrumentsService {
             .tradingSchedules(.new(exchange: exchange, from: from, to: to))
             .response
             .map {
-                $0.exchanges.map { $0.toModel()}
+                $0.exchanges.map { $0.toModel() }
             }
     }
     
@@ -420,7 +636,7 @@ internal struct GrpcInstrumentsService: InstrumentsService {
             }
     }
     
-    func editFavorites(figis: String..., action: FavoriteActionType) throws -> EventLoopFuture<[FavoriteInstrument]> {
+    func editFavorites(figis: [String], action: FavoriteActionType) throws -> EventLoopFuture<[FavoriteInstrument]> {
         self.client
             .editFavorites(try .new(figis: figis, action: action))
             .response
@@ -464,6 +680,184 @@ internal struct GrpcInstrumentsService: InstrumentsService {
     }
     
 #if compiler(>=5.5) && canImport(_Concurrency)
+    func tradingSchedules(exchange: String, from: Date, to: Date) async throws -> [TradingSchedule] {
+        try await self.client
+            .tradingSchedules(.new(exchange: exchange, from: from, to: to))
+            .exchanges
+            .map { $0.toModel() }
+    }
     
+    func bondBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Bond {
+        try await self.client
+            .bondBy(try .new(idType: idType, classCode: classCode, id: id))
+            .instrument
+            .toModel()
+    }
+    
+    func bonds(instrumentStatus: InstrumentStatus) async throws -> [Bond] {
+        try await self.client
+            .bonds(try .new(instrumentStatus: instrumentStatus))
+            .instruments
+            .map { try $0.toModel() }
+    }
+    
+    func getBondCoupons(figi: String, from: Date, to: Date) async throws -> [Coupon] {
+        try await self.client
+            .getBondCoupons(.new(figi: figi, from: from, to: to))
+            .events
+            .map { try $0.toModel() }
+    }
+    
+    func currencyBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Currency {
+        try await self.client
+            .currencyBy(try .new(idType: idType, classCode: classCode, id: id))
+            .instrument
+            .toModel()
+    }
+    
+    func currencies(instrumentStatus: InstrumentStatus) async throws -> [Currency] {
+        try await self.client
+            .currencies(try .new(instrumentStatus: instrumentStatus))
+            .instruments
+            .map { try $0.toModel() }
+    }
+    
+    func etfBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Etf {
+        try await self.client
+            .etfBy(try .new(idType: idType, classCode: classCode, id: id))
+            .instrument
+            .toModel()
+    }
+    
+    func etfs(instrumentStatus: InstrumentStatus) async throws -> [Etf] {
+        try await self.client
+            .etfs(try .new(instrumentStatus: instrumentStatus))
+            .instruments
+            .map { try $0.toModel() }
+    }
+    
+    func futureBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Future {
+        try await self.client
+            .futureBy(try .new(idType: idType, classCode: classCode, id: id))
+            .instrument
+            .toModel()
+    }
+    
+    func futures(instrumentStatus: InstrumentStatus) async throws -> [Future] {
+        try await self.client
+            .futures(try .new(instrumentStatus: instrumentStatus))
+            .instruments
+            .map { try $0.toModel() }
+    }
+    
+    func optionBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Option {
+        try await self.client
+            .optionBy(try .new(idType: idType, classCode: classCode, id: id))
+            .instrument
+            .toModel()
+    }
+    
+    func optionsBy(basicAssetUid: String, basicAssetPositionUid: String) async throws -> [Option] {
+        try await self.client
+            .optionsBy(.new(basicAssetUid: basicAssetUid, basicAssetPositionUid: basicAssetPositionUid))
+            .instruments
+            .map { try $0.toModel() }
+    }
+    
+    func shareBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Share {
+        try await self.client
+            .shareBy(try .new(idType: idType, classCode: classCode, id: id))
+            .instrument
+            .toModel()
+    }
+    
+    func shares(instrumentStatus: InstrumentStatus) async throws -> [Share] {
+        try await self.client
+            .shares(try .new(instrumentStatus: instrumentStatus))
+            .instruments
+            .map { try $0.toModel() }
+    }
+    
+    func getAccruedInterests(figi: String, from: Date, to: Date) async throws -> [AccruedInterest] {
+        try await self.client
+            .getAccruedInterests(.new(figi: figi, from: from, to: to))
+            .accruedInterests
+            .map { $0.toModel() }
+    }
+    
+    func getFutureContractMargin(figi: String) async throws -> FutureContractMargin {
+        try await self.client
+            .getFuturesMargin(.new(figi: figi))
+            .toModel()
+    }
+    
+    func getInstrumentBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Instrument {
+        try await self.client
+            .getInstrumentBy(try .new(idType: idType, classCode: classCode, id: id))
+            .instrument
+            .toModel()
+    }
+    
+    func getDividends(figi: String, from: Date, to: Date) async throws -> [Dividend] {
+        try await self.client
+            .getDividends(.new(figi: figi, from: from, to: to))
+            .dividends
+            .map { $0.toModel() }
+    }
+    
+    func getAssetBy(uid: String) async throws -> AssetFull {
+        try await self.client
+            .getAssetBy(.new(uid: uid))
+            .asset
+            .toModel()
+    }
+    
+    func getAssets(kind: InstrumentKind) async throws -> [Asset] {
+        try await self.client
+            .getAssets(try .new(kind: kind))
+            .assets
+            .map { try $0.toModel() }
+    }
+    
+    func getFavorites() async throws -> [FavoriteInstrument] {
+        try await self.client
+            .getFavorites(.new())
+            .favoriteInstruments
+            .map { try $0.toModel() }
+    }
+    
+    func editFavorites(figis: [String], action: FavoriteActionType) async throws -> [FavoriteInstrument] {
+        try await self.client
+            .editFavorites(try .new(figis: figis, action: action))
+            .favoriteInstruments
+            .map { try $0.toModel() }
+    }
+    
+    func getCountries() async throws -> [Country] {
+        try await self.client
+            .getCountries(.new())
+            .countries
+            .map { $0.toModel() }
+    }
+    
+    func findInstrument(query: String, kind: InstrumentKind, apiTradeAvailableFlag: Bool) async throws -> [InstrumentShort] {
+        try await self.client
+            .findInstrument(try .new(query: query, kind: kind, apiTradeAvailableFlag: apiTradeAvailableFlag))
+            .instruments
+            .map { try $0.toModel() }
+    }
+    
+    func getBrandBy(uid: String) async throws -> Brand {
+        try await self.client
+            .getBrandBy(.new(uid: uid))
+            .toModel()
+    }
+    
+    func getBrands() async throws -> [Brand] {
+        try await self.client
+            .getBrands(.new())
+            .brands
+            .map { $0.toModel() }
+    }
 #endif
 }

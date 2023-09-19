@@ -70,34 +70,28 @@ internal struct GrpcSandboxService: SandboxService {
     
     func openSandboxAccount() throws -> EventLoopFuture<String> {
         self.client
-            .openSandboxAccount(Requests.SandboxServiceRequests.openSandboxAccountRequest)
+            .openSandboxAccount(.new())
             .response
             .map { $0.accountID }
     }
     
     func closeSandboxAccount(accountId id: String) throws -> EventLoopFuture<Void> {
         self.client
-            .closeSandboxAccount(
-                Requests.SandboxServiceRequests.closeSandboxAccountRequest.with(accountId: id)
-            )
+            .closeSandboxAccount(.new(accountId: id))
             .response
             .map { _ in  }
     }
     
     func sandboxPayIn(accountId id: String, amount: MoneyValue) throws -> EventLoopFuture<MoneyValue> {
         self.client
-            .sandboxPayIn(
-                try Requests.SandboxServiceRequests.sandboxPayInRequest.with(accountId: id, amount: amount)
-            )
+            .sandboxPayIn(try .new(accountId: id, amount: amount))
             .response
             .map { $0.balance.toModel() }
     }
     
     func getSandboxWithdrawLimits(accountId id: String) throws -> EventLoopFuture<WithdrawLimits> {
         self.client
-            .getSandboxWithdrawLimits(
-                Requests.SandboxServiceRequests.withdrawLimitsRequest.with(accountId: id)
-            )
+            .getSandboxWithdrawLimits(.new(accountId: String(id)))
             .response
             .map { $0.toModel() }
     }
@@ -105,31 +99,25 @@ internal struct GrpcSandboxService: SandboxService {
 #if compiler(>=5.5) && canImport(_Concurrency)
     func openSandboxAccount() async throws -> String {
         try await self.client
-            .openSandboxAccount(Requests.SandboxServiceRequests.openSandboxAccountRequest)
+            .openSandboxAccount(.new())
             .accountID
     }
     
     func closeSandboxAccount(accountId id: String) async throws {
         _ = try await self.client
-            .closeSandboxAccount(
-                Requests.SandboxServiceRequests.closeSandboxAccountRequest.with(accountId: id)
-            )
+            .closeSandboxAccount(.new(accountId: id))
     }
     
     func sandboxPayIn(accountId id: String, amount: MoneyValue) async throws -> MoneyValue {
         try await self.client
-            .sandboxPayIn(
-                try Requests.SandboxServiceRequests.sandboxPayInRequest.with(accountId: id, amount: amount)
-            )
+            .sandboxPayIn(try .new(accountId: id, amount: amount))
             .balance
             .toModel()
     }
     
     func getSandboxWithdrawLimits(accountId id: String) async throws -> WithdrawLimits {
         try await self.client
-            .getSandboxWithdrawLimits(
-                Requests.SandboxServiceRequests.withdrawLimitsRequest.with(accountId: id)
-            )
+            .getSandboxWithdrawLimits(.new(accountId: id))
             .toModel()
     }
 #endif

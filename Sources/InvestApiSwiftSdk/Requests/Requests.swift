@@ -2,132 +2,142 @@ import GRPC
 import Foundation
 import SwiftProtobuf
 
-internal struct Requests {
-    struct UsersServiceRequests {
-        static let getAccountsRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetAccountsRequest()
-        static let getMarginAttributesRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesRequest()
-        static let getUserTariffRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetUserTariffRequest()
-        static let getInfoRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetInfoRequest()
-    }
-    
-    struct SandboxServiceRequests {
-        static let openSandboxAccountRequest = Tinkoff_Public_Invest_Api_Contract_V1_OpenSandboxAccountRequest()
-        static let closeSandboxAccountRequest = Tinkoff_Public_Invest_Api_Contract_V1_CloseSandboxAccountRequest()
-        static let sandboxPayInRequest = Tinkoff_Public_Invest_Api_Contract_V1_SandboxPayInRequest()
-        static let withdrawLimitsRequest = Tinkoff_Public_Invest_Api_Contract_V1_WithdrawLimitsRequest()
-    }
-    
-    struct MarketDataServiceRequests {
-        static let getCandlesRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetCandlesRequest()
-        static let getLastPricesRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetLastPricesRequest()
-        static let getOrderBookRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOrderBookRequest()
-        static let getTradingStatusRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetTradingStatusRequest()
-        static let getLastTradesRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetLastTradesRequest()
-        static let getClosePricesRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetClosePricesRequest()
-    }
-    
-    struct OperationsServiceRequests {
-        static let getOperationsRequest = Tinkoff_Public_Invest_Api_Contract_V1_OperationsRequest()
-        static let getPortfolioRequest = Tinkoff_Public_Invest_Api_Contract_V1_PortfolioRequest()
-        static let getPositionsRequest = Tinkoff_Public_Invest_Api_Contract_V1_PositionsRequest()
-        static let getWithdrawLimitsRequest = Tinkoff_Public_Invest_Api_Contract_V1_WithdrawLimitsRequest()
-        static let brokerReportRequest = Tinkoff_Public_Invest_Api_Contract_V1_BrokerReportRequest()
-        static let divForeignIssuerReportRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetDividendsForeignIssuerRequest()
-        static let getOperationsByCursorRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorRequest()
-    }
-    
-    struct OrdersServiceRequests {
-        static let postOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_PostOrderRequest()
-        static let cancelOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_CancelOrderRequest()
-        static let getOrderStateRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOrderStateRequest()
-        static let getOrdersRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetOrdersRequest()
-        static let replaceOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_ReplaceOrderRequest()
-    }
-    
-    struct StopOrdersServiceRequests {
-        static let postStopOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_PostStopOrderRequest()
-        static let getStopOrdersRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetStopOrdersRequest()
-        static let cancelStopOrderRequest = Tinkoff_Public_Invest_Api_Contract_V1_CancelStopOrderRequest()
+// MARK: - UsersServiceRequests
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetAccountsRequest {
+    static func new() -> Self {
+        .init()
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesRequest {
-    func with(accountId: String) -> Self {
-        var request = self
-        request.accountID = accountId
-        return request
+    init(accountId: String) {
+        self.accountID = accountId
+    }
+
+    static func new(accountId: String) -> Self {
+        .init(accountId: accountId)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetUserTariffRequest {
+    static func new() -> Self {
+        .init()
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetInfoRequest {
+    static func new() -> Self {
+        .init()
+    }
+}
+
+// MARK: - SandboxServiceRequests
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_OpenSandboxAccountRequest {
+    static func new() -> Self {
+        .init()
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_CloseSandboxAccountRequest {
-    func with(accountId: String) -> Self {
-        var request = self
-        request.accountID = accountId
-        return request
+    init(accountId: String) {
+        self.accountID = accountId
+    }
+
+    static func new(accountId: String) -> Self {
+        .init(accountId: accountId)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_SandboxPayInRequest {
-    func with(accountId: String, amount: MoneyValue) throws -> Self {
-        var request = self
-        request.accountID = accountId
-        request.amount = try amount.forRequest()
-        return request
+    init(accountId: String, amount: MoneyValue) throws {
+        self.accountID = accountId
+        self.amount = try amount.forRequest()
+    }
+
+    static func new(accountId: String, amount: MoneyValue) throws -> Self {
+        try .init(accountId: accountId, amount: amount)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_WithdrawLimitsRequest {
-    func with(accountId: String) -> Self {
-        var request = self
-        request.accountID = accountId
-        return request
+    init(accountId: String) {
+        self.accountID = accountId
+    }
+
+    static func new(accountId: String) -> Self {
+        .init(accountId: accountId)
     }
 }
 
+// MARK: - MarketDataServiceRequests
+
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetCandlesRequest {
-    func with(figi: String, from: Date, to: Date, interval: CandleInterval) throws -> Self {
-        var request = self
-        request.figi = figi
-        request.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
-        request.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
-        request.interval = try Tinkoff_Public_Invest_Api_Contract_V1_CandleInterval(rawValue: interval.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        return request
+    init(figi: String, from: Date, to: Date, interval: CandleInterval) throws {
+        self.figi = figi
+        self.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+        self.interval = try .new(rawValue: interval.rawValue)
+    }
+
+    static func new(figi: String, from: Date, to: Date, interval: CandleInterval) throws -> Self {
+        try .init(figi: figi, from: from, to: to, interval: interval)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetLastPricesRequest {
-    func with(figi: [String]) -> Self {
-        var request = self
-        request.figi = figi
-        return request
+    init(figis: [String]) {
+        self.figi = figis
+    }
+
+    static func new(figis: [String]) -> Self {
+        .init(figis: figis)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOrderBookRequest {
-    func with(figi: String, depth: Int32) -> Self {
-        var request = self
-        request.figi = figi
-        request.depth = depth
-        return request
+    init(figi: String, depth: Int32) {
+        self.figi = figi
+        self.depth = depth
+    }
+
+    static func new(figi: String, depth: Int32) -> Self {
+        .init(figi: figi, depth: depth)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetTradingStatusRequest {
-    func with(figi: String) -> Self {
-        var request = self
-        request.figi = figi
-        return request
+    init(figi: String) {
+        self.figi = figi
+    }
+
+    static func new(figi: String) -> Self {
+        .init(figi: figi)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetLastTradesRequest {
-    func with(figi: String, from: Date, to: Date) -> Self {
-        var request = self
-        request.figi = figi
-        request.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
-        request.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
-        return request
+    init(figi: String, from: Date, to: Date) {
+        self.figi = figi
+        self.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+    }
+
+    static func new(figi: String, from: Date, to: Date) -> Self {
+        .init(figi: figi, from: from, to: to)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetClosePricesRequest {
+    init(figis: [String]) {
+        self.instruments = figis.map {
+            .new(figi: $0)
+        }
+    }
+
+    static func new(figis: [String]) -> Self {
+        .init(figis: figis)
     }
 }
 
@@ -135,208 +145,272 @@ fileprivate extension Tinkoff_Public_Invest_Api_Contract_V1_InstrumentClosePrice
     init(figi: String) {
         self.instrumentID = figi
     }
-}
 
-internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetClosePricesRequest {
-    func with(figi: [String]) -> Self {
-        var request = self
-        request.instruments = figi.map {
-            Tinkoff_Public_Invest_Api_Contract_V1_InstrumentClosePriceRequest(figi: $0)
-        }
-        return request
+    static func new(figi: String) -> Self {
+        .init(figi: figi)
     }
 }
 
+// MARK: - OperationsServiceRequests
+
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OperationsRequest {
-    func with(accountId id: String, from: Date, to: Date, state: OperationState, figi: String) throws -> Self {
-        var request = self
-        request.accountID = id
-        request.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
-        request.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
-        request.state = try Tinkoff_Public_Invest_Api_Contract_V1_OperationState(rawValue: state.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        request.figi = figi
-        return request
+    init(accountId: String, from: Date, to: Date, state: OperationState, figi: String) throws {
+        self.accountID = accountId
+        self.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+        self.state = try .new(rawValue: state.rawValue)
+        self.figi = figi
+    }
+
+    static func new(accountId: String, from: Date, to: Date, state: OperationState, figi: String) throws -> Self {
+        try .init(accountId: accountId, from: from, to: to, state: state, figi: figi)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PortfolioRequest {
-    func with(accountId id: String, currency: CurrencyType) throws -> Self {
-        var request = self
-        request.accountID = id
-        request.currency = try CurrencyRequest(rawValue: currency.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        return request
+    init(accountId: String, currency: CurrencyType) throws {
+        self.accountID = accountId
+        self.currency = try .new(rawValue: currency.rawValue)
+    }
+
+    static func new(accountId: String, currency: CurrencyType) throws -> Self {
+        try .init(accountId: accountId, currency: currency)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionsRequest {
-    func with(accountId id: String) -> Self {
-        var request = self
-        request.accountID = id
-        return request
+    init(accountId: String) {
+        self.accountID = accountId
+    }
+
+    static func new(accountId: String) -> Self {
+        .init(accountId: accountId)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_BrokerReportRequest {
-    func generate(accountId id: String, from: Date, to: Date) -> Self {
-        var request = self
-        request.generateBrokerReportRequest.accountID = id
-        request.generateBrokerReportRequest.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
-        request.generateBrokerReportRequest.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
-        return request
+    init(accountId: String, from: Date, to: Date) {
+        self.generateBrokerReportRequest = Tinkoff_Public_Invest_Api_Contract_V1_GenerateBrokerReportRequest()
+        self.generateBrokerReportRequest.accountID = accountId
+        self.generateBrokerReportRequest.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.generateBrokerReportRequest.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+    }
+
+    static func generate(accountId: String, from: Date, to: Date) -> Self {
+        .init(accountId: accountId, from: from, to: to)
+    }
+
+    init(taskId: String, page: Int32) {
+        self.getBrokerReportRequest = Tinkoff_Public_Invest_Api_Contract_V1_GetBrokerReportRequest()
+        self.getBrokerReportRequest.taskID = taskId
+        self.getBrokerReportRequest.page = page
     }
     
-    func get(taskId id: String, page: Int32) -> Self {
-        var request = self
-        request.getBrokerReportRequest.taskID = id
-        request.getBrokerReportRequest.page = page
-        return request
+    static func get(taskId: String, page: Int32) -> Self {
+        .init(taskId: taskId, page: page)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetDividendsForeignIssuerRequest {
-    func generate(accountId id: String, from: Date, to: Date) -> Self {
-        var request = self
-        request.generateDivForeignIssuerReport.accountID = id
-        request.generateDivForeignIssuerReport.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
-        request.generateDivForeignIssuerReport.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
-        return request
+    init(accountId: String, from: Date, to: Date) {
+        self.generateDivForeignIssuerReport = Tinkoff_Public_Invest_Api_Contract_V1_GenerateDividendsForeignIssuerReportRequest()
+        self.generateDivForeignIssuerReport.accountID = accountId
+        self.generateDivForeignIssuerReport.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.generateDivForeignIssuerReport.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+    }
+
+    static func generate(accountId: String, from: Date, to: Date) -> Self {
+        .init(accountId: accountId, from: from, to: to)
+    }
+
+    init(taskId: String, page: Int32) {
+        self.getDivForeignIssuerReport = Tinkoff_Public_Invest_Api_Contract_V1_GetDividendsForeignIssuerReportRequest()
+        self.getDivForeignIssuerReport.taskID = taskId
+        self.getDivForeignIssuerReport.page = page
     }
     
-    func get(taskId id: String, page: Int32) -> Self {
-        var request = self
-        request.getDivForeignIssuerReport.taskID = id
-        request.getDivForeignIssuerReport.page = page
-        return request
+    static func get(taskId: String, page: Int32) -> Self {
+        .init(taskId: taskId, page: page)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorRequest {
-    func with(
-        accountId id: String, instrumentId: String, from: Date, to: Date, cursor: String,
-        limit: Int32, types: [OperationType], state: OperationState, withCommissions: Bool,
-        withTrades: Bool, withOvernights: Bool
+    init(
+        accountId: String, instrumentId: String, from: Date, to: Date,
+        cursor: String, limit: Int32, types: [OperationType], state: OperationState,
+        withCommissions: Bool, withTrades: Bool, withOvernights: Bool
+    ) throws {
+        self.accountID = accountId
+        self.instrumentID = instrumentId
+        self.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
+        self.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
+        self.cursor = cursor
+        self.limit = limit
+        self.operationTypes = try types.map { try .new(rawValue: $0.rawValue) }
+        self.state = try .new(rawValue: state.rawValue)
+        self.withoutCommissions = !withCommissions
+        self.withoutTrades = !withTrades
+        self.withoutOvernights = !withOvernights
+    }
+
+    static func new(
+        accountId: String, instrumentId: String, from: Date, to: Date,
+        cursor: String, limit: Int32, types: [OperationType], state: OperationState,
+        withCommissions: Bool, withTrades: Bool, withOvernights: Bool
     ) throws -> Self {
-        var request = self
-        request.accountID = id
-        request.instrumentID = instrumentId
-        request.from = SwiftProtobuf.Google_Protobuf_Timestamp(date: from)
-        request.to = SwiftProtobuf.Google_Protobuf_Timestamp(date: to)
-        request.cursor = cursor
-        request.limit = limit
-        request.operationTypes = try types.map {
-            try Tinkoff_Public_Invest_Api_Contract_V1_OperationType(rawValue: $0.rawValue)
-                ?? { throw InvestApiError.valueOutOfRange }()
-        }
-        request.state = try Tinkoff_Public_Invest_Api_Contract_V1_OperationState(rawValue: state.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        request.withoutCommissions = !withCommissions
-        request.withoutTrades = !withTrades
-        request.withoutOvernights = !withOvernights
-        return request
+        try .init(
+            accountId: accountId, instrumentId: instrumentId, from: from, to: to,
+            cursor: cursor, limit: limit, types: types, state: state,
+            withCommissions: withCommissions, withTrades: withTrades, withOvernights: withOvernights
+        )
     }
 }
 
+// MARK: - OrdersServiceRequests
+
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostOrderRequest {
-    func with(
+    init(
+        accountId: String, instrumentId: String, orderRequestId: String?,
+        type: OrderType, direction: OrderDirection, price: Quotation, quantity: Int64
+    ) throws {
+        self.accountID = accountId
+        self.instrumentID = instrumentId
+        if let orderRequestId = orderRequestId { self.orderID = orderRequestId }
+        self.orderType = try .new(rawValue: type.rawValue)
+        self.direction = try .new(rawValue: direction.rawValue)
+        self.price = try price.forRequest()
+        self.quantity = quantity
+    }
+
+    static func new(
         accountId: String, instrumentId: String, orderRequestId: String?,
         type: OrderType, direction: OrderDirection, price: Quotation, quantity: Int64
     ) throws -> Self {
-        var request = self
-        request.accountID = accountId
-        request.instrumentID = instrumentId
-        if let orderRequestId = orderRequestId { request.orderID = orderRequestId }
-        request.orderType = try Tinkoff_Public_Invest_Api_Contract_V1_OrderType(rawValue: type.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        request.direction = try Tinkoff_Public_Invest_Api_Contract_V1_OrderDirection(rawValue: direction.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        request.price = try price.forRequest()
-        request.quantity = quantity
-        return request
+        try .init(
+            accountId: accountId, instrumentId: instrumentId, orderRequestId: orderRequestId,
+            type: type, direction: direction, price: price, quantity: quantity
+        )
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_CancelOrderRequest {
-    func with(accountId: String, orderId: String) -> Self {
-        var request = self
-        request.accountID = accountId
-        request.orderID = orderId
-        return request
+    init(accountId: String, orderId: String) {
+        self.accountID = accountId
+        self.orderID = orderId
+    }
+
+    static func new(accountId: String, orderId: String) -> Self {
+        .init(accountId: accountId, orderId: orderId)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOrderStateRequest {
-    func with(accountId: String, orderId: String) -> Self {
-        var request = self
-        request.accountID = accountId
-        request.orderID = orderId
-        return request
+    init(accountId: String, orderId: String) {
+        self.accountID = accountId
+        self.orderID = orderId
+    }
+
+    static func new(accountId: String, orderId: String) -> Self {
+        .init(accountId: accountId, orderId: orderId)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOrdersRequest {
-    func with(accountId: String) -> Self {
-        var request = self
-        request.accountID = accountId
-        return request
+    init(accountId: String) {
+        self.accountID = accountId
+    }
+
+    static func new(accountId: String) -> Self {
+        .init(accountId: accountId)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_ReplaceOrderRequest {
-    func with(
+    init(
+        accountId: String, orderId: String, orderRequestId: String?,
+        price: Quotation, priceType: PriceType, quantity: Int64
+    ) throws {
+        self.accountID = accountId
+        self.orderID = orderId
+        if let orderRequestId = orderRequestId { self.idempotencyKey = orderRequestId }
+        self.price = try price.forRequest()
+        self.priceType = try .new(rawValue: priceType.rawValue)
+        self.quantity = quantity
+    }
+
+    static func new(
         accountId: String, orderId: String, orderRequestId: String?,
         price: Quotation, priceType: PriceType, quantity: Int64
     ) throws -> Self {
-        var request = self
-        request.accountID = accountId
-        request.orderID = orderId
-        if let orderRequestId = orderRequestId { request.idempotencyKey = orderRequestId }
-        request.price = try price.forRequest()
-        request.priceType = try Tinkoff_Public_Invest_Api_Contract_V1_PriceType(rawValue: priceType.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        request.quantity = quantity
-        return request
+        try .init(
+            accountId: accountId, orderId: orderId, orderRequestId: orderRequestId,
+            price: price, priceType: priceType, quantity: quantity
+        )
     }
 }
 
+// MARK: - OrdersStreamServiceRequests
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamRequest {
+    init(accounts: [String]) {
+        self.accounts = accounts
+    }
+
+    static func new(accounts: [String]) -> Self {
+        .init(accounts: accounts)
+    }
+}
+
+// MARK: - StopOrdersServiceRequests
+
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostStopOrderRequest {
-    func with(
+    init(
+        accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
+        stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
+        expirationType: StopOrderExpirationType, expireDate: Date
+    ) throws {
+        self.accountID = accountId
+        self.instrumentID = instrumentId
+        self.quantity = quantity
+        self.price = try price.forRequest()
+        self.stopPrice = try stopPrice.forRequest()
+        self.direction = try .new(rawValue: direction.rawValue)
+        self.stopOrderType = try .new(rawValue: stopOrderType.rawValue)
+        self.expirationType = try .new(rawValue: expirationType.rawValue)
+        self.expireDate = SwiftProtobuf.Google_Protobuf_Timestamp(date: expireDate)
+    }
+
+    static func new(
         accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
         stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
         expirationType: StopOrderExpirationType, expireDate: Date
     ) throws -> Self {
-        var request = self
-        request.accountID = accountId
-        request.instrumentID = instrumentId
-        request.quantity = quantity
-        request.price = try price.forRequest()
-        request.stopPrice = try stopPrice.forRequest()
-        request.direction = try Tinkoff_Public_Invest_Api_Contract_V1_StopOrderDirection(rawValue: direction.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        request.stopOrderType = try Tinkoff_Public_Invest_Api_Contract_V1_StopOrderType(rawValue: stopOrderType.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        request.expirationType = try Tinkoff_Public_Invest_Api_Contract_V1_StopOrderExpirationType(rawValue: expirationType.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        request.expireDate = SwiftProtobuf.Google_Protobuf_Timestamp(date: expireDate)
-        return request
+        try .init(
+            accountId: accountId, instrumentId: instrumentId, quantity: quantity, price: price,
+            stopPrice: stopPrice, direction: direction, stopOrderType: stopOrderType,
+            expirationType: expirationType, expireDate: expireDate
+        )
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetStopOrdersRequest {
-    func with(accountId: String) -> Self {
-        var request = self
-        request.accountID = accountId
-        return request
+    init(accountId: String) {
+        self.accountID = accountId
+    }
+
+    static func new(accountId: String) -> Self {
+        .init(accountId: accountId)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_CancelStopOrderRequest {
-    func with(accountId: String, stopOrderId: String) -> Self {
-        var request = self
-        request.accountID = accountId
-        request.stopOrderID = stopOrderId
-        return request
+    init(accountId: String, stopOrderId: String) {
+        self.accountID = accountId
+        self.stopOrderID = stopOrderId
+    }
+
+    static func new(accountId: String, stopOrderId: String) -> Self {
+        .init(accountId: accountId, stopOrderId: stopOrderId)
     }
 }
 

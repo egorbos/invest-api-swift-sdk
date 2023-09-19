@@ -89,10 +89,10 @@ public class SandboxAsyncApiRequest<Result>: AsyncApiRequest<SandboxApiClient, R
     /// Возвращает экземпляр `SandboxAsyncApiRequest` для получения последних цен по инструментам.
     ///
     ///  - parameters:
-    ///      - figi: Figi идентификаторы инструментов.
-    public static func getLastPrices(figi: [String]) -> SandboxAsyncApiRequest<[LastPrice]> {
+    ///      - figis: Figi идентификаторы инструментов.
+    public static func getLastPrices(figis: [String]) -> SandboxAsyncApiRequest<[LastPrice]> {
         .init {
-            try await $0.marketData.getLastPrices(figi: figi)
+            try await $0.marketData.getLastPrices(figis: figis)
         }
     }
     
@@ -136,10 +136,10 @@ public class SandboxAsyncApiRequest<Result>: AsyncApiRequest<SandboxApiClient, R
     /// Возвращает экземпляр `SandboxAsyncApiRequest` для получения цен закрытия торговой сессии по инструментам.
     ///
     ///  - parameters:
-    ///      - figi: Figi идентификаторы инструментов.
-    public static func getClosePrices(figi: [String]) throws -> SandboxAsyncApiRequest<[InstrumentClosePrice]> {
+    ///      - figis: Figi идентификаторы инструментов.
+    public static func getClosePrices(figis: [String]) throws -> SandboxAsyncApiRequest<[InstrumentClosePrice]> {
         .init {
-            try await $0.marketData.getClosePrices(figi: figi)
+            try await $0.marketData.getClosePrices(figis: figis)
         }
     }
 }

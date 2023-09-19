@@ -39,8 +39,7 @@ public struct PortfolioPosition: Codable {
 internal extension PortfolioPosition {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioPosition) throws {
         self.figi = grpcModel.figi
-        self.instrumentType = try InstrumentType(rawValue: grpcModel.instrumentType)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.instrumentType = try .new(rawValue: grpcModel.instrumentType)
         self.quantity = grpcModel.quantity.toModel()
         self.averagePositionPrice = grpcModel.averagePositionPrice.toModel()
         self.averagePositionPriceFifo = grpcModel.averagePositionPriceFifo.toModel()

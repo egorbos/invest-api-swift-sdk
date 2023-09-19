@@ -87,10 +87,10 @@ public class SandboxApiRequest<Result>: ApiRequest<SandboxApiClient, Result> {
     /// Возвращает экземпляр `SandboxApiRequest` для получения последних цен по инструментам.
     ///
     ///  - parameters:
-    ///      - figi: Figi идентификаторы инструментов.
-    public static func getLastPrices(figi: [String]) -> SandboxApiRequest<[LastPrice]> {
+    ///      - figis: Figi идентификаторы инструментов.
+    public static func getLastPrices(figis: [String]) -> SandboxApiRequest<[LastPrice]> {
         .init {
-            try $0.marketData.getLastPrices(figi: figi)
+            try $0.marketData.getLastPrices(figis: figis)
         }
     }
     
@@ -134,10 +134,10 @@ public class SandboxApiRequest<Result>: ApiRequest<SandboxApiClient, Result> {
     /// Возвращает экземпляр `SandboxApiRequest` для получения цен закрытия торговой сессии по инструментам.
     ///
     ///  - parameters:
-    ///      - figi: Figi идентификаторы инструментов.
-    public static func getClosePrices(figi: [String]) throws -> SandboxApiRequest<[InstrumentClosePrice]> {
+    ///      - figis: Figi идентификаторы инструментов.
+    public static func getClosePrices(figis: [String]) throws -> SandboxApiRequest<[InstrumentClosePrice]> {
         .init {
-            try $0.marketData.getClosePrices(figi: figi)
+            try $0.marketData.getClosePrices(figis: figis)
         }
     }
 }

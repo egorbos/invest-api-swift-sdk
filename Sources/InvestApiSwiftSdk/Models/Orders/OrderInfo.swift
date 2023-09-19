@@ -81,12 +81,9 @@ internal extension OrderInfo {
         self.orderId = grpcModel.orderID
         self.figi = grpcModel.figi
         self.uid = grpcModel.instrumentUid
-        self.type = try OrderType(rawValue: grpcModel.orderType.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        self.status = try OrderStatus(rawValue: grpcModel.executionReportStatus.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
-        self.direction = try OrderDirection(rawValue: grpcModel.direction.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.type = try .new(rawValue: grpcModel.orderType.rawValue)
+        self.status = try .new(rawValue: grpcModel.executionReportStatus.rawValue)
+        self.direction = try .new(rawValue: grpcModel.direction.rawValue)
         self.lotsRequested = grpcModel.lotsRequested
         self.lotsExecuted = grpcModel.lotsExecuted
         self.initialOrderPrice = grpcModel.initialOrderPrice.toModel()
@@ -112,9 +109,9 @@ internal extension OrderInfo {
         self.orderId = grpcModel.orderID
         self.figi = grpcModel.figi
         self.uid = grpcModel.instrumentUid
-        self.type = try OrderType(rawValue: grpcModel.orderType.rawValue) ?? { throw InvestApiError.valueOutOfRange }()
-        self.status = try OrderStatus(rawValue: grpcModel.executionReportStatus.rawValue) ?? { throw InvestApiError.valueOutOfRange }()
-        self.direction = try OrderDirection(rawValue: grpcModel.direction.rawValue) ?? { throw InvestApiError.valueOutOfRange }()
+        self.type = try .new(rawValue: grpcModel.orderType.rawValue)
+        self.status = try .new(rawValue: grpcModel.executionReportStatus.rawValue)
+        self.direction = try .new(rawValue: grpcModel.direction.rawValue)
         self.lotsRequested = grpcModel.lotsRequested
         self.lotsExecuted = grpcModel.lotsExecuted
         self.initialOrderPrice = grpcModel.initialOrderPrice.toModel()

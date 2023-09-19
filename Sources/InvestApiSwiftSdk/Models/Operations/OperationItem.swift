@@ -81,11 +81,9 @@ internal extension OperationItem {
         self.trades = grpcModel.tradesInfo.trades.map { $0.toModel() }
         self.name = grpcModel.name
         self.date = grpcModel.date.date
-        self.operationType = try OperationType(rawValue: grpcModel.type.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.operationType = try .new(rawValue: grpcModel.type.rawValue)
         self.description = grpcModel.description_p
-        self.state = try OperationState(rawValue: grpcModel.state.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.state = try .new(rawValue: grpcModel.state.rawValue)
         self.figi = grpcModel.figi
         self.instrumentType = grpcModel.instrumentType
         self.payment = grpcModel.payment.toModel()

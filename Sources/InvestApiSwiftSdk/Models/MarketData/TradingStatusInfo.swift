@@ -19,8 +19,7 @@ public struct TradingStatusInfo: Codable {
 internal extension TradingStatusInfo {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetTradingStatusResponse) throws {
         self.figi = grpcModel.figi
-        self.tradingStatus = try SecurityTradingStatus(rawValue: grpcModel.tradingStatus.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.tradingStatus = try .new(rawValue: grpcModel.tradingStatus.rawValue)
         self.limitOrderAvailableFlag = grpcModel.limitOrderAvailableFlag
         self.marketOrderAvailableFlag = grpcModel.marketOrderAvailableFlag
         self.apiTradeAvailableFlag = grpcModel.apiTradeAvailableFlag

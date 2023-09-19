@@ -27,12 +27,12 @@ public struct Account: Codable {
 internal extension Account {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Account) throws {
         self.id = grpcModel.id
-        self.type = try AccountType(rawValue: grpcModel.type.rawValue) ?? { throw InvestApiError.valueOutOfRange }()
+        self.type = try .new(rawValue: grpcModel.type.rawValue)
         self.name =  grpcModel.name
-        self.status =  try AccountStatus(rawValue: grpcModel.status.rawValue) ?? { throw InvestApiError.valueOutOfRange }()
+        self.status =  try .new(rawValue: grpcModel.status.rawValue)
         self.openedDate = grpcModel.openedDate.date
         self.closedDate =  grpcModel.closedDate.date
-        self.accessLevel = try AccessLevel(rawValue: grpcModel.accessLevel.rawValue) ?? { throw InvestApiError.valueOutOfRange }()
+        self.accessLevel = try .new(rawValue: grpcModel.accessLevel.rawValue)
     }
 }
 

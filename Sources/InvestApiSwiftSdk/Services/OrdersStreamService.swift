@@ -4,71 +4,20 @@ import Foundation
 
 /// Сервис работы с торговыми поручениями в реальном времени.
 public protocol OrdersStreamService {
-    /// Stream сделок пользователя
+    /// Поток сделок пользователя.
     ///
-    /// - Parameters:
+    /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
     ///
-    /// - Returns:
-    func tradesStream(accounts: [String], handler: @escaping (TradesStreamData) -> Void) throws -> DataStream
+    /// - Returns: Поток сделок пользователя `OrdersStreamData`.
+    func tradesStream(accounts: [String], handler: @escaping (TradesStreamPayload) -> Void) throws -> OrdersStreamData
     
 #if compiler(>=5.5) && canImport(_Concurrency)
-    /// Stream сделок пользователя
+    /// Поток сделок пользователя.
     ///
-    /// - Parameters:
+    /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
     ///
-    /// - Returns:
-    func tradesStream(accounts: [String], handler: @escaping (TradesStreamData) -> Void) async throws -> GRPCAsyncResponseStream<Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamResponse>
-#endif
-    
-//    - TradesStreamRequest
-//    Запрос установки соединения.
-//
-//    Field    Type    Description
-//    accounts    Массив объектов string    Идентификаторы счетов.
-//
-//    - TradesStreamResponse
-//    Информация о торговых поручениях.
-//
-//    Field    Type    Description
-//    order_trades    OrderTrades    Информация об исполнении торгового поручения.
-//    ping    Ping    Проверка активности стрима.
-//
-//    - OrderTrades
-//    Информация об исполнении торгового поручения.
-//
-//    Field    Type    Description
-//    order_id    string    Идентификатор торгового поручения.
-//    created_at    google.protobuf.Timestamp    Дата и время создания сообщения в часовом поясе UTC.
-//    direction    OrderDirection    Направление сделки.
-//    figi    string    Figi-идентификатор инструмента.
-//    trades    Массив объектов OrderTrade    Массив сделок.
-//    account_id    string    Идентификатор счёта.
-//    instrument_uid    string    UID идентификатор инструмента.
-}
-
-public protocol DataStream {
-    func close() -> Void
-    
-#if compiler(>=5.5) && canImport(_Concurrency)
-    func close() async -> Void
-#endif
-}
-
-internal struct OrdersDataStream: DataStream {
-    let call: ServerStreamingCall<Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamRequest, Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamResponse>
-    
-    init(_ call: ServerStreamingCall<Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamRequest, Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamResponse>) {
-        self.call = call
-    }
-    
-    func close() -> Void {
-        
-    }
-    
-#if compiler(>=5.5) && canImport(_Concurrency)
-    func close() async -> Void {
-        
-    }
+    /// - Returns: Асинхронный поток сделок пользователя `OrdersAsyncStreamData`.
+    func tradesStream(accounts: [String]) async throws -> OrdersAsyncStreamData
 #endif
 }
 
@@ -79,33 +28,16 @@ internal struct GrpcOrdersStreamService: OrdersStreamService {
         self.client = client
     }
     
-    /// Stream сделок пользователя
-    ///
-    /// - Parameters:
-    ///
-    /// - Returns:
-    func tradesStream(accounts: [String], handler: @escaping (TradesStreamData) -> Void) throws -> DataStream {
-        var req = Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamRequest()
-        req.accounts = accounts
-        
-        let call = self.client.tradesStream(req) { response in
-            handler(TradesStreamData())
+    func tradesStream(accounts: [String], handler: @escaping (TradesStreamPayload) -> Void) throws -> OrdersStreamData {
+        let call = self.client.tradesStream(.new(accounts: accounts)) { response in
+            handler(TradesStreamPayload(response: response))
         }
-        return OrdersDataStream(call)
+        return OrdersStreamData(call)
     }
     
 #if compiler(>=5.5) && canImport(_Concurrency)
-    /// Stream сделок пользователя
-    ///
-    /// - Parameters:
-    ///
-    /// - Returns:
-    func tradesStream(accounts: [String], handler: @escaping (TradesStreamData) -> Void) async throws -> GRPCAsyncResponseStream<Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamResponse> {
-        var req = Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamRequest()
-        req.accounts = accounts
-        
-        let call = self.client.tradesStream(req)
-        return call
+    func tradesStream(accounts: [String]) async throws -> OrdersAsyncStreamData {
+        OrdersAsyncStreamData(self.client.tradesStream(.new(accounts: accounts)))
     }
 #endif
 }

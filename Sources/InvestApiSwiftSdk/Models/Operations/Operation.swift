@@ -53,16 +53,13 @@ internal extension Operation {
         self.currency = grpcModel.currency
         self.payment = grpcModel.payment.toModel()
         self.price = grpcModel.price.toModel()
-        self.state = try OperationState(rawValue: grpcModel.state.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.state = try .new(rawValue: grpcModel.state.rawValue)
         self.quantity = grpcModel.quantity
         self.quantityRest = grpcModel.quantityRest
-        self.instrumentType = try InstrumentType(rawValue: grpcModel.instrumentType)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.instrumentType = try .new(rawValue: grpcModel.instrumentType)
         self.date = grpcModel.date.date
         self.type = grpcModel.type
-        self.operationType = try OperationType(rawValue: grpcModel.operationType.rawValue)
-            ?? { throw InvestApiError.valueOutOfRange }()
+        self.operationType = try .new(rawValue: grpcModel.operationType.rawValue)
         self.trades = grpcModel.trades.map { $0.toModel() }
     }
 }

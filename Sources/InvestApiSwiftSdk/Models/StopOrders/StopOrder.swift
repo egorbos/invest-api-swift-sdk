@@ -44,8 +44,8 @@ internal extension StopOrder {
         self.stopOrderId = grpcModel.stopOrderID
         self.figi = grpcModel.figi
         self.uid = grpcModel.instrumentUid
-        self.direction = try OrderDirection(rawValue: grpcModel.direction.rawValue) ?? { throw InvestApiError.valueOutOfRange }()
-        self.orderType = try StopOrderType(rawValue: grpcModel.orderType.rawValue)  ?? { throw InvestApiError.valueOutOfRange }()
+        self.direction = try .new(rawValue: grpcModel.direction.rawValue)
+        self.orderType = try .new(rawValue: grpcModel.orderType.rawValue)
         self.currency = grpcModel.currency
         self.lotsRequested = grpcModel.lotsRequested
         self.price = grpcModel.price.toModel()

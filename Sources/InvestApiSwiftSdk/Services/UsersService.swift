@@ -69,7 +69,7 @@ internal struct GrpcUsersService: CommonUsersService {
     
     func getAccounts() throws -> EventLoopFuture<[Account]> {
         self.client
-            .getAccounts(Requests.UsersServiceRequests.getAccountsRequest)
+            .getAccounts(.new())
             .response
             .flatMapThrowing {
                 try $0.accounts.map { account in try account.toModel() }
@@ -78,23 +78,21 @@ internal struct GrpcUsersService: CommonUsersService {
        
     func getUserTariff() throws -> EventLoopFuture<UserTariff> {
         self.client
-            .getUserTariff(Requests.UsersServiceRequests.getUserTariffRequest)
+            .getUserTariff(.new())
             .response
             .map { $0.toModel() }
     }
     
     func getInfo() throws -> EventLoopFuture<UserInfo> {
         self.client
-            .getInfo(Requests.UsersServiceRequests.getInfoRequest)
+            .getInfo(.new())
             .response
             .map { $0.toModel() }
     }
     
     func getMarginAttributes(accountId id: String) throws -> EventLoopFuture<MarginAttributes> {
         self.client
-            .getMarginAttributes(
-                Requests.UsersServiceRequests.getMarginAttributesRequest.with(accountId: id)
-            )
+            .getMarginAttributes(.new(accountId: id))
             .response
             .map { $0.toModel() }
     }
@@ -102,28 +100,26 @@ internal struct GrpcUsersService: CommonUsersService {
 #if compiler(>=5.5) && canImport(_Concurrency)
     func getAccounts() async throws -> [Account] {
         try await self.client
-            .getAccounts(Requests.UsersServiceRequests.getAccountsRequest)
+            .getAccounts(.new())
             .accounts
             .map { try $0.toModel() }
     }
 
     func getUserTariff() async throws -> UserTariff {
         try await self.client
-            .getUserTariff(Requests.UsersServiceRequests.getUserTariffRequest)
+            .getUserTariff(.new())
             .toModel()
     }
 
     func getInfo() async throws -> UserInfo {
         try await self.client
-            .getInfo(Requests.UsersServiceRequests.getInfoRequest)
+            .getInfo(.new())
             .toModel()
     }
 
     func getMarginAttributes(accountId id: String) async throws -> MarginAttributes {
         try await self.client
-            .getMarginAttributes(
-                Requests.UsersServiceRequests.getMarginAttributesRequest.with(accountId: id)
-            )
+            .getMarginAttributes(.new(accountId: id))
             .toModel()
     }
 #endif

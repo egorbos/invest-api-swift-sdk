@@ -58,10 +58,10 @@ public class CommonApiRequest<Result>: ApiRequest<CommonApiClient, Result> {
     /// Возвращает экземпляр `CommonApiRequest` для получения последних цен по инструментам.
     ///
     ///  - parameters:
-    ///      - figi: Figi идентификаторы инструментов.
-    public static func getLastPrices(figi: [String]) -> CommonApiRequest<[LastPrice]> {
+    ///      - figis: Figi идентификаторы инструментов.
+    public static func getLastPrices(figis: [String]) -> CommonApiRequest<[LastPrice]> {
         .init {
-            try $0.marketData.getLastPrices(figi: figi)
+            try $0.marketData.getLastPrices(figis: figis)
         }
     }
     
@@ -105,10 +105,10 @@ public class CommonApiRequest<Result>: ApiRequest<CommonApiClient, Result> {
     /// Возвращает экземпляр `CommonApiRequest` для получения цен закрытия торговой сессии по инструментам.
     ///
     ///  - parameters:
-    ///      - figi: Figi идентификаторы инструментов.
-    public static func getClosePrices(figi: [String]) throws -> CommonApiRequest<[InstrumentClosePrice]> {
+    ///      - figis: Figi идентификаторы инструментов.
+    public static func getClosePrices(figis: [String]) throws -> CommonApiRequest<[InstrumentClosePrice]> {
         .init {
-            try $0.marketData.getClosePrices(figi: figi)
+            try $0.marketData.getClosePrices(figis: figis)
         }
     }
 }

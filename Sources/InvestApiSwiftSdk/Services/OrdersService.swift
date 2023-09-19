@@ -140,10 +140,7 @@ internal struct GrpcOrdersService: OrdersService {
     ) throws -> EventLoopFuture<OrderInfo> {
         self.client
             .postOrder(
-                try Requests
-                    .OrdersServiceRequests
-                    .postOrderRequest
-                    .with(
+                try .new(
                         accountId: accountId, instrumentId: instrumentId, orderRequestId: orderRequestId,
                         type: type, direction: direction, price: price, quantity: quantity
                     )
@@ -154,38 +151,25 @@ internal struct GrpcOrdersService: OrdersService {
     
     func cancelOrder(accountId: String, orderId: String) throws -> EventLoopFuture<Date> {
         self.client
-            .cancelOrder(
-                Requests
-                    .OrdersServiceRequests
-                    .cancelOrderRequest
-                    .with(accountId: accountId, orderId: orderId)
-            )
+            .cancelOrder(.new(accountId: accountId, orderId: orderId))
             .response
             .map { $0.time.date }
     }
     
     func getOrderState(accountId: String, orderId: String) throws -> EventLoopFuture<OrderInfo> {
         self.client
-            .getOrderState(
-                Requests
-                    .OrdersServiceRequests
-                    .getOrderStateRequest
-                    .with(accountId: accountId, orderId: orderId)
-            )
+            .getOrderState(.new(accountId: accountId, orderId: orderId))
             .response
             .flatMapThrowing { try $0.toModel() }
     }
     
     func getOrders(accountId: String) throws -> EventLoopFuture<[OrderInfo]> {
         self.client
-            .getOrders(
-                Requests
-                    .OrdersServiceRequests
-                    .getOrdersRequest
-                    .with(accountId: accountId)
-            )
+            .getOrders(.new(accountId: accountId))
             .response
-            .flatMapThrowing { try $0.orders.map { try $0.toModel() } }
+            .flatMapThrowing {
+                try $0.orders.map { try $0.toModel() }
+            }
     }
     
     func replaceOrder(
@@ -194,13 +178,10 @@ internal struct GrpcOrdersService: OrdersService {
     ) throws -> EventLoopFuture<OrderInfo> {
         self.client
             .replaceOrder(
-                try Requests
-                        .OrdersServiceRequests
-                        .replaceOrderRequest
-                        .with(
-                            accountId: accountId, orderId: orderId, orderRequestId: orderRequestId,
-                            price: price, priceType: priceType, quantity: quantity
-                        )
+                try .new(
+                        accountId: accountId, orderId: orderId, orderRequestId: orderRequestId,
+                        price: price, priceType: priceType, quantity: quantity
+                    )
             )
             .response
             .flatMapThrowing { try $0.toModel() }
@@ -213,10 +194,7 @@ internal struct GrpcOrdersService: OrdersService {
     ) async throws -> OrderInfo {
         try await self.client
             .postOrder(
-                try Requests
-                    .OrdersServiceRequests
-                    .postOrderRequest
-                    .with(
+                try .new(
                         accountId: accountId, instrumentId: instrumentId, orderRequestId: orderRequestId,
                         type: type, direction: direction, price: price, quantity: quantity
                     )
@@ -226,35 +204,20 @@ internal struct GrpcOrdersService: OrdersService {
     
     func cancelOrder(accountId: String, orderId: String) async throws -> Date {
         try await self.client
-            .cancelOrder(
-                Requests
-                    .OrdersServiceRequests
-                    .cancelOrderRequest
-                    .with(accountId: accountId, orderId: orderId)
-            )
+            .cancelOrder(.new(accountId: accountId, orderId: orderId))
             .time
             .date
     }
     
     func getOrderState(accountId: String, orderId: String) async throws -> OrderInfo {
         try await self.client
-            .getOrderState(
-                Requests
-                    .OrdersServiceRequests
-                    .getOrderStateRequest
-                    .with(accountId: accountId, orderId: orderId)
-            )
+            .getOrderState(.new(accountId: accountId, orderId: orderId))
             .toModel()
     }
     
     func getOrders(accountId: String) async throws -> [OrderInfo] {
         try await self.client
-            .getOrders(
-                Requests
-                    .OrdersServiceRequests
-                    .getOrdersRequest
-                    .with(accountId: accountId)
-            )
+            .getOrders(.new(accountId: accountId))
             .orders
             .map { try $0.toModel() }
     }
@@ -265,13 +228,10 @@ internal struct GrpcOrdersService: OrdersService {
     ) async throws -> OrderInfo {
         try await self.client
             .replaceOrder(
-                try Requests
-                        .OrdersServiceRequests
-                        .replaceOrderRequest
-                        .with(
-                            accountId: accountId, orderId: orderId, orderRequestId: orderRequestId,
-                            price: price, priceType: priceType, quantity: quantity
-                        )
+                try .new(
+                        accountId: accountId, orderId: orderId, orderRequestId: orderRequestId,
+                        price: price, priceType: priceType, quantity: quantity
+                    )
             )
             .toModel()
     }

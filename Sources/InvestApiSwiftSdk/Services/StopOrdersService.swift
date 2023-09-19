@@ -95,10 +95,7 @@ internal struct GrpcStopOrdersService: StopOrdersService {
     ) throws -> EventLoopFuture<String> {
         self.client
             .postStopOrder(
-                try Requests
-                    .StopOrdersServiceRequests
-                    .postStopOrderRequest
-                    .with(
+                try .new(
                         accountId: accountId, instrumentId: instrumentId, quantity: quantity,
                         price: price, stopPrice: stopPrice, direction: direction,
                         stopOrderType: stopOrderType, expirationType: expirationType, expireDate: expireDate
@@ -110,24 +107,14 @@ internal struct GrpcStopOrdersService: StopOrdersService {
     
     func getStopOrders(accountId: String) throws -> EventLoopFuture<[StopOrder]> {
         self.client
-            .getStopOrders(
-                Requests
-                    .StopOrdersServiceRequests
-                    .getStopOrdersRequest
-                    .with(accountId: accountId)
-            )
+            .getStopOrders(.new(accountId: accountId))
             .response
             .flatMapThrowing { try $0.stopOrders.map { try $0.toModel() } }
     }
     
     func cancelStopOrder(accountId: String, stopOrderId: String) throws -> EventLoopFuture<Date> {
         self.client
-            .cancelStopOrder(
-                Requests
-                    .StopOrdersServiceRequests
-                    .cancelStopOrderRequest
-                    .with(accountId: accountId, stopOrderId: stopOrderId)
-            )
+            .cancelStopOrder(.new(accountId: accountId, stopOrderId: stopOrderId))
             .response
             .map { $0.time.date }
     }
@@ -140,10 +127,7 @@ internal struct GrpcStopOrdersService: StopOrdersService {
     ) async throws -> String {
         try await self.client
             .postStopOrder(
-                try Requests
-                    .StopOrdersServiceRequests
-                    .postStopOrderRequest
-                    .with(
+                try .new(
                         accountId: accountId, instrumentId: instrumentId, quantity: quantity,
                         price: price, stopPrice: stopPrice, direction: direction,
                         stopOrderType: stopOrderType, expirationType: expirationType, expireDate: expireDate
@@ -154,24 +138,14 @@ internal struct GrpcStopOrdersService: StopOrdersService {
     
     func getStopOrders(accountId: String) async throws -> [StopOrder] {
         try await self.client
-            .getStopOrders(
-                Requests
-                    .StopOrdersServiceRequests
-                    .getStopOrdersRequest
-                    .with(accountId: accountId)
-            )
+            .getStopOrders(.new(accountId: accountId))
             .stopOrders
             .map { try $0.toModel() }
     }
     
     func cancelStopOrder(accountId: String, stopOrderId: String) async throws -> Date {
         try await self.client
-            .cancelStopOrder(
-                Requests
-                    .StopOrdersServiceRequests
-                    .cancelStopOrderRequest
-                    .with(accountId: accountId, stopOrderId: stopOrderId)
-            )
+            .cancelStopOrder(.new(accountId: accountId, stopOrderId: stopOrderId))
             .time
             .date
     }
