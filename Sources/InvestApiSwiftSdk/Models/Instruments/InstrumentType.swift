@@ -1,5 +1,8 @@
 /// Тип инструмента.
 public enum InstrumentType: String, Codable {
+    /// Значение не установлено.
+    case unspecified
+    
     /// Акция.
     case share
     

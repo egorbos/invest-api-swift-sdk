@@ -31,9 +31,9 @@ public struct PortfolioVirtualPosition: Codable {
 }
 
 internal extension PortfolioVirtualPosition {
-    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_VirtualPortfolioPosition) throws {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_VirtualPortfolioPosition) {
         self.figi = grpcModel.figi
-        self.instrumentType = try .new(rawValue: grpcModel.instrumentType)
+        self.instrumentType = InstrumentType(rawValue: grpcModel.instrumentType) ?? .unspecified
         self.quantity = grpcModel.quantity.toModel()
         self.averagePositionPrice = grpcModel.averagePositionPrice.toModel()
         self.averagePositionPriceFifo = grpcModel.averagePositionPriceFifo.toModel()
@@ -45,7 +45,7 @@ internal extension PortfolioVirtualPosition {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_VirtualPortfolioPosition {
-    func toModel() throws -> PortfolioVirtualPosition {
-        try PortfolioVirtualPosition(grpcModel: self)
+    func toModel() -> PortfolioVirtualPosition {
+        PortfolioVirtualPosition(grpcModel: self)
     }
 }

@@ -40,7 +40,7 @@ public struct Portfolio: Codable {
 }
 
 internal extension Portfolio {
-    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioResponse) throws {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioResponse) {
         self.accountId = grpcModel.accountID
         self.totalAmountShares = grpcModel.totalAmountShares.toModel()
         self.totalAmountBonds = grpcModel.totalAmountBonds.toModel()
@@ -51,13 +51,17 @@ internal extension Portfolio {
         self.totalAmountStructuralNotes = grpcModel.totalAmountSp.toModel()
         self.totalAmountPortfolio = grpcModel.totalAmountPortfolio.toModel()
         self.expectedYield = grpcModel.expectedYield.toModel()
-        self.positions = try grpcModel.positions.map { try $0.toModel() }
-        self.virtualPositions = try grpcModel.virtualPositions.map { try $0.toModel() }
+        self.positions = grpcModel.positions.map { $0.toModel() }
+        self.virtualPositions = grpcModel.virtualPositions.map { $0.toModel() }
+    }
+    
+    init() {
+        self.init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioResponse())
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PortfolioResponse {
-    func toModel() throws -> Portfolio {
-        try Portfolio(grpcModel: self)
+    func toModel() -> Portfolio {
+        Portfolio(grpcModel: self)
     }
 }

@@ -220,7 +220,7 @@ internal struct GrpcOperationsService: OperationsService {
         self.client
             .getPortfolio(try .new(accountId: accountId, currency: currency))
             .response
-            .flatMapThrowing { try $0.toModel() }
+            .map { $0.toModel() }
     }
     
     func getPositions(accountId: String) throws -> EventLoopFuture<PositionsCollection> {

@@ -266,6 +266,28 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorRe
     }
 }
 
+// MARK: - OperationsStreamServiceRequests
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_PortfolioStreamRequest {
+    init(accounts: [String]) {
+        self.accounts = accounts
+    }
+
+    static func new(accounts: [String]) -> Self {
+        .init(accounts: accounts)
+    }
+}
+
+internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionsStreamRequest {
+    init(accounts: [String]) {
+        self.accounts = accounts
+    }
+
+    static func new(accounts: [String]) -> Self {
+        .init(accounts: accounts)
+    }
+}
+
 // MARK: - OrdersServiceRequests
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostOrderRequest {

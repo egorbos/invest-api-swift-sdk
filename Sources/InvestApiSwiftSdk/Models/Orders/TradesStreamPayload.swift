@@ -4,7 +4,7 @@ public struct TradesStreamPayload: StreamData {
     public typealias StreamDataType = TradeStreamItem
     
     public let time: Date
-    public let data: TradeStreamItem
+    public let data: StreamDataType
     public let type: StreamPayloadType
     
     public init(response: Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamResponse) {

@@ -37,9 +37,9 @@ public struct PortfolioPosition: Codable {
 }
 
 internal extension PortfolioPosition {
-    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioPosition) throws {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioPosition) {
         self.figi = grpcModel.figi
-        self.instrumentType = try .new(rawValue: grpcModel.instrumentType)
+        self.instrumentType = InstrumentType(rawValue: grpcModel.instrumentType) ?? .unspecified
         self.quantity = grpcModel.quantity.toModel()
         self.averagePositionPrice = grpcModel.averagePositionPrice.toModel()
         self.averagePositionPriceFifo = grpcModel.averagePositionPriceFifo.toModel()
@@ -53,7 +53,7 @@ internal extension PortfolioPosition {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PortfolioPosition {
-    func toModel() throws -> PortfolioPosition {
-        try PortfolioPosition(grpcModel: self)
+    func toModel() -> PortfolioPosition {
+        PortfolioPosition(grpcModel: self)
     }
 }
