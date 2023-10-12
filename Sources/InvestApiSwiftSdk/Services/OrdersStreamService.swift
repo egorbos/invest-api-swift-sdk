@@ -1,22 +1,21 @@
-import NIOCore
-import Foundation
-
 /// Сервис работы с торговыми поручениями в реальном времени.
 public protocol OrdersStreamService {
     /// Поток сделок пользователя.
     ///
-    /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
+    /// - Parameters:
+    ///     - accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
+    ///     - handler: Обработчик событий поступления сообщений из потока.
     ///
-    /// - Returns: Поток сделок пользователя `OrdersStreamData`.
-    func tradesStream(accounts: [String], handler: @escaping (TradesStreamPayload) -> Void) -> OrdersStreamData
+    /// - Returns: Поток сделок пользователя `OrdersStream`.
+    func tradesStream(accounts: [String], handler: @escaping (any StreamData) -> Void) -> OrdersStream
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Поток сделок пользователя.
     ///
     /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
     ///
-    /// - Returns: Асинхронный поток сделок пользователя `OrdersAsyncStreamData`.
-    func tradesStream(accounts: [String]) async -> OrdersAsyncStreamData
+    /// - Returns: Асинхронный поток сделок пользователя `OrdersAsyncStream`.
+    func tradesStream(accounts: [String]) -> OrdersAsyncStream
 #endif
 }
 
@@ -27,16 +26,16 @@ internal struct GrpcOrdersStreamService: OrdersStreamService {
         self.client = client
     }
     
-    func tradesStream(accounts: [String], handler: @escaping (TradesStreamPayload) -> Void) -> OrdersStreamData {
+    func tradesStream(accounts: [String], handler: @escaping (any StreamData) -> Void) -> OrdersStream {
         let call = self.client.tradesStream(.new(accounts: accounts)) { response in
-            handler(TradesStreamPayload(response: response))
+            handler(response.transform())
         }
-        return OrdersStreamData(call)
+        return OrdersStream(call)
     }
     
 #if compiler(>=5.5) && canImport(_Concurrency)
-    func tradesStream(accounts: [String]) async -> OrdersAsyncStreamData {
-        OrdersAsyncStreamData(self.client.tradesStream(.new(accounts: accounts)))
+    func tradesStream(accounts: [String]) -> OrdersAsyncStream {
+        OrdersAsyncStream(self.client.tradesStream(.new(accounts: accounts)))
     }
 #endif
 }

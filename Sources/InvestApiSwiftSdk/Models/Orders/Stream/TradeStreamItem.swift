@@ -1,5 +1,7 @@
+import Foundation
+
 /// Информация об исполнении торгового поручения.
-public struct TradeStreamItem {
+public struct TradeStreamItem: Codable {
     /// Идентификатор торгового поручения.
     let orderId: String
     
@@ -17,6 +19,9 @@ public struct TradeStreamItem {
     
     /// Сделки.
     let trades: [OrderTrade]
+    
+    /// Дата и время создания сообщения в часовом поясе UTC.
+    let createdAt: Date
 }
 
 internal extension TradeStreamItem {
@@ -27,10 +32,7 @@ internal extension TradeStreamItem {
         self.uid = grpcModel.instrumentUid
         self.direction = OrderDirection(rawValue: grpcModel.direction.rawValue) ?? .unspecified
         self.trades = grpcModel.trades.map { $0.toModel() }
-    }
-    
-    init() {
-        self.init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OrderTrades())
+        self.createdAt = grpcModel.createdAt.date
     }
 }
 

@@ -14,16 +14,16 @@ public struct OrderBookInfo: Codable {
     /// Множество пар значений на продажу.
     let asks: [Order]
     
-    /// Цена последней сделки
+    /// Цена последней сделки.
     let lastPrice: Quotation
     
-    /// Цена закрытия
+    /// Цена закрытия.
     let closePrice: Quotation
     
-    /// Верхний лимит цены
+    /// Верхний лимит цены.
     let limitUp: Quotation
     
-    /// Нижний лимит цены
+    /// Нижний лимит цены.
     let limitDown: Quotation
     
     /// Время получения цены последней сделки.

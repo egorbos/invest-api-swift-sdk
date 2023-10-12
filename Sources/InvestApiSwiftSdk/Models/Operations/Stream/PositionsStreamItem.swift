@@ -34,10 +34,6 @@ internal extension PositionsStreamItem {
         self.futures = grpcModel.futures.map { $0.toModel() }
         self.options = grpcModel.options.map { $0.toModel() }
     }
-    
-    init() {
-        self.init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionData())
-    }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionData {

@@ -3,9 +3,9 @@ import GRPC
 import Foundation
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-public struct PortfolioAsyncStreamData: AsyncSequence {
-    public typealias Element = PortfolioStreamPayload
-    public typealias AsyncIterator = AsyncStreamIterator<Tinkoff_Public_Invest_Api_Contract_V1_PortfolioStreamResponse, PortfolioStreamPayload>
+public struct PortfolioAsyncStream: AsyncSequence {
+    public typealias Element = any StreamData
+    public typealias AsyncIterator = AsyncStreamIterator<Tinkoff_Public_Invest_Api_Contract_V1_PortfolioStreamResponse, any StreamData>
     
     private let stream: GRPCAsyncResponseStream<Tinkoff_Public_Invest_Api_Contract_V1_PortfolioStreamResponse>
     
@@ -14,7 +14,7 @@ public struct PortfolioAsyncStreamData: AsyncSequence {
     }
     
     public func makeAsyncIterator() -> AsyncIterator {
-        AsyncStreamIterator(iterator: stream.makeAsyncIterator()) { PortfolioStreamPayload(response: $0!) }
+        AsyncStreamIterator(iterator: stream.makeAsyncIterator()) { $0!.transform() }
     }
 }
 #endif

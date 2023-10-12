@@ -1,6 +1,6 @@
 import Foundation
 
-public class CommonApiRequest<Result>: ApiRequest<CommonApiClient, Result> {
+public final class CommonApiRequest<Result>: ApiRequest<CommonApiClient, Result> {
     
     // MARK: Сервис предоставления справочной информации о пользователе.
     
@@ -96,9 +96,9 @@ public class CommonApiRequest<Result>: ApiRequest<CommonApiClient, Result> {
         figi: String,
         from: Date,
         to: Date
-    ) throws -> CommonApiRequest<[Trade]> {
+    ) -> CommonApiRequest<[Trade]> {
         .init {
-            try $0.marketData.getLastTrades(figi: figi, from: from, to: to)
+            $0.marketData.getLastTrades(figi: figi, from: from, to: to)
         }
     }
     

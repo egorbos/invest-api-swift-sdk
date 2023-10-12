@@ -45,7 +45,7 @@ public protocol MarketDataService {
     ///      - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
     ///  - Returns: Массив обезличенных сделок за последний час `[Trade]`.
-    func getLastTrades(figi: String, from: Date, to: Date) throws -> EventLoopFuture<[Trade]>
+    func getLastTrades(figi: String, from: Date, to: Date) -> EventLoopFuture<[Trade]>
     
     /// Получает цены закрытия торговой сессии по инструментам.
     ///
@@ -153,12 +153,12 @@ internal struct GrpcMarketDataService: MarketDataService {
             .flatMapThrowing { try $0.toModel() }
     }
     
-    func getLastTrades(figi: String, from: Date, to: Date) throws -> EventLoopFuture<[Trade]> {
+    func getLastTrades(figi: String, from: Date, to: Date) -> EventLoopFuture<[Trade]> {
         self.client
             .getLastTrades(.new(figi: figi, from: from, to: to))
             .response
-            .flatMapThrowing {
-                try $0.trades.map { try $0.toModel() }
+            .map {
+                $0.trades.map { $0.toModel() }
             }
     }
     
@@ -202,7 +202,7 @@ internal struct GrpcMarketDataService: MarketDataService {
         try await self.client
             .getLastTrades(.new(figi: figi, from: from, to: to))
             .trades
-            .map { try $0.toModel() }
+            .map { $0.toModel() }
     }
     
     func getClosePrices(figis: [String]) async throws -> [InstrumentClosePrice] {

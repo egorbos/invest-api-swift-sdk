@@ -1,36 +1,37 @@
-import NIOCore
-import Foundation
-
 /// Сервис получения информации о портфеле в реальном времени.
 public protocol OperationsStreamService {
     /// Поток обновлений портфеля.
     ///
-    /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
+    /// - Parameters:
+    ///     - accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
+    ///     - handler: Обработчик событий поступления сообщений из потока.
     ///
-    /// - Returns: Поток обновлений портфеля `PortfolioStreamData`.
-    func portfolioStream(accounts: [String], handler: @escaping (PortfolioStreamPayload) -> Void) -> PortfolioStreamData
+    /// - Returns: Поток обновлений портфеля `PortfolioStream`.
+    func portfolioStream(accounts: [String], handler: @escaping (any StreamData) -> Void) -> PortfolioStream
     
     /// Поток информации по изменению позиций портфеля.
     ///
-    /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
+    /// - Parameters:
+    ///     - accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
+    ///     - handler: Обработчик событий поступления сообщений из потока.
     ///
-    /// - Returns: Поток информации по изменению позиций портфеля `PositionsStreamData`.
-    func positionsStream(accounts: [String], handler: @escaping (PositionsStreamPayload) -> Void) -> PositionsStreamData
+    /// - Returns: Поток информации по изменению позиций портфеля `PositionsStream`.
+    func positionsStream(accounts: [String], handler: @escaping (any StreamData) -> Void) -> PositionsStream
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Поток обновлений портфеля.
     ///
     /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
     ///
-    /// - Returns: Асинхронный поток обновлений портфеля `PortfolioAsyncStreamData`.
-    func portfolioStream(accounts: [String]) async -> PortfolioAsyncStreamData
+    /// - Returns: Асинхронный поток обновлений портфеля `PortfolioAsyncStream`.
+    func portfolioStream(accounts: [String]) -> PortfolioAsyncStream
     
     /// Поток информации по изменению позиций портфеля.
     ///
     /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
     ///
-    /// - Returns: Асинхронный поток информации по изменению позиций портфеля `PositionsAsyncStreamData`.
-    func positionsStream(accounts: [String]) async -> PositionsAsyncStreamData
+    /// - Returns: Асинхронный поток информации по изменению позиций портфеля `PositionsAsyncStream`.
+    func positionsStream(accounts: [String]) -> PositionsAsyncStream
 #endif
 }
 
@@ -41,27 +42,27 @@ internal struct GrpcOperationsStreamService: OperationsStreamService {
         self.client = client
     }
     
-    func portfolioStream(accounts: [String], handler: @escaping (PortfolioStreamPayload) -> Void) -> PortfolioStreamData {
+    func portfolioStream(accounts: [String], handler: @escaping (any StreamData) -> Void) -> PortfolioStream {
         let call = self.client.portfolioStream(.new(accounts: accounts)) { response in
-            handler(PortfolioStreamPayload(response: response))
+            handler(response.transform())
         }
-        return PortfolioStreamData(call)
+        return PortfolioStream(call)
     }
     
-    func positionsStream(accounts: [String], handler: @escaping (PositionsStreamPayload) -> Void) -> PositionsStreamData {
+    func positionsStream(accounts: [String], handler: @escaping (any StreamData) -> Void) -> PositionsStream {
         let call = self.client.positionsStream(.new(accounts: accounts)) { response in
-            handler(PositionsStreamPayload(response: response))
+            handler(response.transform())
         }
-        return PositionsStreamData(call)
+        return PositionsStream(call)
     }
     
 #if compiler(>=5.5) && canImport(_Concurrency)
-    func portfolioStream(accounts: [String]) async -> PortfolioAsyncStreamData {
-        PortfolioAsyncStreamData(self.client.portfolioStream(.new(accounts: accounts)))
+    func portfolioStream(accounts: [String]) -> PortfolioAsyncStream {
+        PortfolioAsyncStream(self.client.portfolioStream(.new(accounts: accounts)))
     }
     
-    func positionsStream(accounts: [String]) async -> PositionsAsyncStreamData {
-        PositionsAsyncStreamData(self.client.positionsStream(.new(accounts: accounts)))
+    func positionsStream(accounts: [String]) -> PositionsAsyncStream {
+        PositionsAsyncStream(self.client.positionsStream(.new(accounts: accounts)))
     }
 #endif
 }

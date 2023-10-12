@@ -54,10 +54,6 @@ internal extension Portfolio {
         self.positions = grpcModel.positions.map { $0.toModel() }
         self.virtualPositions = grpcModel.virtualPositions.map { $0.toModel() }
     }
-    
-    init() {
-        self.init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioResponse())
-    }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PortfolioResponse {

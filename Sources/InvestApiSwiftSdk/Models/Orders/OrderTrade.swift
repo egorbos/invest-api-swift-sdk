@@ -1,7 +1,7 @@
 import Foundation
 
 /// Информация о сделке.
-public struct OrderTrade {
+public struct OrderTrade: Codable {
     /// Идентификатор сделки.
     let tradeId: String
     

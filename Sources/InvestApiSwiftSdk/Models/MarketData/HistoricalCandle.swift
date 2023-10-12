@@ -17,7 +17,7 @@ public struct HistoricalCandle: Codable {
     /// Объём торгов в лотах.
     let volume: Int64
     
-    /// Время свечи в часовом поясе UTC.
+    /// Время начала интервала свечи в часовом поясе UTC.
     let time: Date
     
     /// Признак завершённости свечи.

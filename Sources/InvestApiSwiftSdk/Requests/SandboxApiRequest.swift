@@ -125,9 +125,9 @@ public class SandboxApiRequest<Result>: ApiRequest<SandboxApiClient, Result> {
         figi: String,
         from: Date,
         to: Date
-    ) throws -> SandboxApiRequest<[Trade]> {
+    ) -> SandboxApiRequest<[Trade]> {
         .init {
-            try $0.marketData.getLastTrades(figi: figi, from: from, to: to)
+            $0.marketData.getLastTrades(figi: figi, from: from, to: to)
         }
     }
     

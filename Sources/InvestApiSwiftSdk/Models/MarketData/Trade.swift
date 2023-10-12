@@ -5,6 +5,9 @@ public struct Trade: Codable {
     /// Figi идентификатор инструмента.
     let figi: String
     
+    /// Уникальный идентификатор инструмента.
+    let uid: String
+    
     /// Направление сделки.
     let direction: TradeDirection
     
@@ -19,9 +22,10 @@ public struct Trade: Codable {
 }
 
 internal extension Trade {
-    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Trade) throws {
+    fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Trade) {
         self.figi = grpcModel.figi
-        self.direction = try .new(rawValue: grpcModel.direction.rawValue)
+        self.uid = grpcModel.instrumentUid
+        self.direction = TradeDirection(rawValue: grpcModel.direction.rawValue) ?? .unspecified
         self.price = grpcModel.price.toModel()
         self.quantity = grpcModel.quantity
         self.time = grpcModel.time.date
@@ -29,7 +33,7 @@ internal extension Trade {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Trade {
-    func toModel() throws -> Trade {
-        try Trade(grpcModel: self)
+    func toModel() -> Trade {
+        Trade(grpcModel: self)
     }
 }
