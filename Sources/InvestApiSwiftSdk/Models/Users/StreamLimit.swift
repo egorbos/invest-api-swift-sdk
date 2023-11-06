@@ -1,10 +1,10 @@
 /// Лимит stream-соединений.
 public struct StreamLimit: Codable {
     /// Максимальное количество stream-соединений.
-    let limit: Int32
+    public let limit: Int32
     
     /// Названия stream-методов.
-    let streams: [String]
+    public let streams: [String]
 }
 
 internal extension StreamLimit {

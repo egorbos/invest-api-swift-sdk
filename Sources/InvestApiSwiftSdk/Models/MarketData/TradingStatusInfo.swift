@@ -1,19 +1,19 @@
 /// Информация о торговом статусе.
 public struct TradingStatusInfo: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Статус торговли инструментом.
-    let tradingStatus: SecurityTradingStatus
+    public let tradingStatus: SecurityTradingStatus
     
     /// Признак доступности выставления лимитной заявки по инструменту.
-    let limitOrderAvailableFlag: Bool
+    public let limitOrderAvailableFlag: Bool
     
     /// Признак доступности выставления рыночной заявки по инструменту.
-    let marketOrderAvailableFlag: Bool
+    public let marketOrderAvailableFlag: Bool
     
     /// Признак доступности торгов через API.
-    let apiTradeAvailableFlag: Bool
+    public let apiTradeAvailableFlag: Bool
 }
 
 internal extension TradingStatusInfo {

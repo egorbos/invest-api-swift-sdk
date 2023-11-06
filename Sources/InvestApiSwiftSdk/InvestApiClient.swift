@@ -12,11 +12,13 @@ public final class InvestApiClient {
     
     /// Создаёт экземпляр `SandboxApiClient` для взаимодействия с Tinkoff API (канал песочницы).
     ///
-    ///  - parameters:
+    ///  - Parameters:
     ///      - token: Токен доступа клиента к Tinkoff API.
     ///      - appName: Наименование приложения. По умолчанию: codes.egorbos.invest-api-swift-sdk
     ///      - host: Адрес назначения Tinkoff API. По умолчанию: sandbox-invest-public-api.tinkoff.ru
     ///      - port: Порт назначения Tinkoff API. По умолчанию: 443
+    ///
+    ///  - Returns: Экземпляр клиента `SandboxApiClient`.
     public static func sandbox(
         _ token: String,
         appName: String = Constants.appName,
@@ -35,11 +37,13 @@ public final class InvestApiClient {
     
     /// Создаёт экземпляр `CommonApiClient` для взаимодействия с Tinkoff API (основной канал).
     ///
-    ///  - parameters:
+    ///  - Parameters:
     ///      - token: Токен доступа клиента к Tinkoff API.
     ///      - appName: Наименование приложения. По умолчанию: codes.egorbos.invest-api-swift-sdk
     ///      - host: Адрес назначения Tinkoff API. По умолчанию: invest-public-api.tinkoff.ru
     ///      - port: Порт назначения Tinkoff API. По умолчанию: 443
+    ///
+    ///  - Returns: Экземпляр клиента `CommonApiClient`.
     public static func common(
         _ token: String,
         appName: String = Constants.appName,

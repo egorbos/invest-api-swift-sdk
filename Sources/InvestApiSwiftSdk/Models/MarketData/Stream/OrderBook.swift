@@ -3,31 +3,31 @@ import Foundation
 /// Информация о стакане.
 public struct OrderBook: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Уникальный идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Глубина стакана.
-    let depth: Int32
+    public let depth: Int32
     
     /// Флаг консистентности стакана (false означает, что не все заявки попали в стакан по причинам сетевых задержек или нарушения порядка доставки).
-    let isConsistent: Bool
+    public let isConsistent: Bool
     
     /// Множество пар значений на покупку.
-    let bids: [Order]
+    public let bids: [Order]
     
     /// Множество пар значений на продажу.
-    let asks: [Order]
+    public let asks: [Order]
     
     /// Верхний лимит цены.
-    let limitUp: Quotation
+    public let limitUp: Quotation
     
     /// Нижний лимит цены.
-    let limitDown: Quotation
+    public let limitDown: Quotation
     
     /// Время формирования стакана на бирже, в часовом поясе UTC.
-    let time: Date
+    public let time: Date
 }
 
 internal extension OrderBook {

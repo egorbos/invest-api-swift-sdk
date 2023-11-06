@@ -1,13 +1,13 @@
 /// Лимиты на вывод средств.
 public struct WithdrawLimits: Codable {
     /// Валютные позиции портфеля.
-    let money: [MoneyValue]
+    public let money: [MoneyValue]
 
     /// Заблокированные валютные позиции портфеля.
-    let blocked: [MoneyValue]
+    public let blocked: [MoneyValue]
 
     /// Заблокировано под гарантийное обеспечение фьючерсов.
-    let blockedGuarantee: [MoneyValue]
+    public let blockedGuarantee: [MoneyValue]
 }
 
 internal extension WithdrawLimits {

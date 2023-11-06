@@ -1,8 +1,8 @@
 /// Тип фьючерсного контракта.
 public enum FutureContractType: String, Codable {
     /// Поставочный.
-    case physicalDelivery = "physical_delivery"
+    case physicalDelivery = "DELIVERY_TYPE_PHYSICAL_DELIVERY"
     
     /// Расчётный.
-    case cashSettlement = "cash_settlement"
+    case cashSettlement = "DELIVERY_TYPE_CASH_SETTLEMENT"
 }

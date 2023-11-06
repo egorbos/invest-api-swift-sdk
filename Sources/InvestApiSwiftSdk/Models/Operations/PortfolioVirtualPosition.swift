@@ -3,31 +3,31 @@ import Foundation
 /// Виртуальная (подарочная) позиция портфеля.
 public struct PortfolioVirtualPosition: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Тип инструмента.
-    let instrumentType: InstrumentType
+    public let instrumentType: InstrumentType
     
     /// Количество инструмента в портфеле в штуках.
-    let quantity: Quotation
+    public let quantity: Quotation
     
     /// Средневзвешенная цена позиции.
-    let averagePositionPrice: MoneyValue
+    public let averagePositionPrice: MoneyValue
     
     /// Средняя цена позиции по методу FIFO.
-    let averagePositionPriceFifo: MoneyValue
+    public let averagePositionPriceFifo: MoneyValue
     
     /// Текущая рассчитанная доходность позиции.
-    let expectedYield: Quotation
+    public let expectedYield: Quotation
     
     /// Текущая рассчитанная доходность позиции.
-    let expectedYieldFifo: Quotation
+    public let expectedYieldFifo: Quotation
     
     /// Дата до которой нужно продать виртуальные бумаги.
-    let expirationDate: Date
+    public let expirationDate: Date
     
     /// Текущая цена за 1 инструмент.
-    let currentPrice: MoneyValue
+    public let currentPrice: MoneyValue
 }
 
 internal extension PortfolioVirtualPosition {

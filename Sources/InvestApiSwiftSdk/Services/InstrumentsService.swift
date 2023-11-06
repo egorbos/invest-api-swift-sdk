@@ -10,7 +10,7 @@ public protocol InstrumentsService {
     ///     - from: Начало периода по часовому поясу UTC.
     ///     - to: Окончание периода по часовому поясу UTC.
     ///
-    /// - Returns: Список торговых площадок и режимов торгов `OrderInfo`.
+    /// - Returns: Список торговых площадок и режимов торгов `[TradingSchedule]`.
     func tradingSchedules(exchange: String, from: Date, to: Date) -> EventLoopFuture<[TradingSchedule]>
 
     /// Получает облигацию по её идентификатору.
@@ -100,6 +100,13 @@ public protocol InstrumentsService {
     ///
     /// - Returns: Информация об опционном контракте `Option`.
     func optionBy(idType: InstrumentIdType, classCode: String, id: String) throws -> EventLoopFuture<Option>
+    
+    /// Получает список опционных контрактов.
+    ///
+    /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
+    ///
+    /// - Returns: Список опционных контрактов `[Option]`.
+    func options(instrumentStatus: InstrumentStatus) throws -> EventLoopFuture<[Option]>
     
     /// Получает список опционных контрактов.
     ///
@@ -216,8 +223,6 @@ public protocol InstrumentsService {
 
     /// Получает список брендов.
     ///
-    /// - Parameters:
-    ///
     /// - Returns: Список брендов `[Brand]`.
     func getBrands() throws -> EventLoopFuture<[Brand]>
     
@@ -229,7 +234,7 @@ public protocol InstrumentsService {
     ///     - from: Начало периода по часовому поясу UTC.
     ///     - to: Окончание периода по часовому поясу UTC.
     ///
-    /// - Returns: Список торговых площадок и режимов торгов `OrderInfo`.
+    /// - Returns: Список торговых площадок и режимов торгов `[TradingSchedule]`.
     func tradingSchedules(exchange: String, from: Date, to: Date) async throws -> [TradingSchedule]
 
     /// Получает облигацию по её идентификатору.
@@ -319,6 +324,13 @@ public protocol InstrumentsService {
     ///
     /// - Returns: Информация об опционном контракте `Option`.
     func optionBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Option
+    
+    /// Получает список опционных контрактов.
+    ///
+    /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
+    ///
+    /// - Returns: Список опционных контрактов `[Option]`.
+    func options(instrumentStatus: InstrumentStatus) async throws -> [Option]
     
     /// Получает список опционных контрактов.
     ///
@@ -435,8 +447,6 @@ public protocol InstrumentsService {
 
     /// Получает список брендов.
     ///
-    /// - Parameters:
-    ///
     /// - Returns: Список брендов `[Brand]`.
     func getBrands() async throws -> [Brand]
 #endif
@@ -545,6 +555,15 @@ internal struct GrpcInstrumentsService: InstrumentsService {
             .response
             .flatMapThrowing {
                 try $0.instrument.toModel()
+            }
+    }
+    
+    func options(instrumentStatus: InstrumentStatus) throws -> EventLoopFuture<[Option]> {
+        self.client
+            .options(try .new(instrumentStatus: instrumentStatus))
+            .response
+            .flatMapThrowing {
+                try $0.instruments.map { try $0.toModel() }
             }
     }
     
@@ -755,6 +774,13 @@ internal struct GrpcInstrumentsService: InstrumentsService {
             .optionBy(try .new(idType: idType, classCode: classCode, id: id))
             .instrument
             .toModel()
+    }
+    
+    func options(instrumentStatus: InstrumentStatus) async throws -> [Option] {
+        try await self.client
+            .options(try .new(instrumentStatus: instrumentStatus))
+            .instruments
+            .map { try $0.toModel() }
     }
     
     func optionsBy(basicAssetUid: String, basicAssetPositionUid: String) async throws -> [Option] {

@@ -1,35 +1,35 @@
 /// Идентификаторы инструмента.
 public struct AssetInstrument: Codable {
     /// Uid идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Тип инструмента.
-    let type: String // MARK: CHANGE TO INSTRUMENT TYPE ??
+    public let type: InstrumentType
     
     /// Вид инструмента.
-    let kind: InstrumentKind
+    public let kind: InstrumentKind
     
     /// Тикер инструмента.
-    let ticker: String
+    public let ticker: String
     
     /// Класс-код (секция торгов).
-    let classCode: String
+    public let classCode: String
     
     /// Связанные инструменты.
-    let links: [InstrumentLink]
+    public let links: [InstrumentLink]
     
     /// Uid позиции.
-    let positionUid: String
+    public let positionUid: String
 }
 
 internal extension AssetInstrument {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetInstrument) throws {
         self.uid = grpcModel.uid
         self.figi = grpcModel.figi
-        self.type = grpcModel.instrumentType
+        self.type = try .new(rawValue: grpcModel.instrumentType)
         self.ticker = grpcModel.ticker
         self.classCode = grpcModel.classCode
         self.links = grpcModel.links.map { $0.toModel() }

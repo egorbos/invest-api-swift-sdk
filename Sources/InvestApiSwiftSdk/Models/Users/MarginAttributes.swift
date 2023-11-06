@@ -1,19 +1,19 @@
 /// Маржинальные показатели.
 public struct MarginAttributes: Codable {
     /// Ликвидная стоимость портфеля.
-    let liquidPortfolio: MoneyValue
+    public let liquidPortfolio: MoneyValue
     
     /// Начальная маржа — начальное обеспечение для совершения новой сделки.
-    let startingMargin: MoneyValue
+    public let startingMargin: MoneyValue
     
     /// Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли.
-    let minimalMargin: MoneyValue
+    public let minimalMargin: MoneyValue
     
     /// Уровень достаточности средств. Соотношение стоимости ликвидного портфеля к начальной марже.
-    let fundsSufficiencyLevel: Quotation
+    public let fundsSufficiencyLevel: Quotation
     
     /// Объем недостающих средств. Разница между стартовой маржой и ликвидной стоимости портфеля.
-    let amountOfMissingFunds: MoneyValue
+    public let amountOfMissingFunds: MoneyValue
 }
 
 internal extension MarginAttributes {

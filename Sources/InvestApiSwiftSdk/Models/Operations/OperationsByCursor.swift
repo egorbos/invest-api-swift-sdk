@@ -3,13 +3,13 @@ import Foundation
 /// Список операций по счёту с пагинацией.
 public struct OperationsByCursor: Codable {
     /// Список операций.
-    let items: [OperationItem]
+    public let items: [OperationItem]
     
     /// Следующий курсор.
-    let nextCursor: String
+    public let nextCursor: String
     
     /// Признак, есть ли следующий элемент.
-    let hasNext: Bool
+    public let hasNext: Bool
 }
 
 internal extension OperationsByCursor {

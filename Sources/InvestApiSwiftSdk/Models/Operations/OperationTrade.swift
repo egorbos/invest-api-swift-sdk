@@ -3,16 +3,16 @@ import Foundation
 /// Сделка по операции.
 public struct OperationTrade: Codable {
     /// Идентификатор сделки.
-    let tradeId: String
+    public let tradeId: String
     
     /// Дата и время сделки в часовом поясе UTC.
-    let date: Date
+    public let date: Date
     
     /// Количество инструментов.
-    let quantity: Int64
+    public let quantity: Int64
     
     /// Цена за 1 инструмент.
-    let price: MoneyValue
+    public let price: MoneyValue
 }
 
 internal extension OperationTrade {

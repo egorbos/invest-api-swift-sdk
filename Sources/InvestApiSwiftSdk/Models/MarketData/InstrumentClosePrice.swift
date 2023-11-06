@@ -3,13 +3,13 @@ import Foundation
 /// Цена закрытия торговой сессии по инструменту.
 public struct InstrumentClosePrice: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Цена закрытия торговой сессии.
-    let price: Quotation
+    public let price: Quotation
     
     /// Дата совершения торгов.
-    let time: Date
+    public let time: Date
 }
 
 internal extension InstrumentClosePrice {

@@ -3,34 +3,34 @@ import Foundation
 /// Информация о выплате дивиденда.
 public struct Dividend: Codable {
     /// Величина дивиденда на 1 ценную бумагу (включая валюту).
-    let dividendNet: MoneyValue
+    public let dividendNet: MoneyValue
     
     /// Дата фактических выплат в часовом поясе UTC.
-    let paymentDate: Date
+    public let paymentDate: Date
     
     /// Дата объявления дивидендов в часовом поясе UTC.
-    let declaredDate: Date
+    public let declaredDate: Date
     
     /// Последний день (включительно) покупки для получения выплаты в часовом поясе UTC.
-    let lastBuyDate: Date
+    public let lastBuyDate: Date
     
     /// Тип выплаты. Возможные значения: Regular Cash – регулярные выплаты, Cancelled – выплата отменена, Daily Accrual – ежедневное начисление, Return of Capital – возврат капитала, прочие типы выплат.
-    let dividendType: String
+    public let dividendType: String
     
     /// Дата фиксации реестра в часовом поясе UTC.
-    let recordDate: Date
+    public let recordDate: Date
     
     /// Регулярность выплаты. Возможные значения: Annual – ежегодная, Semi-Anl – каждые полгода, прочие типы выплат.
-    let regularity: String
+    public let regularity: String
     
     /// Цена закрытия инструмента на момент Ex-Dividend Date.
-    let closePrice: MoneyValue
+    public let closePrice: MoneyValue
     
     /// Величина доходности.
-    let yieldValue: Quotation
+    public let yieldValue: Quotation
     
     /// Дата и время создания записи в часовом поясе UTC.
-    let createdAt: Date
+    public let createdAt: Date
 }
 
 internal extension Dividend {

@@ -36,11 +36,10 @@ public protocol CommonApiClient {
     /// let result = try client.sendRequest(.getInfo) // Аналогично try client.user.getInfo()
     /// ```
     ///
-    ///  - parameters:
-    ///      - request: Запрос.
+    ///  - Parameter request: Экземпляр запроса.
     ///
-    ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
-    func sendRequest<T>(_ request: CommonApiRequest<T>) throws -> EventLoopFuture<T>
+    ///  - Returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `Result`.
+    func sendRequest<Result>(_ request: CommonApiRequest<Result>) throws -> EventLoopFuture<Result>
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Отправляет запрос к Tinkoff API.
@@ -49,17 +48,16 @@ public protocol CommonApiClient {
     /// let result = try await client.sendRequest(.getInfo) // Аналогично try await client.user.getInfo()
     /// ```
     ///
-    ///  - parameters:
-    ///      - request: Запрос.
+    ///  - Parameter request: Экземпляр запроса.
     ///
-    ///  - returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `T`.
+    ///  - Returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `Result`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-    func sendRequest<T>(_ request: CommonAsyncApiRequest<T>) async throws -> T
+    func sendRequest<Result>(_ request: CommonAsyncApiRequest<Result>) async throws -> Result
 #endif
 }
 
 public extension CommonApiClient {
-    func sendRequest<T>(_ request: CommonApiRequest<T>) throws -> EventLoopFuture<T> {
+    func sendRequest<Result>(_ request: CommonApiRequest<Result>) throws -> EventLoopFuture<Result> {
         return try request.send(client: self)
     }
 }

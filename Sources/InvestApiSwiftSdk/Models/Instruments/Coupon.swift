@@ -3,31 +3,31 @@ import Foundation
 /// Объект содержащий информацию о купоне облигации.
 public struct Coupon: Codable {
     /// Figi-идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Дата выплаты купона.
-    let couponDate: Date
+    public let couponDate: Date
     
     /// Номер купона.
-    let couponNumber: Int64
+    public let couponNumber: Int64
     
     /// Дата фиксации реестра для выплаты купона (опционально).
-    let fixDate: Date
+    public let fixDate: Date
     
     /// Выплата на одну облигацию.
-    let payOneBond: MoneyValue
+    public let payOneBond: MoneyValue
     
     /// Тип купона.
-    let couponType: CouponType
+    public let couponType: CouponType
     
     /// Начало купонного периода.
-    let couponStartDate: Date
+    public let couponStartDate: Date
     
     /// Окончание купонного периода.
-    let couponEndDate: Date
+    public let couponEndDate: Date
     
     /// Купонный период в днях.
-    let couponPeriod: Int32
+    public let couponPeriod: Int32
 }
 
 internal extension Coupon {

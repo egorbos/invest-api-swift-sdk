@@ -1,10 +1,10 @@
 /// Текущие лимиты пользователя.
 public struct UserTariff: Codable {
     /// Лимиты пользователя по unary-запросам.
-    let unaryLimits: [UnaryLimit]
+    public let unaryLimits: [UnaryLimit]
     
     /// Лимиты пользователя для stream-соединений.
-    let streamLimits: [StreamLimit]
+    public let streamLimits: [StreamLimit]
 }
 
 internal extension UserTariff {

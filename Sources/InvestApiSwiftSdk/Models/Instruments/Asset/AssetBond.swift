@@ -1,69 +1,69 @@
 import Foundation
 
 /// Облигация.
-struct AssetBond: Codable {
+public struct AssetBond: Codable {
     /// Текущий номинал.
-    let currentNominal: Quotation
+    public let currentNominal: Quotation
     
     /// Наименование заемщика.
-    let borrowName: String
+    public let borrowName: String
     
     /// Объем эмиссии облигации (стоимость).
-    let issueSize: Quotation
+    public let issueSize: Quotation
     
     /// Номинал облигации.
-    let nominal: Quotation
+    public let nominal: Quotation
     
     /// Валюта номинала.
-    let nominalCurrency: String
+    public let nominalCurrency: String
     
     /// Форма выпуска облигации.
-    let issueKind: String
+    public let issueKind: String
     
     /// Форма дохода облигации.
-    let interestKind: String
+    public let interestKind: String
     
     /// Количество выплат в год.
-    let couponQuantityPerYear: Int32
+    public let couponQuantityPerYear: Int32
     
     /// Признак облигации с индексируемым номиналом.
-    let indexedNominalFlag: Bool
+    public let indexedNominalFlag: Bool
     
     /// Признак субординированной облигации.
-    let subordinatedFlag: Bool
+    public let subordinatedFlag: Bool
     
     /// Признак обеспеченной облигации.
-    let collateralFlag: Bool
+    public let collateralFlag: Bool
     
     /// Признак показывает, что купоны облигации не облагаются налогом (для mass market).
-    let taxFreeFlag: Bool
+    public let taxFreeFlag: Bool
     
     /// Признак облигации с амортизацией долга.
-    let amortizationFlag: Bool
+    public let amortizationFlag: Bool
     
     /// Признак облигации с плавающим купоном.
-    let floatingCouponFlag: Bool
+    public let floatingCouponFlag: Bool
     
     /// Признак бессрочной облигации.
-    let perpetualFlag: Bool
+    public let perpetualFlag: Bool
     
     /// Дата погашения облигации.
-    let maturityDate: Date
+    public let maturityDate: Date
     
     /// Описание и условия получения дополнительного дохода.
-    let returnCondition: String
+    public let returnCondition: String
     
     /// Дата выпуска облигации.
-    let stateRegDate: Date
+    public let stateRegDate: Date
     
     /// Дата размещения облигации.
-    let placementDate: Date
+    public let placementDate: Date
     
     /// Цена размещения облигации.
-    let placementPrice: Quotation
+    public let placementPrice: Quotation
     
     /// Объявленное количество (штук).
-    let issueSizePlan: Quotation
+    public let issueSizePlan: Quotation
 }
 
 internal extension AssetBond {

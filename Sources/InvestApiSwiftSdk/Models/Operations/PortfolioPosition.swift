@@ -3,37 +3,37 @@ import Foundation
 /// Позиция портфеля.
 public struct PortfolioPosition: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Тип инструмента.
-    let instrumentType: InstrumentType
+    public let instrumentType: InstrumentType
     
     /// Количество инструмента в портфеле в штуках.
-    let quantity: Quotation
+    public let quantity: Quotation
     
     /// Средневзвешенная цена позиции.
-    let averagePositionPrice: MoneyValue
+    public let averagePositionPrice: MoneyValue
     
     /// Средняя цена позиции по методу FIFO.
-    let averagePositionPriceFifo: MoneyValue
+    public let averagePositionPriceFifo: MoneyValue
     
     /// Текущая рассчитанная доходность позиции.
-    let expectedYield: Quotation
+    public let expectedYield: Quotation
     
     /// Текущая рассчитанная доходность позиции по методу FIFO.
-    let expectedYieldFifo: Quotation
+    public let expectedYieldFifo: Quotation
     
     /// Текущий накопленный купонный доход.
-    let accumulatedCouponIncome: MoneyValue
+    public let accumulatedCouponIncome: MoneyValue
     
     /// Текущая цена за 1 инструмент.
-    let currentPrice: MoneyValue
+    public let currentPrice: MoneyValue
     
     /// Заблокировано на бирже.
-    let blocked: Bool
+    public let blocked: Bool
     
     /// Вариационная маржа.
-    let variationMargin: MoneyValue
+    public let variationMargin: MoneyValue
 }
 
 internal extension PortfolioPosition {

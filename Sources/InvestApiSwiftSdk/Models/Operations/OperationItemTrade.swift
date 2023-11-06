@@ -3,22 +3,22 @@ import Foundation
 /// Сделка по операции.
 public struct OperationItemTrade: Codable {
     /// Номер сделки.
-    let number: String
+    public let number: String
     
     /// Дата сделки.
-    let date: Date
+    public let date: Date
     
     /// Количество в единицах.
-    let quantity: Int64
+    public let quantity: Int64
     
     /// Цена.
-    let price: MoneyValue
+    public let price: MoneyValue
     
     /// Доходность.
-    let yield: MoneyValue
+    public let yield: MoneyValue
     
     /// Относительная доходность.
-    let yieldRelative: Quotation
+    public let yieldRelative: Quotation
 }
 
 internal extension OperationItemTrade {

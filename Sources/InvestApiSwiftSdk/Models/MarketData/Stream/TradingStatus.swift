@@ -3,22 +3,22 @@ import Foundation
 /// Информация о торговом статусе.
 public struct TradingStatus: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Уникальный идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Статус торговли инструментом.
-    let tradingStatus: SecurityTradingStatus
+    public let tradingStatus: SecurityTradingStatus
     
     /// Признак доступности выставления лимитной заявки по инструменту.
-    let limitOrderAvailableFlag: Bool
+    public let limitOrderAvailableFlag: Bool
     
     /// Признак доступности выставления рыночной заявки по инструменту.
-    let marketOrderAvailableFlag: Bool
+    public let marketOrderAvailableFlag: Bool
     
     /// Время изменения торгового статуса в часовом поясе UTC.
-    let time: Date
+    public let time: Date
 }
 
 internal extension TradingStatus {

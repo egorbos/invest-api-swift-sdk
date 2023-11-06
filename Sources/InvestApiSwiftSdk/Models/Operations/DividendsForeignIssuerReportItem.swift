@@ -3,40 +3,40 @@ import Foundation
 /// Отчёт "Справка о доходах за пределами РФ".
 public struct DividendsForeignIssuerReportItem: Codable {
     /// Дата фиксации реестра.
-    let recordDate: Date
+    public let recordDate: Date
     
     /// Дата выплаты.
-    let paymentDate: Date
+    public let paymentDate: Date
     
     /// Наименование ценной бумаги.
-    let securityName: String
+    public let securityName: String
     
     /// ISIN-идентификатор ценной бумаги.
-    let isin: String
+    public let isin: String
     
     /// Страна эмитента (для депозитарных расписок указывается страна эмитента базового актива).
-    let issuerCountry: String
+    public let issuerCountry: String
     
     /// Количество ценных бумаг.
-    let quantity: Int64
+    public let quantity: Int64
     
     /// Выплаты на одну бумагу.
-    let dividend: Quotation
+    public let dividend: Quotation
     
     /// Комиссия внешних платёжных агентов.
-    let externalCommission: Quotation
+    public let externalCommission: Quotation
     
     /// Сумма до удержания налога.
-    let dividendGross: Quotation
+    public let dividendGross: Quotation
     
     /// Сумма налога, удержанного агентом.
-    let tax: Quotation
+    public let tax: Quotation
     
     /// Итоговая сумма выплаты.
-    let dividendAmount: Quotation
+    public let dividendAmount: Quotation
     
     /// Валюта.
-    let currency: String // MARK: Возможно изменить на CurrencyType?
+    public let currency: CurrencyType
 }
 
 internal extension DividendsForeignIssuerReportItem {
@@ -52,7 +52,7 @@ internal extension DividendsForeignIssuerReportItem {
         self.dividendGross = grpcModel.dividendGross.toModel()
         self.tax = grpcModel.tax.toModel()
         self.dividendAmount = grpcModel.dividendAmount.toModel()
-        self.currency = grpcModel.currency
+        self.currency = CurrencyType(rawValue: grpcModel.currency) ?? .unspecified
     }
 }
 

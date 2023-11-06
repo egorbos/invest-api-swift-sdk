@@ -3,85 +3,85 @@ import Foundation
 /// Элемент брокерского отчёта.
 public struct BrokerReportItem: Codable {
     /// Номер сделки.
-    let tradeId: String
+    public let tradeId: String
     
     /// Номер поручения.
-    let orderId: String
+    public let orderId: String
     
     /// Figi-идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Признак исполнения.
-    let executeSign: String
+    public let executeSign: String
     
     /// Дата и время заключения в часовом поясе UTC.
-    let date: Date
+    public let date: Date
     
     /// Торговая площадка.
-    let exchange: String
+    public let exchange: String
     
     /// Режим торгов.
-    let classCode: String
+    public let classCode: String
     
     /// Вид сделки.
-    let direction: String
+    public let direction: String
     
     /// Сокращённое наименование актива.
-    let name: String
+    public let name: String
     
     /// Код актива.
-    let ticker: String
+    public let ticker: String
     
     /// Цена за единицу.
-    let price: MoneyValue
+    public let price: MoneyValue
     
     /// Количество.
-    let quantity: Int64
+    public let quantity: Int64
     
     /// Сумма (без накопленного купонного дохода).
-    let orderAmount: MoneyValue
+    public let orderAmount: MoneyValue
     
     /// Накопленный купонный доход.
-    let accumCouponValue: Quotation
+    public let accumCouponValue: Quotation
     
     /// Сумма сделки.
-    let totalOrderAmount: MoneyValue
+    public let totalOrderAmount: MoneyValue
     
     /// Комиссия брокера.
-    let brokerCommission: MoneyValue
+    public let brokerCommission: MoneyValue
     
     /// Комиссия биржи.
-    let exchangeCommission: MoneyValue
+    public let exchangeCommission: MoneyValue
     
     /// Комиссия клирингового центра.
-    let exchangeClearingCommission:  MoneyValue
+    public let exchangeClearingCommission:  MoneyValue
     
     /// Ставка РЕПО (%).
-    let repoRate: Quotation
+    public let repoRate: Quotation
     
     /// Контрагент / Брокер.
-    let party: String
+    public let party: String
     
     /// Дата расчётов в часовом поясе UTC.
-    let clearValueDate: Date
+    public let clearValueDate: Date
     
     /// Дата поставки в часовом поясе UTC.
-    let supplyValueDate: Date
+    public let supplyValueDate: Date
     
     /// Статус брокера.
-    let brokerStatus: String
+    public let brokerStatus: String
     
     /// Тип договора.
-    let separateAgreementType: String
+    public let separateAgreementType: String
     
     /// Номер договора.
-    let separateAgreementNumber: String
+    public let separateAgreementNumber: String
     
     /// Дата договора.
-    let separateAgreementDate: String
+    public let separateAgreementDate: String
     
     /// Тип расчёта по сделке.
-    let deliveryType: String
+    public let deliveryType: String
 }
 
 internal extension BrokerReportItem {

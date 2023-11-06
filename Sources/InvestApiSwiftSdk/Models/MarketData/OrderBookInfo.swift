@@ -3,37 +3,37 @@ import Foundation
 /// Информация о стакане.
 public struct OrderBookInfo: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Глубина стакана.
-    let depth: Int32
+    public let depth: Int32
     
     /// Множество пар значений на покупку.
-    let bids: [Order]
+    public let bids: [Order]
     
     /// Множество пар значений на продажу.
-    let asks: [Order]
+    public let asks: [Order]
     
     /// Цена последней сделки.
-    let lastPrice: Quotation
+    public let lastPrice: Quotation
     
     /// Цена закрытия.
-    let closePrice: Quotation
+    public let closePrice: Quotation
     
     /// Верхний лимит цены.
-    let limitUp: Quotation
+    public let limitUp: Quotation
     
     /// Нижний лимит цены.
-    let limitDown: Quotation
+    public let limitDown: Quotation
     
     /// Время получения цены последней сделки.
-    let lastPriceTime: Date
+    public let lastPriceTime: Date
     
     /// Время получения цены закрытия.
-    let closePriceTime: Date
+    public let closePriceTime: Date
     
     /// Время формирования стакана на бирже.
-    let time: Date
+    public let time: Date
 }
 
 internal extension OrderBookInfo {

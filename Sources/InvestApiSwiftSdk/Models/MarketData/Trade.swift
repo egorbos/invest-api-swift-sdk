@@ -3,22 +3,22 @@ import Foundation
 /// Информация о сделке.
 public struct Trade: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Уникальный идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Направление сделки.
-    let direction: TradeDirection
+    public let direction: TradeDirection
     
     /// Цена (1 единица).
-    let price: Quotation
+    public let price: Quotation
     
     /// Количество лотов.
-    let quantity: Int64
+    public let quantity: Int64
     
     /// Время сделки в часовом поясе UTC по времени биржи.
-    let time: Date
+    public let time: Date
 }
 
 internal extension Trade {

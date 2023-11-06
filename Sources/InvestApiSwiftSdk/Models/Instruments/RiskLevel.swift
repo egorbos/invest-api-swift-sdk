@@ -1,11 +1,14 @@
 /// Уровень риска облигации.
 public enum RiskLevel: Int, Codable {
-    /// Высокий уровень.
-    case high
+    /// Значение не определено.
+    case unspecified
+    
+    /// Низкий уровень.
+    case low
     
     /// Средний уровень.
     case moderate
     
-    /// Низкий уровень.
-    case low
+    /// Высокий уровень.
+    case high
 }

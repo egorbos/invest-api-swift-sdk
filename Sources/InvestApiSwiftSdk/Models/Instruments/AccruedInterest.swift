@@ -1,18 +1,18 @@
 import Foundation
 
-/// Информация о начислении купона.
+/// Информация о накопленном купонном доходе.
 public struct AccruedInterest: Codable {
-    /// Дата и время выплаты в часовом поясе UTC.
-    let date: Date
+    /// Дата и время в часовом поясе UTC.
+    public let date: Date
     
-    /// Величина выплаты.
-    let value: Quotation
+    /// Величина НКД.
+    public let value: Quotation
     
-    /// Величина выплаты в процентах от номинала.
-    let valuePercent: Quotation
+    /// Величина НКД в процентах от номинала.
+    public let valuePercent: Quotation
     
     /// Номинал облигации.
-    let nominal: Quotation
+    public let nominal: Quotation
 }
 
 internal extension AccruedInterest {

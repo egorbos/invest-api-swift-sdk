@@ -3,22 +3,22 @@ import Foundation
 /// Список позиций по счёту.
 public struct PositionsCollection: Codable {
     /// Валютные позиции портфеля.
-    let money: [MoneyValue]
+    public let money: [MoneyValue]
     
     /// Заблокированные валютные позиции портфеля.
-    let blockedMoney: [MoneyValue]
+    public let blockedMoney: [MoneyValue]
     
     /// Открытые позиции ценных бумаг.
-    let securities: [PositionElement]
+    public let securities: [PositionElement]
     
     /// Открытые  позиции фьючерсов.
-    let futures: [PositionElement]
+    public let futures: [PositionElement]
     
     /// Открытые позиции опционов.
-    let options: [PositionElement]
+    public let options: [PositionElement]
     
     /// Признак выполнения операции выгрузки лимитов.
-    let limitsLoadingInProgress: Bool
+    public let limitsLoadingInProgress: Bool
 }
 
 internal extension PositionsCollection {

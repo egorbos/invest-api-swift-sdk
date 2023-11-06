@@ -1,45 +1,45 @@
 import Foundation
 
 /// Структурная нота.
-struct AssetStructuredProduct: Codable {
+public struct AssetStructuredProduct: Codable {
     /// Наименование заемщика.
-    let borrowName: String
+    public let borrowName: String
     
     /// Номинал.
-    let nominal: Quotation
+    public let nominal: Quotation
     
     /// Валюта номинала.
-    let nominalCurrency: String
+    public let nominalCurrency: String
     
     /// Тип структурной ноты.
-    let type: StructuredProductType
+    public let type: StructuredProductType
     
     /// Стратегия портфеля.
-    let logicPortfolio: String
+    public let logicPortfolio: String
     
     /// Тип базового актива.
-    let assetType: AssetType
+    public let assetType: AssetType
     
     /// Вид базового актива в зависимости от типа базового актива.
-    let basicAsset: String
+    public let basicAsset: String
     
     /// Барьер сохранности (в процентах).
-    let safetyBarrier: Quotation
+    public let safetyBarrier: Quotation
     
     /// Дата погашения.
-    let maturityDate: Date
+    public let maturityDate: Date
     
     /// Объявленное количество (штук).
-    let issueSizePlan: Quotation
+    public let issueSizePlan: Quotation
     
     /// Объем размещения.
-    let issueSize: Quotation
+    public let issueSize: Quotation
     
     /// Дата размещения ноты.
-    let placementDate: Date
+    public let placementDate: Date
     
     /// Форма выпуска.
-    let issueKind: String
+    public let issueKind: String
 }
 
 internal extension AssetStructuredProduct {

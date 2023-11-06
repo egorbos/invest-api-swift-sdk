@@ -1,10 +1,10 @@
 /// Результат подписки.
 public struct CandlesSubscriptionResult: Codable {
     /// Уникальный идентификатор запроса.
-    let trackingId: String
+    public let trackingId: String
     
     /// Статусы подписок на свечи.
-    let subscriptions: [CandleSubscription]
+    public let subscriptions: [CandleSubscription]
 }
 
 internal extension CandlesSubscriptionResult {

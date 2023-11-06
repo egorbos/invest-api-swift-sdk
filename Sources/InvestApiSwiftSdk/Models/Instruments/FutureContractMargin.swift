@@ -1,16 +1,16 @@
 ///  Размер гарантийного обеспечения по фьючерсному контракту.
 public struct FutureContractMargin: Codable {
     /// Гарантийное обеспечение при покупке.
-    let initialMarginOnBuy: MoneyValue
+    public let initialMarginOnBuy: MoneyValue
     
     /// Гарантийное обеспечение при продаже.
-    let initialMarginOnSell: MoneyValue
+    public let initialMarginOnSell: MoneyValue
     
     /// Шаг цены.
-    let minPriceIncrement: Quotation
+    public let minPriceIncrement: Quotation
     
     /// Стоимость шага цены.
-    let minPriceIncrementAmount: Quotation
+    public let minPriceIncrementAmount: Quotation
 }
 
 internal extension FutureContractMargin {

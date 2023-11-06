@@ -1,10 +1,10 @@
 /// Результат подписки.
 public struct LastPricesSubscriptionResult: Codable {
     /// Уникальный идентификатор запроса.
-    let trackingId: String
+    public let trackingId: String
     
     /// Статусы подписок на цены последних сделок.
-    let subscriptions: [LastPriceSubscription]
+    public let subscriptions: [LastPriceSubscription]
 }
 
 internal extension LastPricesSubscriptionResult {

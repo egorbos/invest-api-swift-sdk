@@ -3,22 +3,22 @@ import Foundation
 /// Данные о позиции портфеля.
 public struct PositionsStreamItem: Codable {
     /// Идентификатор счёта пользователя.
-    let accountId: String
+    public let accountId: String
     
     /// Валютные позиции портфеля.
-    let money: [MoneyValue]
+    public let money: [MoneyValue]
     
     /// Заблокированные валютные позиции портфеля.
-    let blockedMoney: [MoneyValue]
+    public let blockedMoney: [MoneyValue]
     
     /// Открытые позиции ценных бумаг.
-    let securities: [PositionElement]
+    public let securities: [PositionElement]
     
     /// Открытые  позиции фьючерсов.
-    let futures: [PositionElement]
+    public let futures: [PositionElement]
     
     /// Открытые позиции опционов.
-    let options: [PositionElement]
+    public let options: [PositionElement]
 }
 
 internal extension PositionsStreamItem {

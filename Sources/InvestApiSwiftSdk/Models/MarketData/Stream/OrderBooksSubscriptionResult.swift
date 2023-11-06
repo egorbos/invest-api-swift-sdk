@@ -1,10 +1,10 @@
 /// Результат подписки.
 public struct OrderBooksSubscriptionResult: Codable {
     /// Уникальный идентификатор запроса.
-    let trackingId: String
+    public let trackingId: String
     
     /// Статусы подписок на стаканы.
-    let subscriptions: [OrderBookSubscription]
+    public let subscriptions: [OrderBookSubscription]
 }
 
 internal extension OrderBooksSubscriptionResult {

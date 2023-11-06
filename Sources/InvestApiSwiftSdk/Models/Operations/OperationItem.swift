@@ -3,73 +3,73 @@ import Foundation
 /// Данные об операции.
 public struct OperationItem: Codable {
     /// Курсор.
-    let cursor: String
+    public let cursor: String
     
     /// Номер счета клиента.
-    let accountId: String
+    public let accountId: String
     
     /// Идентификатор операции (может меняться с течением времени).
-    let id: String
+    public let id: String
     
     /// Идентификатор родительской операции (может измениться, если изменился id родительской операции).
-    let parentOperationId: String
+    public let parentOperationId: String
     
     /// Массив сделок.
-    let trades: [OperationItemTrade]
+    public let trades: [OperationItemTrade]
     
     /// Название операции.
-    let name: String
+    public let name: String
     
     /// Дата поручения.
-    let date: Date
+    public let date: Date
     
     /// Тип операции.
-    let operationType: OperationType
+    public let operationType: OperationType
     
     /// Описание операции.
-    let description: String
+    public let description: String
     
     /// Статус поручения.
-    let state: OperationState
+    public let state: OperationState
     
     /// Figi-идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Тип инструмента.
-    let instrumentType: String // TODO: InstrumentType ???
+    public let instrumentType: InstrumentType
     
     /// Сумма операции.
-    let payment: MoneyValue
+    public let payment: MoneyValue
     
     /// Цена за 1 инструмент.
-    let price: MoneyValue
+    public let price: MoneyValue
     
     /// Комиссия.
-    let commission: MoneyValue
+    public let commission: MoneyValue
     
     /// Доходность.
-    let yield: MoneyValue
+    public let yield: MoneyValue
     
     /// Относительная доходность.
-    let yieldRelative: Quotation
+    public let yieldRelative: Quotation
     
     /// Накопленный купонный доход.
-    let accumCouponValue: MoneyValue
+    public let accumCouponValue: MoneyValue
     
     /// Количество единиц инструмента.
-    let quantity: Int64
+    public let quantity: Int64
     
     /// Неисполненный остаток по сделке.
-    let quantityRest: Int64
+    public let quantityRest: Int64
     
     /// Исполненный остаток.
-    let quantityDone: Int64
+    public let quantityDone: Int64
     
     /// Дата снятия заявки.
-    let cancelDate: Date
+    public let cancelDate: Date
     
     /// Причина отмены операции.
-    let cancelReason: String
+    public let cancelReason: String
 }
 
 internal extension OperationItem {
@@ -85,7 +85,7 @@ internal extension OperationItem {
         self.description = grpcModel.description_p
         self.state = try .new(rawValue: grpcModel.state.rawValue)
         self.figi = grpcModel.figi
-        self.instrumentType = grpcModel.instrumentType
+        self.instrumentType = try .new(rawValue:  grpcModel.instrumentType)
         self.payment = grpcModel.payment.toModel()
         self.price = grpcModel.price.toModel()
         self.commission = grpcModel.commission.toModel()

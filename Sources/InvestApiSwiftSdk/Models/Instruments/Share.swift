@@ -3,124 +3,124 @@ import Foundation
 /// Информация об акции.
 public struct Share: Codable {
     /// Figi-идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Уникальный идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Тикер инструмента.
-    let ticker: String
+    public let ticker: String
     
     /// Класс-код (секция торгов).
-    let classCode: String
+    public let classCode: String
     
     /// Isin-идентификатор инструмента.
-    let isin: String
+    public let isin: String
     
     /// Лотность инструмента (возможно совершение операций только на количества ценной бумаги, кратные параметру lot).
-    let lot: Int32
+    public let lot: Int32
     
     /// Название инструмента.
-    let name: String
+    public let name: String
     
     /// Валюта расчётов.
-    let currency: String // MARK: Возможно изменить на CurrencyType?
+    public let currency: CurrencyType
     
     /// Коэффициент ставки риска длинной позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    let klong: Quotation
+    public let klong: Quotation
     
     /// Коэффициент ставки риска короткой позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    let kshort: Quotation
+    public let kshort: Quotation
     
     /// Ставка риска начальной маржи для КСУР лонг.
-    let dlong: Quotation
+    public let dlong: Quotation
     
     /// Ставка риска начальной маржи для КСУР шорт.
-    let dshort: Quotation
+    public let dshort: Quotation
     
     /// Ставка риска начальной маржи для КПУР лонг.
-    let dlongMin: Quotation
+    public let dlongMin: Quotation
     
     /// Ставка риска начальной маржи для КПУР шорт.
-    let dshortMin: Quotation
+    public let dshortMin: Quotation
     
     /// Признак доступности для операций в шорт.
-    let shortEnabledFlag: Bool
+    public let shortEnabledFlag: Bool
     
     /// Tорговая площадка (секция биржи).
-    let exchange: String
+    public let exchange: String
     
     /// Дата IPO акции в часовом поясе UTC.
-    let ipoDate: Date
+    public let ipoDate: Date
     
     /// Размер выпуска.
-    let issueSize: Int64
+    public let issueSize: Int64
     
     /// Плановый размер выпуска.
-    let issueSizePlan: Int64
+    public let issueSizePlan: Int64
     
     /// Код страны риска (в которой компания ведёт основной бизнес).
-    let countryOfRisk: String
+    public let countryOfRisk: String
     
     /// Наименование страны риска (в которой компания ведёт основной бизнес).
-    let countryOfRiskName: String
+    public let countryOfRiskName: String
     
     /// Сектор экономики.
-    let sector: String
+    public let sector: String
     
     /// Номинал.
-    let nominal: MoneyValue
+    public let nominal: MoneyValue
     
     /// Текущий режим торгов инструмента.
-    let tradingStatus: SecurityTradingStatus
+    public let tradingStatus: SecurityTradingStatus
     
     /// Признак внебиржевой ценной бумаги.
-    let otcFlag: Bool
+    public let otcFlag: Bool
     
     /// Признак доступности для покупки.
-    let buyAvailableFlag: Bool
+    public let buyAvailableFlag: Bool
     
     /// Признак доступности для продажи.
-    let sellAvailableFlag: Bool
+    public let sellAvailableFlag: Bool
     
     /// Признак наличия дивидендной доходности.
-    let divYieldFlag: Bool
+    public let divYieldFlag: Bool
     
     /// Тип акции.
-    let shareType: AssetShareType
+    public let shareType: AssetShareType
     
     /// Шаг цены.
-    let minPriceIncrement: Quotation
+    public let minPriceIncrement: Quotation
     
     /// Параметр указывает на возможность торговать инструментом через API.
-    let apiTradeAvailableFlag: Bool
+    public let apiTradeAvailableFlag: Bool
     
     /// Реальная площадка исполнения расчётов (биржа).
-    let realExchange: RealExchange
+    public let realExchange: RealExchange
     
     /// Уникальный идентификатор позиции инструмента.
-    let positionUid: String
+    public let positionUid: String
     
     /// Признак доступности для ИИС.
-    let forIisFlag: Bool
+    public let forIisFlag: Bool
     
     /// Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов.
-    let forQualInvestorFlag: Bool
+    public let forQualInvestorFlag: Bool
     
     /// Флаг отображающий доступность торговли инструментом по выходным.
-    let weekendFlag: Bool
+    public let weekendFlag: Bool
     
     /// Флаг заблокированного ТКС.
-    let blockedTcaFlag: Bool
+    public let blockedTcaFlag: Bool
     
     /// Флаг достаточной ликвидности.
-    let liquidityFlag: Bool
+    public let liquidityFlag: Bool
     
     /// Дата первой минутной свечи.
-    let firstOneMinCandleDate: Date
+    public let firstOneMinCandleDate: Date
     
     /// Дата первой дневной свечи.
-    let firstOneDayCandleDate: Date
+    public let firstOneDayCandleDate: Date
 }
 
 internal extension Share {
@@ -132,7 +132,7 @@ internal extension Share {
         self.isin = grpcModel.isin
         self.lot = grpcModel.lot
         self.name = grpcModel.name
-        self.currency = grpcModel.currency
+        self.currency = try .new(rawValue: grpcModel.currency)
         self.klong = grpcModel.klong.toModel()
         self.kshort = grpcModel.kshort.toModel()
         self.dlong = grpcModel.dlong.toModel()

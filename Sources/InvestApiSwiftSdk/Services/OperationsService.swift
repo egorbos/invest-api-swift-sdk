@@ -1,7 +1,7 @@
 import NIOCore
 import Foundation
 
-/// Сервис получения списка операций по счёту, портфеля по счёту, позиций ценных бумаг на счёте и т.д.
+/// Сервис получения списка операций, портфеля, позиций ценных бумаг и т.д.
 public protocol OperationsService {
     /// Получает список операций по счёту.
     ///
@@ -52,7 +52,7 @@ public protocol OperationsService {
     ///
     /// - Parameters:
     ///     - taskId: Идентификатор задачи формирования брокерского отчёта.
-    ///     - page: Номер страницы отчета (начинается с 1), значение по умолчанию: 0.
+    ///     - page: Номер страницы отчета (начинается с 0), значение по умолчанию: 0.
     ///
     /// - Returns: Брокерский отчёт `BrokerReport`.
     func getBrokerReport(taskId: String, page: Int32) throws -> EventLoopFuture<BrokerReport>
@@ -150,7 +150,7 @@ public protocol OperationsService {
     ///
     /// - Parameters:
     ///     - taskId: Идентификатор задачи формирования брокерского отчёта.
-    ///     - page: Номер страницы отчета (начинается с 1), значение по умолчанию: 0.
+    ///     - page: Номер страницы отчета (начинается с 0), значение по умолчанию: 0.
     ///
     /// - Returns: Брокерский отчёт `BrokerReport`.
     func getBrokerReport(taskId: String, page: Int32) async throws -> BrokerReport

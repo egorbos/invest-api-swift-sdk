@@ -1,10 +1,10 @@
 /// Результат подписки.
 public struct InfoSubscriptionResult: Codable {
     /// Уникальный идентификатор запроса.
-    let trackingId: String
+    public let trackingId: String
     
     /// Статусы подписок на потоки торговых статусов.
-    let subscriptions: [InfoSubscription]
+    public let subscriptions: [InfoSubscription]
 }
 
 internal extension InfoSubscriptionResult {

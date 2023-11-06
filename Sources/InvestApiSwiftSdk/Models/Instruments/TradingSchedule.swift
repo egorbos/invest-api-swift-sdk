@@ -1,10 +1,10 @@
 /// Данные по торговой площадке.
 public struct TradingSchedule: Codable {
     /// Наименование торговой площадки.
-    let exchange: String
+    public let exchange: String
     
     /// Торговые / неторговые дни.
-    let days: [TradingDay]
+    public let days: [TradingDay]
 }
 
 internal extension TradingSchedule {

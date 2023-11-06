@@ -1,16 +1,16 @@
 /// Информация о пользователе.
 public struct UserInfo: Codable {
     /// Признак премиум клиента.
-    let premStatus: Bool
+    public let premStatus: Bool
     
     /// Признак квалифицированного инвестора.
-    let qualStatus: Bool
+    public let qualStatus: Bool
     
     /// Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь.
-    let qualifiedForWorkWith: [String]
+    public let qualifiedForWorkWith: [String]
     
     /// Наименование тарифа пользователя.
-    let tariff: String
+    public let tariff: String
 }
 
 internal extension UserInfo {

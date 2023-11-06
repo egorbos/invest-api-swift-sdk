@@ -1,10 +1,10 @@
 /// Клиринговый сертификат участия.
-struct AssetClearingCertificate: Codable {
+public struct AssetClearingCertificate: Codable {
     /// Номинал.
-    let nominal: Quotation
+    public let nominal: Quotation
     
     /// Валюта номинала.
-    let nominalCurrency: String
+    public let nominalCurrency: String
 }
 
 internal extension AssetClearingCertificate {

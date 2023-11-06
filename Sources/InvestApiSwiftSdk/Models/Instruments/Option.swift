@@ -3,136 +3,136 @@ import Foundation
 /// Информация об опционном контракте.
 public struct Option: Codable {
     /// Уникальный идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Уникальный идентификатор позиции инструмента.
-    let positionUid: String
+    public let positionUid: String
     
     /// Тикер инструмента.
-    let ticker: String
+    public let ticker: String
     
     /// Класс-код (секция торгов).
-    let classCode: String
+    public let classCode: String
     
     /// Уникальный идентификатор позиции базового актива.
-    let basicAssetPositionUid: String
+    public let basicAssetPositionUid: String
     
     /// Текущий режим торгов инструмента.
-    let tradingStatus: SecurityTradingStatus
+    public let tradingStatus: SecurityTradingStatus
     
     /// Реальная площадка исполнения расчётов (биржа).
-    let realExchange: RealExchange
+    public let realExchange: RealExchange
     
     /// Направление контракта.
-    let direction: OptionDirection
+    public let direction: OptionDirection
     
     /// Тип расчетов по контракту.
-    let paymentType: OptionPaymentType
+    public let paymentType: OptionPaymentType
     
     /// Стиль контракта.
-    let style: OptionStyle
+    public let style: OptionStyle
     
     /// Тип опционного контракта.
-    let contractType: OptionContractType
+    public let contractType: OptionContractType
     
     /// Название инструмента.
-    let name: String
+    public let name: String
     
     /// Валюта расчётов.
-    let currency: String // MARK: Возможно изменить на CurrencyType?
+    public let currency: CurrencyType
     
     /// Валюта, в которой оценивается контракт.
-    let settlementCurrency: String // MARK: Возможно изменить на CurrencyType?
+    public let settlementCurrency: String
     
     /// Тип базового актива.
-    let assetType: OptionAssetType
+    public let assetType: ContractAssetType
     
     /// Базовый актив.
-    let basicAsset: String
+    public let basicAsset: String
     
     /// Размер базового актива.
-    let basicAssetSize: Quotation
+    public let basicAssetSize: Quotation
     
     /// Tорговая площадка (секция биржи).
-    let exchange: String
+    public let exchange: String
     
     /// Код страны риска (в которой компания ведёт основной бизнес).
-    let countryOfRisk: String
+    public let countryOfRisk: String
     
     /// Наименование страны риска (в которой компания ведёт основной бизнес).
-    let countryOfRiskName: String
+    public let countryOfRiskName: String
     
     /// Сектор экономики.
-    let sector: String
+    public let sector: String
     
     /// Лотность инструмента (возможно совершение операций только на количества ценной бумаги, кратные параметру lot).
-    let lot: Int32
+    public let lot: Int32
     
     /// Коэффициент ставки риска длинной позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    let klong: Quotation
+    public let klong: Quotation
     
     /// Коэффициент ставки риска короткой позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    let kshort: Quotation
+    public let kshort: Quotation
     
     /// Ставка риска начальной маржи для КСУР лонг.
-    let dlong: Quotation
+    public let dlong: Quotation
     
     /// Ставка риска начальной маржи для КСУР шорт.
-    let dshort: Quotation
+    public let dshort: Quotation
     
     /// Ставка риска начальной маржи для КПУР лонг.
-    let dlongMin: Quotation
+    public let dlongMin: Quotation
     
     /// Ставка риска начальной маржи для КПУР шорт.
-    let dshortMin: Quotation
+    public let dshortMin: Quotation
     
     /// Шаг цены.
-    let minPriceIncrement: Quotation
+    public let minPriceIncrement: Quotation
     
     /// Цена страйка (по которой покупатель опциона может купить 'колл' или продать 'пут' базовый актив).
-    let strikePrice: MoneyValue
+    public let strikePrice: MoneyValue
     
     /// Дата экспирации контракта в часов поясе UTC.
-    let expirationDate: Date
+    public let expirationDate: Date
     
     /// Дата начала обращения контракта в часовом поясе UTC.
-    let firstTradeDate: Date
+    public let firstTradeDate: Date
     
     /// Дата исполнения контракта в часовом поясе UTC.
-    let lastTradeDate: Date
+    public let lastTradeDate: Date
     
     /// Признак доступности для операций в шорт.
-    let shortEnabledFlag: Bool
+    public let shortEnabledFlag: Bool
     
     /// Признак доступности для ИИС.
-    let forIisFlag: Bool
+    public let forIisFlag: Bool
     
     /// Признак внебиржевой ценной бумаги.
-    let otcFlag: Bool
+    public let otcFlag: Bool
     
     /// Признак доступности для покупки.
-    let buyAvailableFlag: Bool
+    public let buyAvailableFlag: Bool
     
     /// Признак доступности для продажи.
-    let sellAvailableFlag: Bool
+    public let sellAvailableFlag: Bool
     
     /// Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов.
-    let forQualInvestorFlag: Bool
+    public let forQualInvestorFlag: Bool
     
     /// Флаг отображающий доступность торговли инструментом по выходным.
-    let weekendFlag: Bool
+    public let weekendFlag: Bool
     
     /// Флаг заблокированного ТКС.
-    let blockedTcaFlag: Bool
+    public let blockedTcaFlag: Bool
     
     /// Параметр указывает на возможность торговать инструментом через API.
-    let apiTradeAvailableFlag: Bool
+    public let apiTradeAvailableFlag: Bool
    
     /// Дата первой минутной свечи.
-    let firstOneMinCandleDate: Date
+    public let firstOneMinCandleDate: Date
     
     /// Дата первой дневной свечи.
-    let firstOneDayCandleDate: Date
+    public let firstOneDayCandleDate: Date
 }
 
 internal extension Option {
@@ -149,7 +149,7 @@ internal extension Option {
         self.style = try .new(rawValue: grpcModel.style.rawValue)
         self.contractType = try .new(rawValue: grpcModel.settlementType.rawValue)
         self.name = grpcModel.name
-        self.currency = grpcModel.currency
+        self.currency = try .new(rawValue: grpcModel.currency)
         self.settlementCurrency = grpcModel.settlementCurrency
         self.assetType = try .new(rawValue: grpcModel.assetType)
         self.basicAsset = grpcModel.basicAsset

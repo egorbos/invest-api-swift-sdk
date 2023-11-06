@@ -1,28 +1,28 @@
 /// Бренд.
 public struct Brand: Codable {
     /// Uid идентификатор бренда.
-    let uid: String
+    public let uid: String
     
     /// Наименование бренда.
-    let name: String
+    public let name: String
     
     /// Описание.
-    let description: String
+    public let description: String
     
     /// Информация о бренде.
-    let info: String
+    public let info: String
     
     /// Компания.
-    let company: String
+    public let company: String
     
     /// Сектор.
-    let sector: String
+    public let sector: String
     
     /// Код страны риска.
-    let countryOfRisk: String
+    public let countryOfRisk: String
     
     /// Наименование страны риска.
-    let countryOfRiskName: String
+    public let countryOfRiskName: String
 }
 
 internal extension Brand {

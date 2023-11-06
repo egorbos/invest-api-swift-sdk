@@ -3,16 +3,16 @@ import Foundation
 /// Информация о цене.
 public struct LastPrice: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Uid идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Последняя цена (1 единица).
-    let price: Quotation
+    public let price: Quotation
     
     /// Время получения последней цены в часовом поясе UTC по времени биржи.
-    let time: Date
+    public let time: Date
 }
 
 internal extension LastPrice {

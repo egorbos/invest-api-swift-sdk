@@ -1,5 +1,3 @@
-import Foundation
-
 internal struct ApiTarget {
     enum ApiTargetType: String, CaseIterable {
         case common, sandbox

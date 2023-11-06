@@ -3,40 +3,40 @@ import Foundation
 /// Портфель по счёту.
 public struct Portfolio: Codable {
     /// Идентификатор счёта пользователя.
-    let accountId: String
+    public let accountId: String
     
     /// Общая стоимость акций в портфеле в рублях.
-    let totalAmountShares: MoneyValue
+    public let totalAmountShares: MoneyValue
     
     /// Общая стоимость облигаций в портфеле в рублях.
-    let totalAmountBonds: MoneyValue
+    public let totalAmountBonds: MoneyValue
     
     /// Общая стоимость фондов в портфеле в рублях.
-    let totalAmountEtf: MoneyValue
+    public let totalAmountEtf: MoneyValue
     
     /// Общая стоимость валют в портфеле в рублях.
-    let totalAmountCurrencies: MoneyValue
+    public let totalAmountCurrencies: MoneyValue
     
     /// Общая стоимость фьючерсов в портфеле в рублях.
-    let totalAmountFutures: MoneyValue
+    public let totalAmountFutures: MoneyValue
     
     /// Общая стоимость опционов в портфеле в рублях.
-    let totalAmountOptions: MoneyValue
+    public let totalAmountOptions: MoneyValue
     
     /// Общая стоимость структурных нот в портфеле в рублях.
-    let totalAmountStructuralNotes: MoneyValue
+    public let totalAmountStructuralNotes: MoneyValue
     
     /// Общая стоимость портфеля в рублях.
-    let totalAmountPortfolio: MoneyValue
+    public let totalAmountPortfolio: MoneyValue
     
     /// Текущая относительная доходность портфеля в процентах.
-    let expectedYield: Quotation
+    public let expectedYield: Quotation
     
     /// Список позиций портфеля.
-    let positions: [PortfolioPosition]
+    public let positions: [PortfolioPosition]
     
     /// Список виртуальных позиций портфеля.
-    let virtualPositions: [PortfolioVirtualPosition]
+    public let virtualPositions: [PortfolioVirtualPosition]
 }
 
 internal extension Portfolio {

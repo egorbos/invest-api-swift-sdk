@@ -1,13 +1,13 @@
 /// Статус подписки на поток обезличенных сделок.
 public struct TradeSubscription: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Uid идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Статус подписки.
-    let status: MarketDataStreamSubscriptionStatus
+    public let status: MarketDataStreamSubscriptionStatus
 }
 
 internal extension TradeSubscription {

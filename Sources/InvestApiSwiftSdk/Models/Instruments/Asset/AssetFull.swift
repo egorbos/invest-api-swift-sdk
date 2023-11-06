@@ -3,58 +3,58 @@ import Foundation
 /// Информация об активе.
 public struct AssetFull: Codable {
     /// Уникальный идентификатор актива.
-    let uid: String
+    public let uid: String
     
     /// Тип актива.
-    let type: AssetType
+    public let type: AssetType
     
     /// Наименование актива.
-    let name: String
+    public let name: String
     
     /// Краткое наименование актива.
-    let nameBrief: String
+    public let nameBrief: String
     
     /// Описание актива.
-    let description: String
+    public let description: String
     
     /// Тестирование клиентов.
-    let requiredTests: [String]
+    public let requiredTests: [String]
     
     /// Валюта (обязательно и заполняется только для type = "ASSET_TYPE_CURRENCY").
-    let currency: AssetCurrency?
+    public let currency: AssetCurrency?
     
     /// Ценная бумага (обязательно и заполняется только для type = "ASSET_TYPE_SECURITY").
-    let security: AssetSecurity?
+    public let security: AssetSecurity?
     
     /// Номер государственной регистрации.
-    let regCode: String
+    public let regCode: String
     
     /// Код CFI.
-    let cfiCode: String
+    public let cfiCode: String
     
     /// Код НРД инструмента.
-    let nsdCode: String
+    public let nsdCode: String
     
     /// Статус актива.
-    let status: String
+    public let status: String
     
     /// Бренд.
-    let brand: Brand
+    public let brand: Brand
     
     /// Код типа ценной бумаги по классификации Банка России.
-    let brCode: String
+    public let brCode: String
     
     /// Наименование кода типа ценной бумаги по классификации Банка России.
-    let brCodeName: String
+    public let brCodeName: String
     
     /// Идентификаторы инструментов.
-    let instruments: [AssetInstrument]
+    public let instruments: [AssetInstrument]
     
     /// Дата и время последнего обновления записи.
-    let updatedAt: Date
+    public let updatedAt: Date
     
     /// Дата и время удаления актива.
-    let deletedAt: Date
+    public let deletedAt: Date
 }
 
 internal extension AssetFull {

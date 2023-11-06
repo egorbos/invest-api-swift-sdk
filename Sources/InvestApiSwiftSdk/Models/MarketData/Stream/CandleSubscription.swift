@@ -1,16 +1,16 @@
 /// Статус подписки на свечи.
 public struct CandleSubscription: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Uid идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Интервал свечей.
-    let interval: SubscriptionInterval
+    public let interval: SubscriptionInterval
     
     /// Статус подписки.
-    let status: MarketDataStreamSubscriptionStatus
+    public let status: MarketDataStreamSubscriptionStatus
 }
 
 internal extension CandleSubscription {

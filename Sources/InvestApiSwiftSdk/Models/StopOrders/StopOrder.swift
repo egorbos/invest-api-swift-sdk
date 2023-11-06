@@ -3,40 +3,40 @@ import Foundation
 /// Стоп-заявка.
 public struct StopOrder: Codable {
     /// Идентификатор стоп-заявки.
-    let stopOrderId: String
+    public let stopOrderId: String
     
     /// Figi-идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Uid идентификатор инструмента.
-    let uid: String
+    public let uid: String
 
     /// Направление операции.
-    let direction: OrderDirection
+    public let direction: OrderDirection
     
     /// Тип стоп-заявки.
-    let orderType: StopOrderType
+    public let orderType: StopOrderType
     
     /// Валюта стоп-заявки.
-    let currency: String // MARK: Возможно изменить на CurrencyType?
+    public let currency: CurrencyType
     
     /// Количество запрошенных лотов.
-    let lotsRequested: Int64
+    public let lotsRequested: Int64
     
     /// Цена заявки за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
-    let price: MoneyValue
+    public let price: MoneyValue
     
     /// Цена активации стоп-заявки за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
-    let stopPrice: MoneyValue
+    public let stopPrice: MoneyValue
     
     /// Дата и время конвертации стоп-заявки в биржевую в часовом поясе UTC.
-    let activationDate: Date
+    public let activationDate: Date
     
     /// Дата и время снятия заявки в часовом поясе UTC.
-    let expirationDate: Date
+    public let expirationDate: Date
     
     /// Дата и время выставления заявки в часовом поясе UTC.
-    let creationDate: Date
+    public let creationDate: Date
 }
 
 internal extension StopOrder {
@@ -46,7 +46,7 @@ internal extension StopOrder {
         self.uid = grpcModel.instrumentUid
         self.direction = try .new(rawValue: grpcModel.direction.rawValue)
         self.orderType = try .new(rawValue: grpcModel.orderType.rawValue)
-        self.currency = grpcModel.currency
+        self.currency = try .new(rawValue: grpcModel.currency)
         self.lotsRequested = grpcModel.lotsRequested
         self.price = grpcModel.price.toModel()
         self.stopPrice = grpcModel.stopPrice.toModel()

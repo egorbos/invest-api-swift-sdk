@@ -3,16 +3,16 @@ import Foundation
 /// Брокерский отчёт.
 public struct BrokerReport: Codable {
     /// Элементы отчёта.
-    let items: [BrokerReportItem]
+    public let items: [BrokerReportItem]
     
     /// Количество записей в отчете.
-    let itemsCount: Int32
+    public let itemsCount: Int32
     
     /// Текущая страница (начинается с 0).
-    let page: Int32
+    public let page: Int32
     
     /// Количество страниц с данными отчета (начинается с 0).
-    let pagesCount: Int32
+    public let pagesCount: Int32
 }
 
 internal extension BrokerReport {

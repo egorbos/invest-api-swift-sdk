@@ -1,34 +1,34 @@
 /// Ценная бумага.
-struct AssetSecurity: Codable {
+public struct AssetSecurity: Codable {
     /// ISIN-идентификатор ценной бумаги.
-    let isin: String
+    public let isin: String
     
     /// Тип ценной бумаги.
-    let type: String // MARK: CHANGE TO INSTRUMENT TYPE
+    public let type: InstrumentType
     
     /// Вид инструмента.
-    let kind: InstrumentKind
+    public let kind: InstrumentKind
     
     /// Акция (значение присваивается только для акций, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = share).
-    let share: AssetShare?
+    public let share: AssetShare?
     
     /// Облигация (значение присваивается только для облигаций, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = bond).
-    let bond: AssetBond?
+    public let bond: AssetBond?
     
     /// Структурная нота (значение присваивается только для структурных продуктов, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = sp).
-    let structuredProduct: AssetStructuredProduct?
+    public let structuredProduct: AssetStructuredProduct?
     
     /// Фонд (значение присваивается только для фондов, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = etf).
-    let etf: AssetEtf?
+    public let etf: AssetEtf?
     
     /// Клиринговый сертификат участия (значение присваивается только для клиринговых сертификатов, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = clearing_certificate).
-    let clearingCertificate: AssetClearingCertificate?
+    public let clearingCertificate: AssetClearingCertificate?
 }
 
 internal extension AssetSecurity {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetSecurity) throws {
         self.isin = grpcModel.isin
-        self.type = grpcModel.type
+        self.type = try .new(rawValue: grpcModel.type)
         self.kind = try .new(rawValue: grpcModel.instrumentKind.rawValue)
         self.share = try grpcModel.share.toModel()
         self.bond = grpcModel.bond.toModel()

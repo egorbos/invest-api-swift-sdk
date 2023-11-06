@@ -1,7 +1,6 @@
 import GRPC
 import NIOCore
 import NIOHPACK
-import Foundation
 
 internal class ServicesBuilder {
     private let channel: GRPCChannel

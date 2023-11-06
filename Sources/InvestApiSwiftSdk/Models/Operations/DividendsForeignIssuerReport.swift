@@ -3,16 +3,16 @@ import Foundation
 /// Отчёт "Справка о доходах за пределами РФ".
 public struct DividendsForeignIssuerReport: Codable {
     /// Элементы отчёта.
-    let items: [DividendsForeignIssuerReportItem]
+    public let items: [DividendsForeignIssuerReportItem]
     
     /// Количество записей в отчете.
-    let itemsCount: Int32
+    public let itemsCount: Int32
     
     /// Текущая страница (начинается с 0).
-    let page: Int32
+    public let page: Int32
     
     /// Количество страниц с данными отчета (начинается с 0).
-    let pagesCount: Int32
+    public let pagesCount: Int32
 }
 
 internal extension DividendsForeignIssuerReport {

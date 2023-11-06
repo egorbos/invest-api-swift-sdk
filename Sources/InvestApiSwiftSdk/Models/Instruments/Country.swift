@@ -1,16 +1,16 @@
 /// Данные о стране.
 public struct Country: Codable {
     /// Двухбуквенный код страны.
-    let alfaTwo: String
+    public let alfaTwo: String
     
     /// Трёхбуквенный код страны.
-    let alfaThree: String
+    public let alfaThree: String
     
     /// Наименование страны.
-    let name: String
+    public let name: String
     
     /// Краткое наименование страны.
-    let nameBrief: String
+    public let nameBrief: String
 }
 
 internal extension Country {

@@ -1,10 +1,10 @@
 /// Лимит unary-методов.
 public struct UnaryLimit: Codable {
     /// Количество unary-запросов в минуту.
-    let limitPerMinute: Int32
+    public let limitPerMinute: Int32
     
     /// Названия методов.
-    let methods: [String]
+    public let methods: [String]
 }
 
 internal extension UnaryLimit {

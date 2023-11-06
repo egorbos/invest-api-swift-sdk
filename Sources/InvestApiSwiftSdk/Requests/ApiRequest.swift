@@ -3,9 +3,7 @@ import NIOCore
 public class ApiRequest<Client, Result> {
     private let closure: (Client) throws -> EventLoopFuture<Result>
     
-    init(
-        closure: @escaping (Client) throws -> EventLoopFuture<Result>
-    ) {
+    init(closure: @escaping (Client) throws -> EventLoopFuture<Result>) {
         self.closure = closure
     }
 

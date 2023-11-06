@@ -1,32 +1,32 @@
 /// Баланс позиции.
 public struct PositionElement: Codable {
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Тип инструмента.
-    let type: InstrumentType
+    public let instrumentType: InstrumentType
     
     ///Уникальный идентификатор  инструмента.
-    let instrumentUid: String
+    public let instrumentUid: String
     
     ///Уникальный идентификатор позиции.
-    let positionUid: String
+    public let positionUid: String
     
     /// Текущий незаблокированный баланс.
-    let balance: Int64
+    public let balance: Int64
     
     /// Количество бумаг заблокированных выставленными заявками.
-    let blocked: Int64
+    public let blocked: Int64
     
     /// Заблокировано на бирже.
-    let exchangeBlocked: Bool
+    public let exchangeBlocked: Bool
 }
 
 internal extension PositionElement {    
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionsSecurities) {
         self.init(
             figi: grpcModel.figi,
-            type: InstrumentType.share,
+            instrumentType: InstrumentType(rawValue: grpcModel.instrumentType) ?? .unspecified,
             instrumentUid: grpcModel.instrumentUid,
             positionUid: grpcModel.positionUid,
             balance: grpcModel.balance,
@@ -38,7 +38,7 @@ internal extension PositionElement {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionsFutures) {
         self.init(
             figi: grpcModel.figi,
-            type: InstrumentType.futures,
+            instrumentType: InstrumentType.future,
             instrumentUid: grpcModel.instrumentUid,
             positionUid: grpcModel.positionUid,
             balance: grpcModel.balance,
@@ -50,7 +50,7 @@ internal extension PositionElement {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionsOptions) {
         self.init(
             figi: "",
-            type: InstrumentType.option,
+            instrumentType: InstrumentType.option,
             instrumentUid: grpcModel.instrumentUid,
             positionUid: grpcModel.positionUid,
             balance: grpcModel.balance,

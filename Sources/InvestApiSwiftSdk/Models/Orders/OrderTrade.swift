@@ -3,16 +3,16 @@ import Foundation
 /// Информация о сделке.
 public struct OrderTrade: Codable {
     /// Идентификатор сделки.
-    let tradeId: String
+    public let tradeId: String
     
     /// Цена по которой совершена сделка (за 1 штуку).
-    let price: Quotation
+    public let price: Quotation
     
     /// Количество штук в сделке.
-    let quantity: Int64
+    public let quantity: Int64
     
     /// Дата и время совершения сделки в часовом поясе UTC.
-    let time: Date
+    public let time: Date
 }
 
 internal extension OrderTrade {

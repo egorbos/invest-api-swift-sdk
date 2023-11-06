@@ -3,46 +3,46 @@ import Foundation
 /// Данные по операции.
 public struct Operation: Codable {
     /// Идентификатор операции.
-    let id: String
+    public let id: String
     
     /// Figi идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Идентификатор родительской операции.
-    let parentOperationId: String
+    public let parentOperationId: String
     
     /// Валюта операции.
-    let currency: String // MARK: Возможно изменить на CurrencyType?
+    public let currency: CurrencyType
     
     /// Сумма операции.
-    let payment: MoneyValue
+    public let payment: MoneyValue
     
     /// Цена операции за 1 инструмент.
-    let price: MoneyValue
+    public let price: MoneyValue
     
     /// Статус операции.
-    let state: OperationState
+    public let state: OperationState
     
     /// Количество единиц инструмента.
-    let quantity: Int64
+    public let quantity: Int64
     
     /// Неисполненный остаток по сделке.
-    let quantityRest: Int64
+    public let quantityRest: Int64
     
     /// Тип инструмента.
-    let instrumentType: InstrumentType
+    public let instrumentType: InstrumentType
     
     /// Дата и время операции в формате часовом поясе UTC.
-    let date: Date
+    public let date: Date
     
     /// Текстовое описание типа операции.
-    let type: String
+    public let type: String
     
     /// Тип операции.
-    let operationType: OperationType
+    public let operationType: OperationType
     
     /// Массив сделок.
-    let trades: [OperationTrade]
+    public let trades: [OperationTrade]
 }
 
 internal extension Operation {
@@ -50,7 +50,7 @@ internal extension Operation {
         self.id = grpcModel.id
         self.figi = grpcModel.figi
         self.parentOperationId = grpcModel.parentOperationID
-        self.currency = grpcModel.currency
+        self.currency = try .new(rawValue: grpcModel.currency)
         self.payment = grpcModel.payment.toModel()
         self.price = grpcModel.price.toModel()
         self.state = try .new(rawValue: grpcModel.state.rawValue)

@@ -3,52 +3,52 @@ import Foundation
 /// Краткая информация об инструменте.
 public struct InstrumentShort: Codable {
     /// Figi-идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Уникальный идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Isin-идентификатор инструмента.
-    let isin: String
+    public let isin: String
 
     /// Тикер инструмента.
-    let ticker: String
+    public let ticker: String
 
     /// Класс-код (секция торгов).
-    let classCode: String
+    public let classCode: String
     
     /// Название инструмента.
-    let name: String
+    public let name: String
 
     /// Тип инструмента.
-    let type: String // MARK: CHANGE TO INSTRUMENT TYPE ??
+    public let type: InstrumentType
     
     /// Вид инструмента.
-    let kind: InstrumentKind
+    public let kind: InstrumentKind
     
     /// Уникальный идентификатор позиции инструмента.
-    let positionUid: String
+    public let positionUid: String
     
     /// Признак доступности для ИИС.
-    let forIisFlag: Bool
+    public let forIisFlag: Bool
     
     /// Параметр указывает на возможность торговать инструментом через API.
-    let apiTradeAvailableFlag: Bool
+    public let apiTradeAvailableFlag: Bool
     
     /// Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов.
-    let forQualInvestorFlag: Bool
+    public let forQualInvestorFlag: Bool
     
     /// Флаг отображающий доступность торговли инструментом по выходным.
-    let weekendFlag: Bool
+    public let weekendFlag: Bool
     
     /// Флаг заблокированного ТКС.
-    let blockedTcaFlag: Bool
+    public let blockedTcaFlag: Bool
     
     /// Дата первой минутной свечи.
-    let firstOneMinCandleDate: Date
+    public let firstOneMinCandleDate: Date
     
     /// Дата первой дневной свечи.
-    let firstOneDayCandleDate: Date
+    public let firstOneDayCandleDate: Date
 }
 
 internal extension InstrumentShort {
@@ -59,7 +59,7 @@ internal extension InstrumentShort {
         self.ticker = grpcModel.ticker
         self.classCode = grpcModel.classCode
         self.name = grpcModel.name
-        self.type = grpcModel.instrumentType
+        self.type = try .new(rawValue: grpcModel.instrumentType)
         self.kind = try .new(rawValue: grpcModel.instrumentKind.rawValue)
         self.positionUid = grpcModel.positionUid
         self.forIisFlag = grpcModel.forIisFlag

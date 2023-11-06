@@ -3,25 +3,25 @@ import Foundation
 /// Информация об исполнении торгового поручения.
 public struct TradeStreamItem: Codable {
     /// Идентификатор торгового поручения.
-    let orderId: String
+    public let orderId: String
     
     /// Идентификатор счёта.
-    let accountId: String
+    public let accountId: String
     
     /// Figi-идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Uid идентификатор инструмента.
-    let uid: String
+    public let uid: String
     
     /// Направление сделки.
-    let direction: OrderDirection
+    public let direction: OrderDirection
     
     /// Сделки.
-    let trades: [OrderTrade]
+    public let trades: [OrderTrade]
     
     /// Дата и время создания сообщения в часовом поясе UTC.
-    let createdAt: Date
+    public let createdAt: Date
 }
 
 internal extension TradeStreamItem {

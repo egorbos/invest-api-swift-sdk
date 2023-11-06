@@ -3,25 +3,25 @@ import Foundation
 /// Информация о счёте.
 public struct Account: Codable {
     /// Идентификатор счёта.
-    let id: String
+    public let id: String
     
     /// Тип счёта.
-    let type: AccountType
+    public let type: AccountType
     
     /// Название счёта.
-    let name: String
+    public let name: String
     
     /// Статус счёта.
-    let status: AccountStatus
+    public let status: AccountStatus
     
     /// Дата открытия счёта в часовом поясе UTC.
-    let openedDate: Date
+    public let openedDate: Date
     
     /// Дата закрытия счёта в часовом поясе UTC.
-    let closedDate: Date
+    public let closedDate: Date
     
     /// Уровень доступа к текущему счёту (определяется токеном).
-    let accessLevel: AccessLevel
+    public let accessLevel: AccessLevel
 }
 
 internal extension Account {

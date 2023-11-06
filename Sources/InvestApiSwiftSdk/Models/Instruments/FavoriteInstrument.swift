@@ -1,28 +1,28 @@
 /// Краткая информация об избранном инструменте.
 public struct FavoriteInstrument: Codable {
     /// Figi-идентификатор инструмента.
-    let figi: String
+    public let figi: String
     
     /// Тикер инструмента.
-    let ticker: String
+    public let ticker: String
     
     /// Класс-код (секция торгов).
-    let classCode: String
+    public let classCode: String
     
     /// Isin-идентификатор инструмента.
-    let isin: String
+    public let isin: String
     
     /// Тип инструмента.
-    let instrumentType: String
-    
-    /// Признак внебиржевой ценной бумаги.
-    let otcFlag: Bool
-    
-    /// Параметр указывает на возможность торговать инструментом через API.
-    let apiTradeAvailableFlag: Bool
+    public let instrumentType: InstrumentType
     
     /// Вид инструмента.
-    let kind: InstrumentKind
+    public let instrumentKind: InstrumentKind
+    
+    /// Признак внебиржевой ценной бумаги.
+    public let otcFlag: Bool
+    
+    /// Параметр указывает на возможность торговать инструментом через API.
+    public let apiTradeAvailableFlag: Bool
 }
 
 internal extension FavoriteInstrument {
@@ -31,10 +31,10 @@ internal extension FavoriteInstrument {
         self.ticker = grpcModel.ticker
         self.classCode = grpcModel.classCode
         self.isin = grpcModel.isin
-        self.instrumentType = grpcModel.instrumentType
+        self.instrumentType = try .new(rawValue: grpcModel.instrumentType)
+        self.instrumentKind = try .new(rawValue: grpcModel.instrumentKind.rawValue)
         self.otcFlag = grpcModel.otcFlag
         self.apiTradeAvailableFlag = grpcModel.apiTradeAvailableFlag
-        self.kind = try .new(rawValue: grpcModel.instrumentKind.rawValue)
     }
 }
 

@@ -1,6 +1,5 @@
 import GRPC
 import NIOCore
-import Foundation
 
 internal struct ApiConnection {
     let target: ApiTarget
@@ -14,7 +13,10 @@ internal struct ApiConnection {
             target: .host(target.host, port: target.port),
             transportSecurity: .tls(.makeClientConfigurationBackedByNIOSSL()),
             eventLoopGroup: self.group
-        )
+        ) { config in
+            // Максимальный объём данных в сообщении, принимаемом от сервера
+            config.maximumReceiveMessageLength = 8 * 1000000 // 8 МБ
+        }
     }
     
     func close() {

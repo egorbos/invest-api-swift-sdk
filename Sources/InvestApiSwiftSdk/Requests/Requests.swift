@@ -170,7 +170,7 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_OperationsRequest {
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PortfolioRequest {
     init(accountId: String, currency: CurrencyType) throws {
         self.accountID = accountId
-        self.currency = try .new(rawValue: currency.rawValue)
+        self.currency = try .new(rawValue: currency.forPortfolioRequest())
     }
 
     static func new(accountId: String, currency: CurrencyType) throws -> Self {
@@ -389,7 +389,7 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostStopOrderRequest {
     init(
         accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
         stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
-        expirationType: StopOrderExpirationType, expireDate: Date
+        expirationType: StopOrderExpirationType, expireDate: Date?
     ) throws {
         self.accountID = accountId
         self.instrumentID = instrumentId
@@ -399,13 +399,13 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostStopOrderRequest {
         self.direction = try .new(rawValue: direction.rawValue)
         self.stopOrderType = try .new(rawValue: stopOrderType.rawValue)
         self.expirationType = try .new(rawValue: expirationType.rawValue)
-        self.expireDate = SwiftProtobuf.Google_Protobuf_Timestamp(date: expireDate)
+        self.expireDate = SwiftProtobuf.Google_Protobuf_Timestamp(date: expireDate ?? Date(timeIntervalSince1970: 0))
     }
 
     static func new(
         accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
         stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
-        expirationType: StopOrderExpirationType, expireDate: Date
+        expirationType: StopOrderExpirationType, expireDate: Date?
     ) throws -> Self {
         try .init(
             accountId: accountId, instrumentId: instrumentId, quantity: quantity, price: price,

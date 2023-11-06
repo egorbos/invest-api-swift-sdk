@@ -1,10 +1,10 @@
 /// Результат подписки.
 public struct OperationsStreamSubscriptionResult: Codable {
     /// Идентификатор счёта.
-    let accountId: String
+    public let accountId: String
     
     /// Статус подписки.
-    let status: OperationsStreamSubscriptionStatus
+    public let status: OperationsStreamSubscriptionStatus
 }
 
 internal extension OperationsStreamSubscriptionResult {

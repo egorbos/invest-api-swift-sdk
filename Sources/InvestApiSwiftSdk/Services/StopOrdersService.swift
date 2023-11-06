@@ -20,7 +20,7 @@ public protocol StopOrdersService {
     func postStopOrder(
         accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
         stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
-        expirationType: StopOrderExpirationType, expireDate: Date
+        expirationType: StopOrderExpirationType, expireDate: Date?
     ) throws -> EventLoopFuture<String>
     
     /// Получает список активных стоп-заявок по счёту.
@@ -58,7 +58,7 @@ public protocol StopOrdersService {
     func postStopOrder(
         accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
         stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
-        expirationType: StopOrderExpirationType, expireDate: Date
+        expirationType: StopOrderExpirationType, expireDate: Date?
     ) async throws -> String
     
     /// Получает список активных стоп-заявок по счёту.
@@ -91,7 +91,7 @@ internal struct GrpcStopOrdersService: StopOrdersService {
     func postStopOrder(
         accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
         stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
-        expirationType: StopOrderExpirationType, expireDate: Date
+        expirationType: StopOrderExpirationType, expireDate: Date?
     ) throws -> EventLoopFuture<String> {
         self.client
             .postStopOrder(
@@ -123,7 +123,7 @@ internal struct GrpcStopOrdersService: StopOrdersService {
     func postStopOrder(
         accountId: String, instrumentId: String, quantity: Int64, price: Quotation,
         stopPrice: Quotation, direction: OrderDirection, stopOrderType: StopOrderType,
-        expirationType: StopOrderExpirationType, expireDate: Date
+        expirationType: StopOrderExpirationType, expireDate: Date?
     ) async throws -> String {
         try await self.client
             .postStopOrder(

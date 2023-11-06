@@ -3,25 +3,25 @@ import Foundation
 /// Информация о свече.
 public struct HistoricalCandle: Codable {
     /// Цена открытия (1 единица).
-    let open: Quotation
+    public let open: Quotation
     
     /// Максимальная цена (1 единица).
-    let high: Quotation
+    public let high: Quotation
     
     /// Минимальная цена (1 единица).
-    let low: Quotation
+    public let low: Quotation
     
     /// Цена закрытия (1 единица).
-    let close: Quotation
+    public let close: Quotation
     
     /// Объём торгов в лотах.
-    let volume: Int64
+    public let volume: Int64
     
     /// Время начала интервала свечи в часовом поясе UTC.
-    let time: Date
+    public let time: Date
     
     /// Признак завершённости свечи.
-    let isComplete: Bool
+    public let isComplete: Bool
 }
 
 internal extension HistoricalCandle {

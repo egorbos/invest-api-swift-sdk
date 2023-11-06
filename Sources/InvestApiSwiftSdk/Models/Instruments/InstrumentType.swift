@@ -1,23 +1,23 @@
 /// Тип инструмента.
 public enum InstrumentType: String, Codable {
     /// Значение не установлено.
-    case unspecified
-    
+    case unspecified = ""
+
+    /// Облигация.
+    case bond
+
     /// Акция.
     case share
     
-    /// Облигация.
-    case bond
-    
+    /// Валюта.
+    case currency
+
     /// Фонд.
     case etf
     
     /// Фьючерс.
-    case futures
-    
+    case future = "futures"
+
     /// Опцион.
     case option
-    
-    /// Валюта.
-    case currency
 }

@@ -1,10 +1,10 @@
 /// Связь с другим инструментом.
 public struct InstrumentLink: Codable {
     /// Тип связи.
-    let type: String
+    public let type: String
     
     /// Uid идентификатор связанного инструмента.
-    let instrumentUid: String
+    public let instrumentUid: String
 }
 
 internal extension InstrumentLink {

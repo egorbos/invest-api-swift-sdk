@@ -1,51 +1,51 @@
 import Foundation
 
 /// Акция.
-struct AssetShare: Codable {
+public struct AssetShare: Codable {
     /// Тип акции.
-    let type: AssetShareType
+    public let type: AssetShareType
     
     /// Объем выпуска (штук).
-    let issueSize: Quotation
+    public let issueSize: Quotation
     
     /// Номинал.
-    let nominal: Quotation
+    public let nominal: Quotation
     
     /// Валюта номинала.
-    let nominalCurrency: String
+    public let nominalCurrency: String
     
     /// Индекс (Bloomberg).
-    let primaryIndex: String
+    public let primaryIndex: String
     
     /// Ставка дивиденда (для привилегированных акций).
-    let dividendRate: Quotation
+    public let dividendRate: Quotation
     
     /// Тип привилегированных акций.
-    let preferredShareType: String
+    public let preferredShareType: String
     
     /// Дата IPO.
-    let ipoDate: Date
+    public let ipoDate: Date
     
     /// Дата регистрации.
-    let registrationDate: Date
+    public let registrationDate: Date
     
     /// Признак наличия дивидендной доходности.
-    let divYieldFlag: Bool
+    public let divYieldFlag: Bool
     
     /// Форма выпуска ФИ.
-    let issueKind: String
+    public let issueKind: String
     
     /// Дата размещения акции.
-    let placementDate: Date
+    public let placementDate: Date
     
     /// ISIN базового актива.
-    let represIsin: String
+    public let represIsin: String
     
     /// Объявленное количество (штук).
-    let issueSizePlan: Quotation
+    public let issueSizePlan: Quotation
     
     /// Количество акций в свободном обращении (штук).
-    let totalFloat: Quotation
+    public let totalFloat: Quotation
 }
 
 internal extension AssetShare {

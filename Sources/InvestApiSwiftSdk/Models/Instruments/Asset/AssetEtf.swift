@@ -1,99 +1,99 @@
 import Foundation
 
 /// Фонд.
-struct AssetEtf: Codable {
+public struct AssetEtf: Codable {
     /// Суммарные расходы фонда (в процентах).
-    let totalExpense: Quotation
+    public let totalExpense: Quotation
     
     /// Барьерная ставка доходности после которой фонд имеет право на perfomance fee (в процентах).
-    let hurdleRate: Quotation
+    public let hurdleRate: Quotation
     
     /// Комиссия за успешные результаты фонда (в процентах).
-    let performanceFee: Quotation
+    public let performanceFee: Quotation
     
     /// Фиксированная комиссия за управление (в процентах).
-    let fixedCommission: Quotation
+    public let fixedCommission: Quotation
     
     /// Тип распределения доходов от выплат по бумагам.
-    let paymentType: String
+    public let paymentType: String
     
     /// Признак необходимости выхода фонда в плюс для получения комиссии.
-    let watermarkFlag: Bool
+    public let watermarkFlag: Bool
     
     /// Премия (надбавка к цене) при покупке доли в фонде (в процентах).
-    let buyPremium: Quotation
+    public let buyPremium: Quotation
     
     /// Ставка дисконта (вычет из цены) при продаже доли в фонде (в процентах).
-    let sellDiscount: Quotation
+    public let sellDiscount: Quotation
     
     /// Признак ребалансируемости портфеля фонда.
-    let rebalancingFlag: Bool
+    public let rebalancingFlag: Bool
     
     /// Периодичность ребалансировки.
-    let rebalancingFrequency: String
+    public let rebalancingFrequency: String
     
     /// Тип управления.
-    let managementType: String
+    public let managementType: String
     
     /// Индекс, который реплицирует (старается копировать) фонд.
-    let primaryIndex: String
+    public let primaryIndex: String
     
     /// База ETF.
-    let focusType: String
+    public let focusType: String
     
     /// Признак использования заемных активов (плечо).
-    let leveragedFlag: Bool
+    public let leveragedFlag: Bool
     
     /// Количество акций в обращении.
-    let numShare: Quotation
+    public let numShare: Quotation
     
     /// Признак обязательства по отчетности перед регулятором.
-    let ucitsFlag: Bool
+    public let ucitsFlag: Bool
     
     /// Дата выпуска.
-    let releasedDate: Date
+    public let releasedDate: Date
     
     /// Описание фонда.
-    let description: String
+    public let description: String
     
     /// Описание индекса, за которым следует фонд.
-    let primaryIndexDescription: String
+    public let primaryIndexDescription: String
     
     /// Основные компании, в которые вкладывается фонд.
-    let primaryIndexCompany: String
+    public let primaryIndexCompany: String
     
     /// Срок восстановления индекса (после просадки).
-    let indexRecoveryPeriod: Quotation
+    public let indexRecoveryPeriod: Quotation
     
     /// IVAV-код.
-    let inavCode: String
+    public let inavCode: String
     
     /// Признак наличия дивидендной доходности.
-    let divYieldFlag: Bool
+    public let divYieldFlag: Bool
     
     /// Комиссия на покрытие расходов фонда (в процентах).
-    let expenseCommission: Quotation
+    public let expenseCommission: Quotation
     
     /// Ошибка следования за индексом (в процентах).
-    let primaryIndexTrackingError: Quotation
+    public let primaryIndexTrackingError: Quotation
     
     /// Плановая ребалансировка портфеля.
-    let rebalancingPlan: String
+    public let rebalancingPlan: String
     
     /// Ставки налогообложения дивидендов и купонов.
-    let taxRate: String
+    public let taxRate: String
     
     /// Даты ребалансировок.
-    let rebalancingDates: [Date]
+    public let rebalancingDates: [Date]
     
     /// Форма выпуска.
-    let issueKind: String
+    public let issueKind: String
     
     /// Номинал.
-    let nominal: Quotation
+    public let nominal: Quotation
     
     /// Валюта номинала.
-    let nominalCurrency: String
+    public let nominalCurrency: String
 }
 
 internal extension AssetEtf {

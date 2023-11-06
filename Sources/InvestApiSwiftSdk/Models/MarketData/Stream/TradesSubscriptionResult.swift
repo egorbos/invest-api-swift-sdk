@@ -1,10 +1,10 @@
 /// Результат подписки.
 public struct TradesSubscriptionResult: Codable {
     /// Уникальный идентификатор запроса.
-    let trackingId: String
+    public let trackingId: String
     
     /// Статусы подписок на потоки обезличенных сделок.
-    let subscriptions: [TradeSubscription]
+    public let subscriptions: [TradeSubscription]
 }
 
 internal extension TradesSubscriptionResult {

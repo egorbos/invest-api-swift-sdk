@@ -1,14 +1,14 @@
 /// Ордер на покупку / продажу инструмента.
 public struct Order: Codable {
     /// Цена за 1 инструмент.
-    let price: Quotation
+    public let price: Quotation
     
     /// Количество в лотах.
     ///
     /// ```
     /// Для получения стоимости лота требуется умножить на лотность инструмента.
     /// ```
-    let quantity: Int64
+    public let quantity: Int64
 }
 
 internal extension Order {

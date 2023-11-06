@@ -1,16 +1,16 @@
 /// Информация об активе.
 public struct Asset: Codable {
     /// Уникальный идентификатор актива.
-    let uid: String
+    public let uid: String
     
     /// Тип актива.
-    let type: AssetType
+    public let type: AssetType
     
     /// Наименование актива.
-    let name: String
+    public let name: String
     
     /// Идентификаторы инструментов.
-    let instruments: [AssetInstrument]
+    public let instruments: [AssetInstrument]
 }
 
 internal extension Asset {

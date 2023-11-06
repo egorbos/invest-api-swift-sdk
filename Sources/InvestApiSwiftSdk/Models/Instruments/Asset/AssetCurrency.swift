@@ -1,7 +1,7 @@
 /// Валюта.
 public struct AssetCurrency: Codable {
     /// ISO-код валюты.
-    let baseCurrency: String
+    public let baseCurrency: String
 }
 
 internal extension AssetCurrency {

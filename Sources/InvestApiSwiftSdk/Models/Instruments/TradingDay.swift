@@ -3,49 +3,49 @@ import Foundation
 /// Торговый / неторговый день.
 public struct TradingDay: Codable {
     /// Дата.
-    let date: Date
+    public let date: Date
     
     /// Признак торгового дня на бирже.
-    let isTradingDay: Bool
+    public let isTradingDay: Bool
     
     /// Время начала торгов по часовому поясу UTC.
-    let startTime: Date
+    public let startTime: Date
     
     /// Время окончания торгов по часовому поясу UTC.
-    let endTime: Date
+    public let endTime: Date
     
     /// Время начала аукциона открытия в часовом поясе UTC.
-    let openingAuctionStartTime: Date
+    public let openingAuctionStartTime: Date
     
     /// Время окончания аукциона закрытия в часовом поясе UTC.
-    let closingAuctionEndTime: Date
+    public let closingAuctionEndTime: Date
     
     /// Время начала аукциона открытия вечерней сессии в часовом поясе UTC.
-    let eveningOpeningAuctionStartTime: Date
+    public let eveningOpeningAuctionStartTime: Date
     
     /// Время начала вечерней сессии в часовом поясе UTC.
-    let eveningStartTime: Date
+    public let eveningStartTime: Date
     
     /// Время окончания вечерней сессии в часовом поясе UTC.
-    let eveningEndTime: Date
+    public let eveningEndTime: Date
     
     /// Время начала основного клиринга в часовом поясе UTC.
-    let clearingStartTime: Date
+    public let clearingStartTime: Date
     
     /// Время окончания основного клиринга в часовом поясе UTC.
-    let clearingEndTime: Date
+    public let clearingEndTime: Date
     
     /// Время начала премаркета в часовом поясе UTC.
-    let premarketStartTime: Date
+    public let premarketStartTime: Date
     
     /// Время окончания премаркета в часовом поясе UTC.
-    let premarketEndTime: Date
+    public let premarketEndTime: Date
     
     /// Время начала аукциона закрытия в часовом поясе UTC.
-    let closingAuctionStartTime: Date
+    public let closingAuctionStartTime: Date
     
     /// Время окончания аукциона открытия в часовом поясе UTC.
-    let openingAuctionEndTime: Date
+    public let openingAuctionEndTime: Date
 }
 
 internal extension TradingDay {
