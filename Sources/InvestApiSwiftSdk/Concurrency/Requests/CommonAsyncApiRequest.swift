@@ -2,7 +2,7 @@
 import Foundation
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-public class CommonAsyncApiRequest<Result>: AsyncApiRequest<CommonApiClient, Result> {
+public final class CommonAsyncApiRequest<Result>: AsyncApiRequest<CommonApiClient, Result> {
     // MARK: Сервис предоставления справочной информации о пользователе.
     
     /// Экземпляр `CommonAsyncApiRequest` для получения счетов пользователя.
@@ -463,7 +463,9 @@ public class CommonAsyncApiRequest<Result>: AsyncApiRequest<CommonApiClient, Res
     
     /// Возвращает экземпляр `CommonAsyncApiRequest` для получения портфеля по счёту.
     ///
-    /// - Parameter accountId: Идентификатор счёта.
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта.
+    ///     - currency: Валюта представления портфеля.
     ///
     /// - Returns: Экземпляр `CommonAsyncApiRequest`.
     public static func getPortfolio(accountId: String, currency: CurrencyType) -> CommonAsyncApiRequest<Portfolio> {

@@ -123,7 +123,9 @@ public protocol SandboxService {
     
     /// Получает портфель по счёту песочницы.
     ///
-    /// - Parameter accountId: Идентификатор счёта песочницы.
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта песочницы.
+    ///     - currency: Валюта представления портфеля.
     ///
     /// - Returns: Портфель по счёту `Portfolio`.
     func getSandboxPortfolio(accountId: String, currency: CurrencyType) throws -> EventLoopFuture<Portfolio>
@@ -263,7 +265,9 @@ public protocol SandboxService {
     
     /// Получает портфель по счёту песочницы.
     ///
-    /// - Parameter accountId: Идентификатор счёта песочницы.
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта песочницы.
+    ///     - currency: Валюта представления портфеля.
     ///
     /// - Returns: Портфель по счёту `Portfolio`.
     func getSandboxPortfolio(accountId: String, currency: CurrencyType) async throws -> Portfolio

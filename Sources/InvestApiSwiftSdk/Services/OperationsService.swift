@@ -19,7 +19,9 @@ public protocol OperationsService {
     
     /// Получает портфель по счёту.
     ///
-    /// - Parameter accountId: Идентификатор счёта.
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта.
+    ///     - currency: Валюта представления портфеля.
     ///
     /// - Returns: Портфель по счёту `Portfolio`.
     func getPortfolio(accountId: String, currency: CurrencyType) throws -> EventLoopFuture<Portfolio>
@@ -117,7 +119,9 @@ public protocol OperationsService {
     
     /// Получает портфель по счёту.
     ///
-    /// - Parameter accountId: Идентификатор счёта.
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта.
+    ///     - currency: Валюта представления портфеля.
     ///
     /// - Returns: Портфель по счёту `Portfolio`.
     func getPortfolio(accountId: String, currency: CurrencyType) async throws -> Portfolio

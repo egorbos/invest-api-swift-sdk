@@ -1,6 +1,6 @@
 import Foundation
 
-/// Сообщение с информацией о торговом статусе
+/// Сообщение с информацией о торговом статусе.
 public struct TradingStatusPayload: StreamData {
     public typealias StreamDataType = TradingStatus
     

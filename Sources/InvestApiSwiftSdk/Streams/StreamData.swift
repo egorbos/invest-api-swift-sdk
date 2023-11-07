@@ -7,9 +7,9 @@ public protocol StreamData: Codable {
     /// Время поступления сообщения.
     var time: Date { get }
     
-    /// Тип полезной нагрузки
-    var data: StreamDataType { get }
+    /// Тип полезной нагрузки.
+    var type: StreamPayloadType { get }
     
     /// Полезная нагрузка сообщения.
-    var type: StreamPayloadType { get }
+    var data: StreamDataType { get }
 }

@@ -2,7 +2,7 @@
 import Foundation
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-public class SandboxAsyncApiRequest<Result>: AsyncApiRequest<SandboxApiClient, Result> {
+public final class SandboxAsyncApiRequest<Result>: AsyncApiRequest<SandboxApiClient, Result> {
     // MARK: Сервис для работы с песочницей.
     
     /// Экземпляр `SandboxAsyncApiRequest` для регистрации счёта в песочнице.
@@ -177,7 +177,9 @@ public class SandboxAsyncApiRequest<Result>: AsyncApiRequest<SandboxApiClient, R
     
     /// Возвращает экземпляр `SandboxAsyncApiRequest` для получения портфеля по счёту песочницы.
     ///
-    /// - Parameter accountId: Идентификатор счёта песочницы.
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта песочницы.
+    ///     - currency: Валюта представления портфеля.
     ///
     ///  - Returns: Экземпляр `SandboxAsyncApiRequest`.
     public static func getSandboxPortfolio(accountId: String, currency: CurrencyType) -> SandboxAsyncApiRequest<Portfolio> {

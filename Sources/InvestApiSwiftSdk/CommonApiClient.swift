@@ -33,13 +33,34 @@ public protocol CommonApiClient {
     /// Отправляет запрос к Tinkoff API.
     ///
     /// ```
-    /// let result = try client.sendRequest(.getInfo) // Аналогично try client.user.getInfo()
+    /// let result = try client.sendRequest(.getPortfolio(accountId: "...", currency: .russianRuble))
+    /// // Аналогично
+    /// let result = try client.operations.getPortfolio(accountId: "...", currency: .russianRuble)
     /// ```
     ///
     ///  - Parameter request: Экземпляр запроса.
     ///
     ///  - Returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `Result`.
     func sendRequest<Result>(_ request: CommonApiRequest<Result>) throws -> EventLoopFuture<Result>
+    
+    /// Возвращает поток предоставления информации в реальном времени.
+    ///
+    /// ```
+    /// let stream = client.stream(.trades(["..."])) { message in
+    ///     // Обработка сообщения
+    /// }
+    /// // Аналогично
+    /// let stream = client.ordersStream.tradesStream(accounts: ["..."]) { message in
+    ///     // Обработка сообщения
+    /// }
+    /// ```
+    ///
+    ///  - Parameters:
+    ///      - stream: Необходимый поток.
+    ///      - handler: Обработчик событий поступления сообщений из потока.
+    ///
+    ///  - Returns: Поток предоставления информации в реальном времени.
+    func stream<Stream>(_ stream: CommonStreamWrapper<Stream>, handler: @escaping (any StreamData) -> Void) -> Stream
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Отправляет запрос к Tinkoff API.
@@ -53,12 +74,38 @@ public protocol CommonApiClient {
     ///  - Returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `Result`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func sendRequest<Result>(_ request: CommonAsyncApiRequest<Result>) async throws -> Result
+    
+    /// Возвращает поток предоставления информации в реальном времени.
+    ///
+    /// ```
+    /// let stream = client.stream(.trades(["..."])) { message in
+    ///     // Обработка сообщения
+    /// }
+    /// // Аналогично
+    /// let stream = client.ordersStream.tradesStream(accounts: ["..."]) { message in
+    ///     // Обработка сообщения
+    /// }
+    /// ```
+    ///
+    ///  - Parameters:
+    ///      - stream: Необходимый поток.
+    ///      - handler: Обработчик событий поступления сообщений из потока.
+    ///
+    ///  - Returns: Поток предоставления информации в реальном времени.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
+    func stream<Stream>(_ stream: CommonAsyncStreamWrapper<Stream>) -> Stream
 #endif
 }
 
 public extension CommonApiClient {
     func sendRequest<Result>(_ request: CommonApiRequest<Result>) throws -> EventLoopFuture<Result> {
         return try request.send(client: self)
+    }
+}
+
+public extension CommonApiClient {
+    func stream<Stream>(_ stream: CommonStreamWrapper<Stream>, handler: @escaping (any StreamData) -> Void) -> Stream {
+        return stream.get(client: self, handler: handler)
     }
 }
 

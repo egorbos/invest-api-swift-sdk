@@ -1,6 +1,6 @@
 import Foundation
 
-public class SandboxApiRequest<Result>: ApiRequest<SandboxApiClient, Result> {
+public final class SandboxApiRequest<Result>: ApiRequest<SandboxApiClient, Result> {
     // MARK: Сервис для работы с песочницей.
     
     /// Экземпляр `SandboxApiRequest` для регистрации счёта в песочнице.
@@ -175,7 +175,9 @@ public class SandboxApiRequest<Result>: ApiRequest<SandboxApiClient, Result> {
     
     /// Возвращает экземпляр `SandboxApiRequest` для получения портфеля по счёту песочницы.
     ///
-    /// - Parameter accountId: Идентификатор счёта песочницы.
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта песочницы.
+    ///     - currency: Валюта представления портфеля.
     ///
     ///  - Returns: Экземпляр `SandboxApiRequest`.
     public static func getSandboxPortfolio(accountId: String, currency: CurrencyType) -> SandboxApiRequest<Portfolio> {

@@ -27,13 +27,34 @@ public protocol SandboxApiClient {
     /// Отправляет запрос к Tinkoff API.
     ///
     /// ```
-    /// let result = try client.sendRequest(.getInfo) // Аналогично try client.user.getInfo()
+    /// let result = try client.sendRequest(.getSandboxPortfolio(accountId: "...", currency: .russianRuble))
+    /// // Аналогично
+    /// let result = try client.sandbox.getSandboxPortfolio(accountId: "...", currency: .russianRuble)
     /// ```
     ///
     ///  - Parameter request: Экземпляр запроса.
     ///
     ///  - Returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `Result`.
     func sendRequest<Result>(_ request: SandboxApiRequest<Result>) throws -> EventLoopFuture<Result>
+    
+    /// Возвращает поток предоставления информации в реальном времени.
+    ///
+    /// ```
+    /// let stream = client.stream(.trades(["..."])) { message in
+    ///     // Обработка сообщения
+    /// }
+    /// // Аналогично
+    /// let stream = client.ordersStream.tradesStream(accounts: ["..."]) { message in
+    ///     // Обработка сообщения
+    /// }
+    /// ```
+    ///
+    ///  - Parameters:
+    ///      - stream: Необходимый поток.
+    ///      - handler: Обработчик событий поступления сообщений из потока.
+    ///
+    ///  - Returns: Поток предоставления информации в реальном времени.
+    func stream<Stream>(_ stream: SandboxStreamWrapper<Stream>, handler: @escaping (any StreamData) -> Void) -> Stream
     
 #if compiler(>=5.5) && canImport(_Concurrency)
     /// Отправляет запрос к Tinkoff API.
@@ -47,12 +68,38 @@ public protocol SandboxApiClient {
     ///  - Returns: Результат запроса к Tinkoff API, являющегося экземпляром типа `Result`.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func sendRequest<Result>(_ request: SandboxAsyncApiRequest<Result>) async throws -> Result
+    
+    /// Возвращает поток предоставления информации в реальном времени.
+    ///
+    /// ```
+    /// let stream = client.stream(.trades(["..."])) { message in
+    ///     // Обработка сообщения
+    /// }
+    /// // Аналогично
+    /// let stream = client.ordersStream.tradesStream(accounts: ["..."]) { message in
+    ///     // Обработка сообщения
+    /// }
+    /// ```
+    ///
+    ///  - Parameters:
+    ///      - stream: Необходимый поток.
+    ///      - handler: Обработчик событий поступления сообщений из потока.
+    ///
+    ///  - Returns: Поток предоставления информации в реальном времени.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
+    func stream<Stream>(_ stream: SandboxAsyncStreamWrapper<Stream>) -> Stream
 #endif
 }
 
 public extension SandboxApiClient {
     func sendRequest<Result>(_ request: SandboxApiRequest<Result>) throws -> EventLoopFuture<Result> {
         return try request.send(client: self)
+    }
+}
+
+public extension SandboxApiClient {
+    func stream<Stream>(_ stream: SandboxStreamWrapper<Stream>, handler: @escaping (any StreamData) -> Void) -> Stream {
+        return stream.get(client: self, handler: handler)
     }
 }
 

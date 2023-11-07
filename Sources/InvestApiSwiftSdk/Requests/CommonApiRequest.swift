@@ -461,7 +461,9 @@ public final class CommonApiRequest<Result>: ApiRequest<CommonApiClient, Result>
     
     /// Возвращает экземпляр `CommonApiRequest` для получения портфеля по счёту.
     ///
-    /// - Parameter accountId: Идентификатор счёта.
+    /// - Parameters:
+    ///     - accountId: Идентификатор счёта.
+    ///     - currency: Валюта представления портфеля.
     ///
     /// - Returns: Экземпляр `CommonApiRequest`.
     public static func getPortfolio(accountId: String, currency: CurrencyType) -> CommonApiRequest<Portfolio> {

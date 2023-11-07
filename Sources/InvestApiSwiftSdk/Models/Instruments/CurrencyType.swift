@@ -61,7 +61,7 @@ internal extension CurrencyType {
         case .russianRuble: 0
         case .usDollar: 1
         case .euro: 2
-        default: 999
+        default: 0
         }
     }
 }

@@ -8,10 +8,10 @@ public struct TradesStreamPayload: StreamData {
     public let time: Date
     
     /// Тип полезной нагрузки = .data
-    public let data: TradeStreamItem
+    public let type: StreamPayloadType
     
     /// Полезная нагрузка сообщения.
-    public let type: StreamPayloadType
+    public let data: TradeStreamItem
 }
 
 internal extension TradesStreamPayload {
