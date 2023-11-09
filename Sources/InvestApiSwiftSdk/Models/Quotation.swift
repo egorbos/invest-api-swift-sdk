@@ -7,21 +7,125 @@ public struct Quotation: Codable {
     
     /// Дробная часть суммы, может быть отрицательным числом.
     public let nano: Int32
-}
-
-public extension Quotation {
-    init(decimalValue: Decimal) {
-        let units = decimalValue.int64Value
-        let nano = ((decimalValue - decimalValue.wholePart) * Quotation.nanoFactor).int32Value
-        self.init(units: units, nano: nano)
+    
+    private static let nanoFactor: Decimal = 1_000_000_000;
+    
+    public init(units: Int64, nano: Int32) {
+        self.units = units
+        self.nano = nano
+    }
+    
+    public init(decimalValue: Decimal) {
+        self.init(units: decimalValue.units, nano: decimalValue.nano)
     }
 }
 
 public extension Quotation {
-    private static let nanoFactor: Decimal = 1_000_000_000;
-    
     func toDecimal() -> Decimal {
         return Decimal(units) + Decimal(nano) / Quotation.nanoFactor;
+    }
+}
+
+public extension Quotation {
+    /// Направление округления.
+    enum RoundingMode {
+        case up
+        case down
+    }
+    
+    fileprivate enum Operation {
+        case increase
+        case decrease
+    }
+    
+    /// Увеличивает данную сумму на указанный процент.
+    ///
+    /// - Parameter percentage: Величина процента, на которую необходимо увеличить данную сумму.
+    ///
+    /// - Returns: Сумма увеличенная на указанный процент `Quotation`.
+    func increaseBy(percentage: Decimal) -> Self {
+        increaseBy(percentage: percentage, priceStep: 0)
+    }
+    
+    /// Увеличивает данную сумму на указанный процент.
+    ///
+    /// - Parameters:
+    ///     - percentage: Величина процента, на которую необходимо увеличить данную сумму.
+    ///     - priceStep: Минимальный шаг цены, с учетом которого необходимо произвести округление результата.
+    ///     - rounding: Направление округления (по умолчанию .down).
+    ///
+    /// - Returns: Сумма увеличенная на указанный процент `Quotation`.
+    func increaseBy(percentage: Decimal, priceStep: Quotation, rounding: RoundingMode = .down) -> Self {
+        return increaseBy(percentage: percentage, priceStep: priceStep.toDecimal(), rounding: rounding)
+    }
+    
+    /// Увеличивает данную сумму на указанный процент.
+    ///
+    /// - Parameters:
+    ///     - percentage: Величина процента, на которую необходимо увеличить данную сумму.
+    ///     - priceStep: Минимальный шаг цены, с учетом которого необходимо произвести округление результата.
+    ///     - rounding: Направление округления (по умолчанию .down).
+    ///
+    /// - Returns: Сумма увеличенная на указанный процент `Quotation`.
+    func increaseBy(percentage: Decimal, priceStep: Decimal, rounding: RoundingMode = .down) -> Self {
+        let decimalValue = applyOperation(operation: .increase, percentage: percentage)
+        if priceStep == 0 {
+            return Quotation(decimalValue: decimalValue)
+        }
+        return roundValue(decimalValue: decimalValue, priceStep: priceStep, rounding: rounding)
+    }
+    
+    /// Уменьшает данную сумму на указанный процент.
+    ///
+    /// - Parameter percentage: Величина процента, на которую необходимо уменьшить данную сумму.
+    ///
+    /// - Returns: Сумма уменьшенная на указанный процент `Quotation`.
+    func decreaseBy(percentage: Decimal) -> Self {
+        decreaseBy(percentage: percentage, priceStep: 0)
+    }
+    
+    /// Уменьшает данную сумму на указанный процент.
+    ///
+    /// - Parameters:
+    ///     - percentage: Величина процента, на которую необходимо уменьшить данную сумму.
+    ///     - priceStep: Минимальный шаг цены, с учетом которого необходимо произвести округление результата.
+    ///     - rounding: Направление округления (по умолчанию .down).
+    ///
+    /// - Returns: Сумма уменьшенная на указанный процент `Quotation`.
+    func decreaseBy(percentage: Decimal, priceStep: Quotation, rounding: RoundingMode = .down) -> Self {
+        return decreaseBy(percentage: percentage, priceStep: priceStep.toDecimal(), rounding: rounding)
+    }
+    
+    /// Уменьшает данную сумму на указанный процент.
+    ///
+    /// - Parameters:
+    ///     - percentage: Величина процента, на которую необходимо уменьшить данную сумму.
+    ///     - priceStep: Минимальный шаг цены, с учетом которого необходимо произвести округление результата.
+    ///     - rounding: Направление округления (по умолчанию .down).
+    ///
+    /// - Returns: Сумма уменьшенная на указанный процент `Quotation`.
+    func decreaseBy(percentage: Decimal, priceStep: Decimal, rounding: RoundingMode = .down) -> Self {
+        let decimalValue = applyOperation(operation: .decrease, percentage: percentage)
+        if priceStep == 0 {
+            return Quotation(decimalValue: decimalValue)
+        }
+        return roundValue(decimalValue: decimalValue, priceStep: priceStep, rounding: rounding)
+    }
+    
+    private func applyOperation(operation: Quotation.Operation, percentage: Decimal) -> Decimal {
+        let decimalValue = self.toDecimal()
+        let secondValue = (decimalValue / 100 * percentage)
+        return operation == .increase ? decimalValue + secondValue : decimalValue - secondValue
+    }
+    
+    private func roundValue(decimalValue: Decimal, priceStep: Decimal, rounding: RoundingMode) -> Quotation {
+        let units = decimalValue.units
+        let nano = decimalValue.nano
+        let newNano = rounding == .down ? nano - nano % priceStep.nano : nano + (priceStep.nano - nano % priceStep.nano)
+        return Quotation(
+            units: newNano < 0 ? units - 1 : newNano < 1000000000 ? units : units + 1,
+            nano: newNano < 0 ? 1000000000 + newNano : newNano < 1000000000 ? newNano : newNano - 1000000000
+        )
     }
 }
 

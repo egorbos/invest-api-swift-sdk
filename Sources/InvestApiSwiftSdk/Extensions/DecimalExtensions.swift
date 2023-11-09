@@ -15,4 +15,10 @@ internal extension Decimal {
       NSDecimalRound(&result, &mutableSelf, 0, self >= 0 ? .down : .up)
       return result
     }
+    
+    fileprivate static let nanoFactor: Decimal = 1_000_000_000;
+    
+    var units: Int64 { return self.int64Value }
+    
+    var nano: Int32 { return ((self - self.wholePart) * Decimal.nanoFactor).int32Value }
 }
