@@ -1,51 +1,81 @@
 import Foundation
 
 /// Данные по операции.
-public struct Operation: Codable {
+public protocol Operation {
     /// Идентификатор операции.
-    public let id: String
+    var id: String { get }
     
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Идентификатор родительской операции.
-    public let parentOperationId: String
+    var parentOperationId: String { get }
     
     /// Валюта операции.
-    public let currency: CurrencyType
+    var currency: CurrencyType { get }
     
     /// Сумма операции.
-    public let payment: MoneyValue
+    var payment: MoneyValue { get }
     
     /// Цена операции за 1 инструмент.
-    public let price: MoneyValue
+    var price: MoneyValue { get }
     
     /// Статус операции.
-    public let state: OperationState
+    var state: OperationState { get }
     
     /// Количество единиц инструмента.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Неисполненный остаток по сделке.
-    public let quantityRest: Int64
+    var quantityRest: Int64 { get }
     
     /// Тип инструмента.
-    public let instrumentType: InstrumentType
+    var instrumentType: InstrumentType { get }
     
     /// Дата и время операции в формате часовом поясе UTC.
-    public let date: Date
+    var date: Date { get }
     
     /// Текстовое описание типа операции.
-    public let type: String
+    var type: String { get }
     
     /// Тип операции.
-    public let operationType: OperationType
+    var operationType: OperationType { get }
     
     /// Массив сделок.
-    public let trades: [OperationTrade]
+    var trades: [OperationTrade] { get }
 }
 
-internal extension Operation {
+internal struct OperationModel: Operation {
+    let id: String
+    
+    let figi: String
+    
+    let parentOperationId: String
+    
+    let currency: CurrencyType
+    
+    let payment: MoneyValue
+    
+    let price: MoneyValue
+    
+    let state: OperationState
+    
+    let quantity: Int64
+    
+    let quantityRest: Int64
+    
+    let instrumentType: InstrumentType
+    
+    let date: Date
+    
+    let type: String
+    
+    let operationType: OperationType
+    
+    let trades: [OperationTrade]
+}
+
+internal extension OperationModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Operation) throws {
         self.id = grpcModel.id
         self.figi = grpcModel.figi
@@ -65,7 +95,7 @@ internal extension Operation {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Operation {
-    func toModel() throws -> Operation {
-        try Operation(grpcModel: self)
+    func toModel() throws -> OperationModel {
+        try OperationModel(grpcModel: self)
     }
 }

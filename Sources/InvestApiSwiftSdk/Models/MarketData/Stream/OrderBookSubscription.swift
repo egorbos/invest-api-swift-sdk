@@ -1,19 +1,29 @@
 /// Статус подписки на стакан.
-public struct OrderBookSubscription: Codable {
+public protocol OrderBookSubscription {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Глубина стакана.
-    public let depth: Int32
+    var depth: Int32 { get }
     
     /// Статус подписки.
-    public let status: MarketDataStreamSubscriptionStatus
+    var status: MarketDataStreamSubscriptionStatus { get }
 }
 
-internal extension OrderBookSubscription {
+internal struct OrderBookSubscriptionModel: OrderBookSubscription {
+    let figi: String
+    
+    let uid: String
+    
+    let depth: Int32
+    
+    let status: MarketDataStreamSubscriptionStatus
+}
+
+internal extension OrderBookSubscriptionModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OrderBookSubscription) {
         self.init(
             figi: grpcModel.figi,
@@ -25,7 +35,7 @@ internal extension OrderBookSubscription {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OrderBookSubscription {
-    func toModel() -> OrderBookSubscription {
-        OrderBookSubscription(grpcModel: self)
+    func toModel() -> OrderBookSubscriptionModel {
+        OrderBookSubscriptionModel(grpcModel: self)
     }
 }

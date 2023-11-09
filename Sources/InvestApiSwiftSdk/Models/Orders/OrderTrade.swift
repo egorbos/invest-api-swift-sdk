@@ -1,21 +1,31 @@
 import Foundation
 
 /// Информация о сделке.
-public struct OrderTrade: Codable {
+public protocol OrderTrade {
     /// Идентификатор сделки.
-    public let tradeId: String
+    var tradeId: String { get }
     
     /// Цена по которой совершена сделка (за 1 штуку).
-    public let price: Quotation
+    var price: Quotation { get }
     
     /// Количество штук в сделке.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Дата и время совершения сделки в часовом поясе UTC.
-    public let time: Date
+    var time: Date { get }
 }
 
-internal extension OrderTrade {
+internal struct OrderTradeModel: OrderTrade {
+    let tradeId: String
+    
+    let price: Quotation
+    
+    let quantity: Int64
+    
+    let time: Date
+}
+
+internal extension OrderTradeModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OrderTrade) {
         self.tradeId = grpcModel.tradeID
         self.price = grpcModel.price.toModel()
@@ -25,7 +35,7 @@ internal extension OrderTrade {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OrderTrade {
-    func toModel() -> OrderTrade {
-        OrderTrade(grpcModel: self)
+    func toModel() -> OrderTradeModel {
+        OrderTradeModel(grpcModel: self)
     }
 }

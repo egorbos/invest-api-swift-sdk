@@ -1,78 +1,126 @@
 import Foundation
 
 /// Данные об операции.
-public struct OperationItem: Codable {
+public protocol OperationItem {
     /// Курсор.
-    public let cursor: String
+    var cursor: String { get }
     
     /// Номер счета клиента.
-    public let accountId: String
+    var accountId: String { get }
     
     /// Идентификатор операции (может меняться с течением времени).
-    public let id: String
+    var id: String { get }
     
     /// Идентификатор родительской операции (может измениться, если изменился id родительской операции).
-    public let parentOperationId: String
+    var parentOperationId: String { get }
     
     /// Массив сделок.
-    public let trades: [OperationItemTrade]
+    var trades: [OperationItemTrade] { get }
     
     /// Название операции.
-    public let name: String
+    var name: String { get }
     
     /// Дата поручения.
-    public let date: Date
+    var date: Date { get }
     
     /// Тип операции.
-    public let operationType: OperationType
+    var operationType: OperationType { get }
     
     /// Описание операции.
-    public let description: String
+    var description: String { get }
     
     /// Статус поручения.
-    public let state: OperationState
+    var state: OperationState { get }
     
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Тип инструмента.
-    public let instrumentType: InstrumentType
+    var instrumentType: InstrumentType { get }
     
     /// Сумма операции.
-    public let payment: MoneyValue
+    var payment: MoneyValue { get }
     
     /// Цена за 1 инструмент.
-    public let price: MoneyValue
+    var price: MoneyValue { get }
     
     /// Комиссия.
-    public let commission: MoneyValue
+    var commission: MoneyValue { get }
     
     /// Доходность.
-    public let yield: MoneyValue
+    var yield: MoneyValue { get }
     
     /// Относительная доходность.
-    public let yieldRelative: Quotation
+    var yieldRelative: Quotation { get }
     
     /// Накопленный купонный доход.
-    public let accumCouponValue: MoneyValue
+    var accumCouponValue: MoneyValue { get }
     
     /// Количество единиц инструмента.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Неисполненный остаток по сделке.
-    public let quantityRest: Int64
+    var quantityRest: Int64 { get }
     
     /// Исполненный остаток.
-    public let quantityDone: Int64
+    var quantityDone: Int64 { get }
     
     /// Дата снятия заявки.
-    public let cancelDate: Date
+    var cancelDate: Date { get }
     
     /// Причина отмены операции.
-    public let cancelReason: String
+    var cancelReason: String { get }
 }
 
-internal extension OperationItem {
+internal struct OperationItemModel: OperationItem {
+    let cursor: String
+    
+    let accountId: String
+    
+    let id: String
+    
+    let parentOperationId: String
+    
+    let trades: [OperationItemTrade]
+    
+    let name: String
+    
+    let date: Date
+    
+    let operationType: OperationType
+    
+    let description: String
+    
+    let state: OperationState
+    
+    let figi: String
+    
+    let instrumentType: InstrumentType
+    
+    let payment: MoneyValue
+    
+    let price: MoneyValue
+    
+    let commission: MoneyValue
+    
+    let yield: MoneyValue
+    
+    let yieldRelative: Quotation
+    
+    let accumCouponValue: MoneyValue
+    
+    let quantity: Int64
+    
+    let quantityRest: Int64
+    
+    let quantityDone: Int64
+    
+    let cancelDate: Date
+    
+    let cancelReason: String
+}
+
+internal extension OperationItemModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OperationItem) throws {
         self.cursor = grpcModel.cursor
         self.accountId = grpcModel.brokerAccountID
@@ -101,7 +149,7 @@ internal extension OperationItem {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OperationItem {
-    func toModel() throws -> OperationItem {
-        try OperationItem(grpcModel: self)
+    func toModel() throws -> OperationItemModel {
+        try OperationItemModel(grpcModel: self)
     }
 }

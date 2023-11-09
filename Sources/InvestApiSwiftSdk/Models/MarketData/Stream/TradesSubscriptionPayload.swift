@@ -1,20 +1,26 @@
 import Foundation
 
 /// Сообщение с результатами подписки на потоки обезличенных сделок.
-public struct TradesSubscriptionPayload: StreamData {
-    public typealias StreamDataType = TradesSubscriptionResult
-    
+public protocol TradesSubscriptionPayload: StreamData where StreamDataType == TradesSubscriptionResult {
     /// Время поступления сообщения.
-    public let time: Date
+    var time: Date { get }
     
     /// Тип полезной нагрузки = .subscriptionInfo
-    public let type: StreamPayloadType
+    var type: StreamPayloadType { get }
     
     /// Полезная нагрузка сообщения.
-    public let data: TradesSubscriptionResult
+    var data: TradesSubscriptionResult { get }
 }
 
-internal extension TradesSubscriptionPayload {
+internal struct TradesSubscriptionPayloadModel: TradesSubscriptionPayload {
+    let time: Date
+    
+    let type: StreamPayloadType
+    
+    let data: TradesSubscriptionResult
+}
+
+internal extension TradesSubscriptionPayloadModel {
     init(response: Tinkoff_Public_Invest_Api_Contract_V1_MarketDataResponse) {
         self.init(
             time: Date(),

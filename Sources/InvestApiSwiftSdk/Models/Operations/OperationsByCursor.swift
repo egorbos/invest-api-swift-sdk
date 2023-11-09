@@ -1,18 +1,26 @@
 import Foundation
 
 /// Список операций по счёту с пагинацией.
-public struct OperationsByCursor: Codable {
+public protocol OperationsByCursor {
     /// Список операций.
-    public let items: [OperationItem]
+    var items: [OperationItem] { get }
     
     /// Следующий курсор.
-    public let nextCursor: String
+    var nextCursor: String { get }
     
     /// Признак, есть ли следующий элемент.
-    public let hasNext: Bool
+    var hasNext: Bool { get }
 }
 
-internal extension OperationsByCursor {
+internal struct OperationsByCursorModel: OperationsByCursor {
+    let items: [OperationItem]
+    
+    let nextCursor: String
+    
+    let hasNext: Bool
+}
+
+internal extension OperationsByCursorModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorResponse) throws {
         self.items = try grpcModel.items.map { try $0.toModel() }
         self.nextCursor = grpcModel.nextCursor
@@ -21,7 +29,7 @@ internal extension OperationsByCursor {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOperationsByCursorResponse {
-    func toModel() throws -> OperationsByCursor {
-        try OperationsByCursor(grpcModel: self)
+    func toModel() throws -> OperationsByCursorModel {
+        try OperationsByCursorModel(grpcModel: self)
     }
 }

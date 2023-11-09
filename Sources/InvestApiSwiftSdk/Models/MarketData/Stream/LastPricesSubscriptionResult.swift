@@ -1,13 +1,19 @@
 /// Результат подписки.
-public struct LastPricesSubscriptionResult: Codable {
+public protocol LastPricesSubscriptionResult {
     /// Уникальный идентификатор запроса.
-    public let trackingId: String
+    var trackingId: String { get }
     
     /// Статусы подписок на цены последних сделок.
-    public let subscriptions: [LastPriceSubscription]
+    var subscriptions: [LastPriceSubscription] { get }
 }
 
-internal extension LastPricesSubscriptionResult {
+internal struct LastPricesSubscriptionResultModel: LastPricesSubscriptionResult {
+    let trackingId: String
+    
+    let subscriptions: [LastPriceSubscription]
+}
+
+internal extension LastPricesSubscriptionResultModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_SubscribeLastPriceResponse) {
         self.init(
             trackingId: grpcModel.trackingID,
@@ -17,8 +23,8 @@ internal extension LastPricesSubscriptionResult {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_SubscribeLastPriceResponse {
-    func toModel() -> LastPricesSubscriptionResult {
-        LastPricesSubscriptionResult(grpcModel: self)
+    func toModel() -> LastPricesSubscriptionResultModel {
+        LastPricesSubscriptionResultModel(grpcModel: self)
     }
 }
 

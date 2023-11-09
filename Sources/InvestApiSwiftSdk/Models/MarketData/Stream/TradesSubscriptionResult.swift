@@ -1,13 +1,19 @@
 /// Результат подписки.
-public struct TradesSubscriptionResult: Codable {
+public protocol TradesSubscriptionResult {
     /// Уникальный идентификатор запроса.
-    public let trackingId: String
+    var trackingId: String { get }
     
     /// Статусы подписок на потоки обезличенных сделок.
-    public let subscriptions: [TradeSubscription]
+    var subscriptions: [TradeSubscription] { get }
 }
 
-internal extension TradesSubscriptionResult {
+internal struct TradesSubscriptionResultModel: TradesSubscriptionResult {
+    let trackingId: String
+    
+    let subscriptions: [TradeSubscription]
+}
+
+internal extension TradesSubscriptionResultModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_SubscribeTradesResponse) {
         self.init(
             trackingId: grpcModel.trackingID,
@@ -17,7 +23,7 @@ internal extension TradesSubscriptionResult {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_SubscribeTradesResponse {
-    func toModel() -> TradesSubscriptionResult {
-        TradesSubscriptionResult(grpcModel: self)
+    func toModel() -> TradesSubscriptionResultModel {
+        TradesSubscriptionResultModel(grpcModel: self)
     }
 }

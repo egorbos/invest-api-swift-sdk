@@ -1,57 +1,91 @@
 import Foundation
 
 /// Краткая информация об инструменте.
-public struct InstrumentShort: Codable {
+public protocol InstrumentShort {
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Уникальный идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Isin-идентификатор инструмента.
-    public let isin: String
+    var isin: String { get }
 
     /// Тикер инструмента.
-    public let ticker: String
+    var ticker: String { get }
 
     /// Класс-код (секция торгов).
-    public let classCode: String
+    var classCode: String { get }
     
     /// Название инструмента.
-    public let name: String
+    var name: String { get }
 
     /// Тип инструмента.
-    public let type: InstrumentType
+    var type: InstrumentType { get }
     
     /// Вид инструмента.
-    public let kind: InstrumentKind
+    var kind: InstrumentKind { get }
     
     /// Уникальный идентификатор позиции инструмента.
-    public let positionUid: String
+    var positionUid: String { get }
     
     /// Признак доступности для ИИС.
-    public let forIisFlag: Bool
+    var forIisFlag: Bool { get }
     
     /// Параметр указывает на возможность торговать инструментом через API.
-    public let apiTradeAvailableFlag: Bool
+    var apiTradeAvailableFlag: Bool { get }
     
     /// Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов.
-    public let forQualInvestorFlag: Bool
+    var forQualInvestorFlag: Bool { get }
     
     /// Флаг отображающий доступность торговли инструментом по выходным.
-    public let weekendFlag: Bool
+    var weekendFlag: Bool { get }
     
     /// Флаг заблокированного ТКС.
-    public let blockedTcaFlag: Bool
+    var blockedTcaFlag: Bool { get }
     
     /// Дата первой минутной свечи.
-    public let firstOneMinCandleDate: Date
+    var firstOneMinCandleDate: Date { get }
     
     /// Дата первой дневной свечи.
-    public let firstOneDayCandleDate: Date
+    var firstOneDayCandleDate: Date { get }
 }
 
-internal extension InstrumentShort {
+internal struct InstrumentShortModel: InstrumentShort {
+    let figi: String
+    
+    let uid: String
+    
+    let isin: String
+    
+    let ticker: String
+    
+    let classCode: String
+    
+    let name: String
+    
+    let type: InstrumentType
+    
+    let kind: InstrumentKind
+    
+    let positionUid: String
+    
+    let forIisFlag: Bool
+    
+    let apiTradeAvailableFlag: Bool
+    
+    let forQualInvestorFlag: Bool
+    
+    let weekendFlag: Bool
+    
+    let blockedTcaFlag: Bool
+    
+    let firstOneMinCandleDate: Date
+    
+    let firstOneDayCandleDate: Date
+}
+
+internal extension InstrumentShortModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_InstrumentShort) throws {
         self.figi = grpcModel.figi
         self.uid = grpcModel.uid
@@ -73,7 +107,7 @@ internal extension InstrumentShort {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_InstrumentShort {
-    func toModel() throws -> InstrumentShort {
-        try InstrumentShort(grpcModel: self)
+    func toModel() throws -> InstrumentShortModel {
+        try InstrumentShortModel(grpcModel: self)
     }
 }

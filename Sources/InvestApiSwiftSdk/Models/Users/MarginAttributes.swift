@@ -1,22 +1,34 @@
 /// Маржинальные показатели.
-public struct MarginAttributes: Codable {
+public protocol MarginAttributes {
     /// Ликвидная стоимость портфеля.
-    public let liquidPortfolio: MoneyValue
+    var liquidPortfolio: MoneyValue { get }
     
     /// Начальная маржа — начальное обеспечение для совершения новой сделки.
-    public let startingMargin: MoneyValue
+    var startingMargin: MoneyValue { get }
     
     /// Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли.
-    public let minimalMargin: MoneyValue
+    var minimalMargin: MoneyValue { get }
     
     /// Уровень достаточности средств. Соотношение стоимости ликвидного портфеля к начальной марже.
-    public let fundsSufficiencyLevel: Quotation
+    var fundsSufficiencyLevel: Quotation { get }
     
     /// Объем недостающих средств. Разница между стартовой маржой и ликвидной стоимости портфеля.
-    public let amountOfMissingFunds: MoneyValue
+    var amountOfMissingFunds: MoneyValue { get }
 }
 
-internal extension MarginAttributes {
+internal struct MarginAttributesModel: MarginAttributes {
+    let liquidPortfolio: MoneyValue
+    
+    let startingMargin: MoneyValue
+    
+    let minimalMargin: MoneyValue
+    
+    let fundsSufficiencyLevel: Quotation
+    
+    let amountOfMissingFunds: MoneyValue
+}
+
+internal extension MarginAttributesModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesResponse) {
         self.liquidPortfolio = grpcModel.liquidPortfolio.toModel()
         self.startingMargin = grpcModel.startingMargin.toModel()
@@ -27,7 +39,7 @@ internal extension MarginAttributes {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetMarginAttributesResponse {
-    func toModel() -> MarginAttributes {
-        MarginAttributes(grpcModel: self)
+    func toModel() -> MarginAttributesModel {
+        MarginAttributesModel(grpcModel: self)
     }
 }

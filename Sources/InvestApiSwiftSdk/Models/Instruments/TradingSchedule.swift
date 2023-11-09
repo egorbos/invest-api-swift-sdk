@@ -1,13 +1,19 @@
 /// Данные по торговой площадке.
-public struct TradingSchedule: Codable {
+public protocol TradingSchedule {
     /// Наименование торговой площадки.
-    public let exchange: String
+    var exchange: String { get }
     
     /// Торговые / неторговые дни.
-    public let days: [TradingDay]
+    var days: [TradingDay] { get }
 }
 
-internal extension TradingSchedule {
+internal struct TradingScheduleModel: TradingSchedule {
+    var exchange: String
+    
+    var days: [TradingDay]
+}
+
+internal extension TradingScheduleModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_TradingSchedule) {
         self.exchange = grpcModel.exchange
         self.days = grpcModel.days.map { $0.toModel() }
@@ -15,7 +21,7 @@ internal extension TradingSchedule {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_TradingSchedule {
-    func toModel() -> TradingSchedule {
-        TradingSchedule(grpcModel: self)
+    func toModel() -> TradingScheduleModel {
+        TradingScheduleModel(grpcModel: self)
     }
 }

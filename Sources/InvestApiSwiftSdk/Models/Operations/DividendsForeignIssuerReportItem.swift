@@ -1,45 +1,71 @@
 import Foundation
 
 /// Отчёт "Справка о доходах за пределами РФ".
-public struct DividendsForeignIssuerReportItem: Codable {
+public protocol DividendsForeignIssuerReportItem {
     /// Дата фиксации реестра.
-    public let recordDate: Date
+    var recordDate: Date { get }
     
     /// Дата выплаты.
-    public let paymentDate: Date
+    var paymentDate: Date { get }
     
     /// Наименование ценной бумаги.
-    public let securityName: String
+    var securityName: String { get }
     
     /// ISIN-идентификатор ценной бумаги.
-    public let isin: String
+    var isin: String { get }
     
     /// Страна эмитента (для депозитарных расписок указывается страна эмитента базового актива).
-    public let issuerCountry: String
+    var issuerCountry: String { get }
     
     /// Количество ценных бумаг.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Выплаты на одну бумагу.
-    public let dividend: Quotation
+    var dividend: Quotation { get }
     
     /// Комиссия внешних платёжных агентов.
-    public let externalCommission: Quotation
+    var externalCommission: Quotation { get }
     
     /// Сумма до удержания налога.
-    public let dividendGross: Quotation
+    var dividendGross: Quotation { get }
     
     /// Сумма налога, удержанного агентом.
-    public let tax: Quotation
+    var tax: Quotation { get }
     
     /// Итоговая сумма выплаты.
-    public let dividendAmount: Quotation
+    var dividendAmount: Quotation { get }
     
     /// Валюта.
-    public let currency: CurrencyType
+    var currency: CurrencyType { get }
 }
 
-internal extension DividendsForeignIssuerReportItem {
+internal struct DividendsForeignIssuerReportItemModel: DividendsForeignIssuerReportItem {
+    let recordDate: Date
+    
+    let paymentDate: Date
+    
+    let securityName: String
+    
+    let isin: String
+    
+    let issuerCountry: String
+    
+    let quantity: Int64
+    
+    let dividend: Quotation
+    
+    let externalCommission: Quotation
+    
+    let dividendGross: Quotation
+    
+    let tax: Quotation
+    
+    let dividendAmount: Quotation
+    
+    let currency: CurrencyType
+}
+
+internal extension DividendsForeignIssuerReportItemModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_DividendsForeignIssuerReport) {
         self.recordDate = grpcModel.recordDate.date
         self.paymentDate = grpcModel.paymentDate.date
@@ -57,7 +83,7 @@ internal extension DividendsForeignIssuerReportItem {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_DividendsForeignIssuerReport {
-    func toModel() -> DividendsForeignIssuerReportItem {
-        DividendsForeignIssuerReportItem(grpcModel: self)
+    func toModel() -> DividendsForeignIssuerReportItemModel {
+        DividendsForeignIssuerReportItemModel(grpcModel: self)
     }
 }

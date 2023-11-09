@@ -1,39 +1,61 @@
 import Foundation
 
 /// Информация о свече.
-public struct Candle: Codable {
+public protocol Candle {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Уникальный идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Интервал свечи.
-    public let interval: CandleInterval
+    var interval: CandleInterval { get }
     
     /// Цена открытия (1 единица).
-    public let open: Quotation
+    var open: Quotation { get }
     
     /// Максимальная цена (1 единица).
-    public let high: Quotation
+    var high: Quotation { get }
     
     /// Минимальная цена (1 единица).
-    public let low: Quotation
+    var low: Quotation { get }
     
     /// Цена закрытия (1 единица).
-    public let close: Quotation
+    var close: Quotation { get }
     
     /// Объём торгов в лотах.
-    public let volume: Int64
+    var volume: Int64 { get }
     
     /// Время начала интервала свечи в часовом поясе UTC.
-    public let time: Date
+    var time: Date { get }
     
     /// Время последней сделки в часовом поясе UTC.
-    public let lastTradeTime: Date
+    var lastTradeTime: Date { get }
 }
 
-internal extension Candle {
+internal struct CandleModel: Candle {
+    let figi: String
+    
+    let uid: String
+    
+    let interval: CandleInterval
+    
+    let open: Quotation
+    
+    let high: Quotation
+    
+    let low: Quotation
+    
+    let close: Quotation
+    
+    let volume: Int64
+    
+    let time: Date
+    
+    let lastTradeTime: Date
+}
+
+internal extension CandleModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Candle) {
         self.figi = grpcModel.figi
         self.uid = grpcModel.instrumentUid
@@ -49,7 +71,7 @@ internal extension Candle {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Candle {
-    func toModel() -> Candle {
-        Candle(grpcModel: self)
+    func toModel() -> CandleModel {
+        CandleModel(grpcModel: self)
     }
 }

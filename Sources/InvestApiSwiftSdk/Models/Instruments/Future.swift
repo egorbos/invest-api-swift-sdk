@@ -1,129 +1,211 @@
 import Foundation
 
 /// Информация о фьючерсном контракте.
-public struct Future: Codable {
+public protocol Future {
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Уникальный идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Тикер инструмента.
-    public let ticker: String
+    var ticker: String { get }
     
     /// Класс-код (секция торгов).
-    public let classCode: String
+    var classCode: String { get }
     
     /// Лотность инструмента (возможно совершение операций только на количества ценной бумаги, кратные параметру lot).
-    public let lot: Int32
+    var lot: Int32 { get }
     
     /// Название инструмента.
-    public let name: String
+    var name: String { get }
     
     /// Валюта расчётов.
-    public let currency: CurrencyType
+    var currency: CurrencyType { get }
     
     /// Коэффициент ставки риска длинной позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    public let klong: Quotation
+    var klong: Quotation { get }
     
     /// Коэффициент ставки риска короткой позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    public let kshort: Quotation
+    var kshort: Quotation { get }
     
     /// Ставка риска начальной маржи для КСУР лонг.
-    public let dlong: Quotation
+    var dlong: Quotation { get }
     
     /// Ставка риска начальной маржи для КСУР шорт.
-    public let dshort: Quotation
+    var dshort: Quotation { get }
     
     /// Ставка риска начальной маржи для КПУР лонг.
-    public let dlongMin: Quotation
+    var dlongMin: Quotation { get }
     
     /// Ставка риска начальной маржи для КПУР шорт.
-    public let dshortMin: Quotation
+    var dshortMin: Quotation { get }
     
     /// Признак доступности для операций в шорт.
-    public let shortEnabledFlag: Bool
+    var shortEnabledFlag: Bool { get }
     
     /// Tорговая площадка (секция биржи).
-    public let exchange: String
+    var exchange: String { get }
     
     /// Дата начала обращения контракта в часовом поясе UTC.
-    public let firstTradeDate: Date
+    var firstTradeDate: Date { get }
     
     /// Дата в часовом поясе UTC, до которой возможно проведение операций с контрактом.
-    public let lastTradeDate: Date
+    var lastTradeDate: Date { get }
     
     /// Тип фьючерсного контракта.
-    public let contractType: FutureContractType
+    var contractType: FutureContractType { get }
     
     /// Тип базового актива.
-    public let assetType: ContractAssetType
+    var assetType: ContractAssetType { get }
     
     /// Базовый актив.
-    public let basicAsset: String
+    var basicAsset: String { get }
 
     /// Размер базового актива.
-    public let basicAssetSize: Quotation
+    var basicAssetSize: Quotation { get }
     
     /// Код страны риска (в которой компания ведёт основной бизнес).
-    public let countryOfRisk: String
+    var countryOfRisk: String { get }
     
     /// Наименование страны риска (в которой компания ведёт основной бизнес).
-    public let countryOfRiskName: String
+    var countryOfRiskName: String { get }
     
     /// Сектор экономики.
-    public let sector: String
+    var sector: String { get }
     
     /// Дата экспирации контракта в часов поясе UTC.
-    public let expirationDate: Date
+    var expirationDate: Date { get }
     
     /// Текущий режим торгов инструмента.
-    public let tradingStatus: SecurityTradingStatus
+    var tradingStatus: SecurityTradingStatus { get }
     
     /// Признак внебиржевой ценной бумаги.
-    public let otcFlag: Bool
+    var otcFlag: Bool { get }
     
     /// Признак доступности для покупки.
-    public let buyAvailableFlag: Bool
+    var buyAvailableFlag: Bool { get }
     
     /// Признак доступности для продажи.
-    public let sellAvailableFlag: Bool
+    var sellAvailableFlag: Bool { get }
     
     /// Шаг цены.
-    public let minPriceIncrement: Quotation
+    var minPriceIncrement: Quotation { get }
     
     /// Параметр указывает на возможность торговать инструментом через API.
-    public let apiTradeAvailableFlag: Bool
+    var apiTradeAvailableFlag: Bool { get }
     
     /// Реальная площадка исполнения расчётов (биржа).
-    public let realExchange: RealExchange
+    var realExchange: RealExchange { get }
     
     /// Уникальный идентификатор позиции инструмента.
-    public let positionUid: String
+    var positionUid: String { get }
     
     /// Уникальный идентификатор позиции базового актива.
-    public let basicAssetPositionUid: String
+    var basicAssetPositionUid: String { get }
     
     /// Признак доступности для ИИС.
-    public let forIisFlag: Bool
+    var forIisFlag: Bool { get }
     
     /// Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов.
-    public let forQualInvestorFlag: Bool
+    var forQualInvestorFlag: Bool { get }
     
     /// Флаг отображающий доступность торговли инструментом по выходным.
-    public let weekendFlag: Bool
+    var weekendFlag: Bool { get }
     
     /// Флаг заблокированного ТКС.
-    public let blockedTcaFlag: Bool
+    var blockedTcaFlag: Bool { get }
     
     /// Дата первой минутной свечи.
-    public let firstOneMinCandleDate: Date
+    var firstOneMinCandleDate: Date { get }
     
     /// Дата первой дневной свечи.
-    public let firstOneDayCandleDate: Date
+    var firstOneDayCandleDate: Date { get }
 }
 
-internal extension Future {
+internal struct FutureModel: Future {
+    let figi: String
+    
+    let uid: String
+    
+    let ticker: String
+    
+    let classCode: String
+    
+    let lot: Int32
+    
+    let name: String
+    
+    let currency: CurrencyType
+    
+    let klong: Quotation
+    
+    let kshort: Quotation
+    
+    let dlong: Quotation
+    
+    let dshort: Quotation
+    
+    let dlongMin: Quotation
+    
+    let dshortMin: Quotation
+    
+    let shortEnabledFlag: Bool
+    
+    let exchange: String
+    
+    let firstTradeDate: Date
+    
+    let lastTradeDate: Date
+    
+    let contractType: FutureContractType
+    
+    let assetType: ContractAssetType
+    
+    let basicAsset: String
+    
+    let basicAssetSize: Quotation
+    
+    let countryOfRisk: String
+    
+    let countryOfRiskName: String
+    
+    let sector: String
+    
+    let expirationDate: Date
+    
+    let tradingStatus: SecurityTradingStatus
+    
+    let otcFlag: Bool
+    
+    let buyAvailableFlag: Bool
+    
+    let sellAvailableFlag: Bool
+    
+    let minPriceIncrement: Quotation
+    
+    let apiTradeAvailableFlag: Bool
+    
+    let realExchange: RealExchange
+    
+    let positionUid: String
+    
+    let basicAssetPositionUid: String
+    
+    let forIisFlag: Bool
+    
+    let forQualInvestorFlag: Bool
+    
+    let weekendFlag: Bool
+    
+    let blockedTcaFlag: Bool
+    
+    let firstOneMinCandleDate: Date
+    
+    let firstOneDayCandleDate: Date
+}
+
+internal extension FutureModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Future) throws {
         self.figi = grpcModel.figi
         self.uid = grpcModel.uid
@@ -169,7 +251,7 @@ internal extension Future {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Future {
-    func toModel() throws -> Future {
-        try Future(grpcModel: self)
+    func toModel() throws -> FutureModel {
+        try FutureModel(grpcModel: self)
     }
 }

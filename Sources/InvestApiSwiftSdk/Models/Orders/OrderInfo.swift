@@ -1,82 +1,130 @@
 import Foundation
 
 /// Информация о биржевой заявке.
-public struct OrderInfo: Codable {
+public protocol OrderInfo {
     /// Биржевой идентификатор заявки.
-    public let orderId: String
+    var orderId: String { get }
     
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Тип заявки.
-    public let type: OrderType
+    var type: OrderType { get }
     
     /// Текущий статус заявки.
-    public let status: OrderStatus
+    var status: OrderStatus { get }
     
     /// Направление сделки.
-    public let direction: OrderDirection
+    var direction: OrderDirection { get }
     
     /// Запрошено лотов.
-    public let lotsRequested: Int64
+    var lotsRequested: Int64 { get }
     
     /// Исполнено лотов.
-    public let lotsExecuted: Int64
+    var lotsExecuted: Int64 { get }
     
     /// Начальная цена заявки (произведение количества запрошенных лотов на цену).
-    public let initialOrderPrice: MoneyValue
+    var initialOrderPrice: MoneyValue { get }
     
     /// Исполненная средняя цена одного инструмента в заявке.
-    public let executedOrderPrice: MoneyValue
+    var executedOrderPrice: MoneyValue { get }
     
     /// Итоговая стоимость заявки, включающая все комиссии.
-    public let totalOrderAmount: MoneyValue
+    var totalOrderAmount: MoneyValue { get }
     
     /// Начальная комиссия. Комиссия рассчитанная при выставлении заявки.
-    public let initialCommission: MoneyValue
+    var initialCommission: MoneyValue { get }
     
     /// Фактическая комиссия по итогам исполнения заявки.
-    public let executedCommission: MoneyValue
+    var executedCommission: MoneyValue { get }
     
     /// Начальная цена за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
-    public let initialSecurityPrice: MoneyValue
+    var initialSecurityPrice: MoneyValue { get }
     
     // MARK: Post / replace order
     
     /// Начальная цена заявки в пунктах (для фьючерсов).
-    public let initialOrderPricePt: Quotation
+    var initialOrderPricePt: Quotation { get }
     
     /// Накопленный купонный доход (в валюте расчётов за 1 лот).
-    public let accumCouponValue: MoneyValue
+    var accumCouponValue: MoneyValue { get }
     
     /// Дополнительные данные об исполнении заявки.
-    public let message: String
+    var message: String { get }
     
     // MARK: Get orders / order state
     
     /// Средняя цена позиции по сделке.
-    public let averagePositionPrice: MoneyValue
+    var averagePositionPrice: MoneyValue { get }
     
     /// Стадии выполнения заявки.
-    public let stages: [OrderStage]
+    var stages: [OrderStage] { get }
     
     /// Сервисная комиссия.
-    public let serviceCommission: MoneyValue
+    var serviceCommission: MoneyValue { get }
     
     /// Валюта заявки.
-    public let currency: CurrencyType
+    var currency: CurrencyType { get }
     
     /// Дата и время выставления заявки в часовом поясе UTC.
-    public let date: Date
+    var date: Date { get }
     
     /// Идентификатор ключа идемпотентности, переданный клиентом, в формате uid (максимальная длина 36 символов).
-    public let orderRequestId: String?
+    var orderRequestId: String? { get }
 }
 
-internal extension OrderInfo {
+internal struct OrderInfoModel: OrderInfo {
+    let orderId: String
+    
+    let figi: String
+    
+    let uid: String
+    
+    let type: OrderType
+    
+    let status: OrderStatus
+    
+    let direction: OrderDirection
+    
+    let lotsRequested: Int64
+    
+    let lotsExecuted: Int64
+    
+    let initialOrderPrice: MoneyValue
+    
+    let executedOrderPrice: MoneyValue
+    
+    let totalOrderAmount: MoneyValue
+    
+    let initialCommission: MoneyValue
+    
+    let executedCommission: MoneyValue
+    
+    let initialSecurityPrice: MoneyValue
+    
+    let initialOrderPricePt: Quotation
+    
+    let accumCouponValue: MoneyValue
+    
+    let message: String
+    
+    let averagePositionPrice: MoneyValue
+    
+    let stages: [OrderStage]
+    
+    let serviceCommission: MoneyValue
+    
+    let currency: CurrencyType
+    
+    let date: Date
+    
+    let orderRequestId: String?
+}
+
+internal extension OrderInfoModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PostOrderResponse) throws {
         self.orderId = grpcModel.orderID
         self.figi = grpcModel.figi
@@ -135,13 +183,13 @@ internal extension OrderInfo {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PostOrderResponse {
-    func toModel() throws -> OrderInfo {
-        try OrderInfo(grpcModel: self)
+    func toModel() throws -> OrderInfoModel {
+        try OrderInfoModel(grpcModel: self)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OrderState {
-    func toModel() throws -> OrderInfo {
-        try OrderInfo(grpcModel: self)
+    func toModel() throws -> OrderInfoModel {
+        try OrderInfoModel(grpcModel: self)
     }
 }

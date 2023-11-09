@@ -7,21 +7,20 @@ public struct Quotation: Codable {
     
     /// Дробная часть суммы, может быть отрицательным числом.
     public let nano: Int32
-    
-    private static let nanoFactor: Decimal = 1_000_000_000;
-    
-    public init(units: Int64, nano: Int32) {
-        self.units = units
-        self.nano = nano
-    }
-    
-    public init(decimalValue: Decimal) {
+}
+
+public extension Quotation {
+    init(decimalValue: Decimal) {
         let units = decimalValue.int64Value
         let nano = ((decimalValue - decimalValue.wholePart) * Quotation.nanoFactor).int32Value
         self.init(units: units, nano: nano)
     }
+}
+
+public extension Quotation {
+    private static let nanoFactor: Decimal = 1_000_000_000;
     
-    public func toDecimal() -> Decimal {
+    func toDecimal() -> Decimal {
         return Decimal(units) + Decimal(nano) / Quotation.nanoFactor;
     }
 }

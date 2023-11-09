@@ -1,22 +1,34 @@
 /// Информация о торговом статусе.
-public struct TradingStatusInfo: Codable {
+public protocol TradingStatusInfo {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Статус торговли инструментом.
-    public let tradingStatus: SecurityTradingStatus
+    var tradingStatus: SecurityTradingStatus { get }
     
     /// Признак доступности выставления лимитной заявки по инструменту.
-    public let limitOrderAvailableFlag: Bool
+    var limitOrderAvailableFlag: Bool { get }
     
     /// Признак доступности выставления рыночной заявки по инструменту.
-    public let marketOrderAvailableFlag: Bool
+    var marketOrderAvailableFlag: Bool { get }
     
     /// Признак доступности торгов через API.
-    public let apiTradeAvailableFlag: Bool
+    var apiTradeAvailableFlag: Bool { get }
 }
 
-internal extension TradingStatusInfo {
+internal struct TradingStatusInfoModel: TradingStatusInfo {
+    let figi: String
+    
+    let tradingStatus: SecurityTradingStatus
+    
+    let limitOrderAvailableFlag: Bool
+    
+    let marketOrderAvailableFlag: Bool
+    
+    let apiTradeAvailableFlag: Bool
+}
+
+internal extension TradingStatusInfoModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetTradingStatusResponse) throws {
         self.figi = grpcModel.figi
         self.tradingStatus = try .new(rawValue: grpcModel.tradingStatus.rawValue)
@@ -27,8 +39,8 @@ internal extension TradingStatusInfo {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetTradingStatusResponse {
-    func toModel() throws -> TradingStatusInfo {
-        try TradingStatusInfo(grpcModel: self)
+    func toModel() throws -> TradingStatusInfoModel {
+        try TradingStatusInfoModel(grpcModel: self)
     }
 }
 

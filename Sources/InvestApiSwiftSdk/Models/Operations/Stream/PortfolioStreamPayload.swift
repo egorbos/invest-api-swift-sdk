@@ -1,20 +1,26 @@
 import Foundation
 
 /// Сообщение об обновлении портфеля.
-public struct PortfolioStreamPayload: StreamData {
-    public typealias StreamDataType = Portfolio
-    
+public protocol PortfolioStreamPayload: StreamData where StreamDataType == Portfolio {
     /// Время поступления сообщения.
-    public let time: Date
+    var time: Date { get }
     
     /// Тип полезной нагрузки = .data
-    public let type: StreamPayloadType
+    var type: StreamPayloadType { get }
     
     /// Полезная нагрузка сообщения.
-    public let data: Portfolio
+    var data: Portfolio { get }
 }
 
-internal extension PortfolioStreamPayload {
+internal struct PortfolioStreamPayloadModel: PortfolioStreamPayload {
+    let time: Date
+    
+    let type: StreamPayloadType
+    
+    let data: Portfolio
+}
+
+internal extension PortfolioStreamPayloadModel {
     init(response: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioStreamResponse) {
         self.time = Date()
         self.type = .data

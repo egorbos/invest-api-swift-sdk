@@ -1,20 +1,26 @@
 import Foundation
 
 /// Сообщение с результатами подписки на потоки `OperationsStreamService`.
-public struct OperationsStreamSubscriptionPayload: StreamData {
-    public typealias StreamDataType = [OperationsStreamSubscriptionResult]
-    
+public protocol OperationsStreamSubscriptionPayload: StreamData where StreamDataType == [OperationsStreamSubscriptionResult] {
     /// Время поступления сообщения.
-    public let time: Date
+    var time: Date { get }
     
     /// Тип полезной нагрузки = .subscriptionInfo
-    public let type: StreamPayloadType
+    var type: StreamPayloadType { get }
     
     /// Полезная нагрузка сообщения.
-    public let data: [OperationsStreamSubscriptionResult]
+    var data: [OperationsStreamSubscriptionResult] { get }
 }
 
-internal extension OperationsStreamSubscriptionPayload {
+internal struct OperationsStreamSubscriptionPayloadModel: OperationsStreamSubscriptionPayload {
+    var time: Date
+    
+    var type: StreamPayloadType
+    
+    var data: [OperationsStreamSubscriptionResult]
+}
+
+internal extension OperationsStreamSubscriptionPayloadModel {
     init(response: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioStreamResponse) {
         self.init(
             time: Date(),

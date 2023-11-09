@@ -1,102 +1,166 @@
 import Foundation
 
 /// Фонд.
-public struct AssetEtf: Codable {
+public protocol AssetEtf {
     /// Суммарные расходы фонда (в процентах).
-    public let totalExpense: Quotation
+    var totalExpense: Quotation { get }
     
     /// Барьерная ставка доходности после которой фонд имеет право на perfomance fee (в процентах).
-    public let hurdleRate: Quotation
+    var hurdleRate: Quotation { get }
     
     /// Комиссия за успешные результаты фонда (в процентах).
-    public let performanceFee: Quotation
+    var performanceFee: Quotation { get }
     
     /// Фиксированная комиссия за управление (в процентах).
-    public let fixedCommission: Quotation
+    var fixedCommission: Quotation { get }
     
     /// Тип распределения доходов от выплат по бумагам.
-    public let paymentType: String
+    var paymentType: String { get }
     
     /// Признак необходимости выхода фонда в плюс для получения комиссии.
-    public let watermarkFlag: Bool
+    var watermarkFlag: Bool { get }
     
     /// Премия (надбавка к цене) при покупке доли в фонде (в процентах).
-    public let buyPremium: Quotation
+    var buyPremium: Quotation { get }
     
     /// Ставка дисконта (вычет из цены) при продаже доли в фонде (в процентах).
-    public let sellDiscount: Quotation
+    var sellDiscount: Quotation { get }
     
     /// Признак ребалансируемости портфеля фонда.
-    public let rebalancingFlag: Bool
+    var rebalancingFlag: Bool { get }
     
     /// Периодичность ребалансировки.
-    public let rebalancingFrequency: String
+    var rebalancingFrequency: String { get }
     
     /// Тип управления.
-    public let managementType: String
+    var managementType: String { get }
     
     /// Индекс, который реплицирует (старается копировать) фонд.
-    public let primaryIndex: String
+    var primaryIndex: String { get }
     
     /// База ETF.
-    public let focusType: String
+    var focusType: String { get }
     
     /// Признак использования заемных активов (плечо).
-    public let leveragedFlag: Bool
+    var leveragedFlag: Bool { get }
     
     /// Количество акций в обращении.
-    public let numShare: Quotation
+    var numShare: Quotation { get }
     
     /// Признак обязательства по отчетности перед регулятором.
-    public let ucitsFlag: Bool
+    var ucitsFlag: Bool { get }
     
     /// Дата выпуска.
-    public let releasedDate: Date
+    var releasedDate: Date { get }
     
     /// Описание фонда.
-    public let description: String
+    var description: String { get }
     
     /// Описание индекса, за которым следует фонд.
-    public let primaryIndexDescription: String
+    var primaryIndexDescription: String { get }
     
     /// Основные компании, в которые вкладывается фонд.
-    public let primaryIndexCompany: String
+    var primaryIndexCompany: String { get }
     
     /// Срок восстановления индекса (после просадки).
-    public let indexRecoveryPeriod: Quotation
+    var indexRecoveryPeriod: Quotation { get }
     
     /// IVAV-код.
-    public let inavCode: String
+    var inavCode: String { get }
     
     /// Признак наличия дивидендной доходности.
-    public let divYieldFlag: Bool
+    var divYieldFlag: Bool { get }
     
     /// Комиссия на покрытие расходов фонда (в процентах).
-    public let expenseCommission: Quotation
+    var expenseCommission: Quotation { get }
     
     /// Ошибка следования за индексом (в процентах).
-    public let primaryIndexTrackingError: Quotation
+    var primaryIndexTrackingError: Quotation { get }
     
     /// Плановая ребалансировка портфеля.
-    public let rebalancingPlan: String
+    var rebalancingPlan: String { get }
     
     /// Ставки налогообложения дивидендов и купонов.
-    public let taxRate: String
+    var taxRate: String { get }
     
     /// Даты ребалансировок.
-    public let rebalancingDates: [Date]
+    var rebalancingDates: [Date] { get }
     
     /// Форма выпуска.
-    public let issueKind: String
+    var issueKind: String { get }
     
     /// Номинал.
-    public let nominal: Quotation
+    var nominal: Quotation { get }
     
     /// Валюта номинала.
-    public let nominalCurrency: String
+    var nominalCurrency: String { get }
 }
 
-internal extension AssetEtf {
+internal struct AssetEtfModel: AssetEtf {
+    let totalExpense: Quotation
+    
+    let hurdleRate: Quotation
+    
+    let performanceFee: Quotation
+    
+    let fixedCommission: Quotation
+    
+    let paymentType: String
+    
+    let watermarkFlag: Bool
+    
+    let buyPremium: Quotation
+    
+    let sellDiscount: Quotation
+    
+    let rebalancingFlag: Bool
+    
+    let rebalancingFrequency: String
+    
+    let managementType: String
+    
+    let primaryIndex: String
+    
+    let focusType: String
+    
+    let leveragedFlag: Bool
+    
+    let numShare: Quotation
+    
+    let ucitsFlag: Bool
+    
+    let releasedDate: Date
+    
+    let description: String
+    
+    let primaryIndexDescription: String
+    
+    let primaryIndexCompany: String
+    
+    let indexRecoveryPeriod: Quotation
+    
+    let inavCode: String
+    
+    let divYieldFlag: Bool
+    
+    let expenseCommission: Quotation
+    
+    let primaryIndexTrackingError: Quotation
+    
+    let rebalancingPlan: String
+    
+    let taxRate: String
+    
+    let rebalancingDates: [Date]
+    
+    let issueKind: String
+    
+    let nominal: Quotation
+    
+    let nominalCurrency: String
+}
+
+internal extension AssetEtfModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetEtf) {
         self.totalExpense = grpcModel.totalExpense.toModel()
         self.hurdleRate = grpcModel.hurdleRate.toModel()
@@ -133,7 +197,7 @@ internal extension AssetEtf {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetEtf {
-    func toModel() -> AssetEtf {
-        AssetEtf(grpcModel: self)
+    func toModel() -> AssetEtfModel {
+        AssetEtfModel(grpcModel: self)
     }
 }

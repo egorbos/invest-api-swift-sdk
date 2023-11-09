@@ -21,16 +21,19 @@ public protocol SandboxUsersService {
     /// Получает счета пользователя.
     ///
     ///  - Returns: Массив счетов пользователя `[Account]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getAccounts() async throws -> [Account]
 
     /// Получает текущие лимиты запросов пользователя.
     ///
     ///  - Returns: Лимиты запросов пользователя `UserTariff`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getUserTariff() async throws -> UserTariff
 
     /// Получает информацию о статусе пользователя.
     ///
-    ///  - Returns: Информация о статусе  пользователя `UserInfo`
+    ///  - Returns: Информация о статусе  пользователя `UserInfo`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getInfo() async throws -> UserInfo
 #endif
 }
@@ -50,6 +53,7 @@ public protocol CommonUsersService: SandboxUsersService {
     ///  - Parameter accountId: Идентификатор счёта пользователя.
     ///
     ///  - Returns: Информация о статусе  пользователя `UserInfo`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getMarginAttributes(accountId id: String) async throws -> MarginAttributes
 #endif
 }

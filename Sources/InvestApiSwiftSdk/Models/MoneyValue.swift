@@ -10,16 +10,12 @@ public struct MoneyValue: Codable {
     
     /// Дробная часть суммы, может быть отрицательным числом.
     public let nano: Int32
-    
+}
+
+public extension MoneyValue {
     private static let nanoFactor: Decimal = 1_000_000_000;
     
-    public init(currency: CurrencyType, units: Int64, nano: Int32) {
-        self.currency = currency
-        self.units = units
-        self.nano = nano
-    }
-    
-    public func toDecimal() -> Decimal {
+    func toDecimal() -> Decimal {
         return Decimal(units) + Decimal(nano) / MoneyValue.nanoFactor;
     }
 }

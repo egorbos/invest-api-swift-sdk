@@ -1,27 +1,41 @@
 import Foundation
 
 /// Сделка по операции.
-public struct OperationItemTrade: Codable {
+public protocol OperationItemTrade {
     /// Номер сделки.
-    public let number: String
+    var number: String { get }
     
     /// Дата сделки.
-    public let date: Date
+    var date: Date { get }
     
     /// Количество в единицах.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Цена.
-    public let price: MoneyValue
+    var price: MoneyValue { get }
     
     /// Доходность.
-    public let yield: MoneyValue
+    var yield: MoneyValue { get }
     
     /// Относительная доходность.
-    public let yieldRelative: Quotation
+    var yieldRelative: Quotation { get }
 }
 
-internal extension OperationItemTrade {
+internal struct OperationItemTradeModel: OperationItemTrade {
+    let number: String
+    
+    let date: Date
+    
+    let quantity: Int64
+    
+    let price: MoneyValue
+    
+    let yield: MoneyValue
+    
+    let yieldRelative: Quotation
+}
+
+internal extension OperationItemTradeModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OperationItemTrade) {
         self.number = grpcModel.num
         self.date = grpcModel.date.date
@@ -33,7 +47,7 @@ internal extension OperationItemTrade {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OperationItemTrade {
-    func toModel() -> OperationItemTrade {
-        OperationItemTrade(grpcModel: self)
+    func toModel() -> OperationItemTradeModel {
+        OperationItemTradeModel(grpcModel: self)
     }
 }

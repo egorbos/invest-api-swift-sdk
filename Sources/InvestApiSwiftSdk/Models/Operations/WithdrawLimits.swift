@@ -1,16 +1,24 @@
 /// Лимиты на вывод средств.
-public struct WithdrawLimits: Codable {
+public protocol WithdrawLimits {
     /// Валютные позиции портфеля.
-    public let money: [MoneyValue]
+    var money: [MoneyValue] { get }
 
     /// Заблокированные валютные позиции портфеля.
-    public let blocked: [MoneyValue]
+    var blocked: [MoneyValue] { get }
 
     /// Заблокировано под гарантийное обеспечение фьючерсов.
-    public let blockedGuarantee: [MoneyValue]
+    var blockedGuarantee: [MoneyValue] { get }
 }
 
-internal extension WithdrawLimits {
+internal struct WithdrawLimitsModel: WithdrawLimits {
+    let money: [MoneyValue]
+    
+    let blocked: [MoneyValue]
+    
+    let blockedGuarantee: [MoneyValue]
+}
+
+internal extension WithdrawLimitsModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_WithdrawLimitsResponse) {
         self.money = grpcModel.money.map { $0.toModel() }
         self.blocked = grpcModel.blocked.map { $0.toModel() }
@@ -19,7 +27,7 @@ internal extension WithdrawLimits {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_WithdrawLimitsResponse {
-    func toModel() -> WithdrawLimits {
-        WithdrawLimits(grpcModel: self)
+    func toModel() -> WithdrawLimitsModel {
+        WithdrawLimitsModel(grpcModel: self)
     }
 }

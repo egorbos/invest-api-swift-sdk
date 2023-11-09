@@ -1,27 +1,41 @@
 import Foundation
 
 /// Список позиций по счёту.
-public struct PositionsCollection: Codable {
+public protocol PositionsCollection {
     /// Валютные позиции портфеля.
-    public let money: [MoneyValue]
+    var money: [MoneyValue] { get }
     
     /// Заблокированные валютные позиции портфеля.
-    public let blockedMoney: [MoneyValue]
+    var blockedMoney: [MoneyValue] { get }
     
     /// Открытые позиции ценных бумаг.
-    public let securities: [PositionElement]
+    var securities: [PositionElement] { get }
     
     /// Открытые  позиции фьючерсов.
-    public let futures: [PositionElement]
+    var futures: [PositionElement] { get }
     
     /// Открытые позиции опционов.
-    public let options: [PositionElement]
+    var options: [PositionElement] { get }
     
     /// Признак выполнения операции выгрузки лимитов.
-    public let limitsLoadingInProgress: Bool
+    var limitsLoadingInProgress: Bool { get }
 }
 
-internal extension PositionsCollection {
+internal struct PositionsCollectionModel: PositionsCollection {
+    let money: [MoneyValue]
+    
+    let blockedMoney: [MoneyValue]
+    
+    let securities: [PositionElement]
+    
+    let futures: [PositionElement]
+    
+    let options: [PositionElement]
+    
+    let limitsLoadingInProgress: Bool
+}
+
+internal extension PositionsCollectionModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionsResponse) {
         self.money = grpcModel.money.map { $0.toModel() }
         self.blockedMoney = grpcModel.blocked.map { $0.toModel() }
@@ -33,7 +47,7 @@ internal extension PositionsCollection {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionsResponse {
-    func toModel() -> PositionsCollection {
-        PositionsCollection(grpcModel: self)
+    func toModel() -> PositionsCollectionModel {
+        PositionsCollectionModel(grpcModel: self)
     }
 }

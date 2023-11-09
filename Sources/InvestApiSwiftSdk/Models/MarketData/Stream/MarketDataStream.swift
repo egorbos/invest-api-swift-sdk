@@ -2,9 +2,14 @@ import GRPC
 
 /// Поток биржевой информации.
 public struct MarketDataStream {
-    private let call: BidirectionalStreamingCall<Tinkoff_Public_Invest_Api_Contract_V1_MarketDataRequest, Tinkoff_Public_Invest_Api_Contract_V1_MarketDataResponse>
+    private let call: BidirectionalStreamingCall
+        <Tinkoff_Public_Invest_Api_Contract_V1_MarketDataRequest,
+            Tinkoff_Public_Invest_Api_Contract_V1_MarketDataResponse>
     
-    internal init(_ call: BidirectionalStreamingCall<Tinkoff_Public_Invest_Api_Contract_V1_MarketDataRequest, Tinkoff_Public_Invest_Api_Contract_V1_MarketDataResponse>) {
+    internal init(_ call: BidirectionalStreamingCall
+                  <Tinkoff_Public_Invest_Api_Contract_V1_MarketDataRequest,
+                    Tinkoff_Public_Invest_Api_Contract_V1_MarketDataResponse>)
+    {
         self.call = call
     }
     

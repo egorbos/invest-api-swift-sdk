@@ -1,63 +1,101 @@
 import Foundation
 
 /// Информация об активе.
-public struct AssetFull: Codable {
+public protocol AssetFull {
     /// Уникальный идентификатор актива.
-    public let uid: String
+    var uid: String { get }
     
     /// Тип актива.
-    public let type: AssetType
+    var type: AssetType { get }
     
     /// Наименование актива.
-    public let name: String
+    var name: String { get }
     
     /// Краткое наименование актива.
-    public let nameBrief: String
+    var nameBrief: String { get }
     
     /// Описание актива.
-    public let description: String
+    var description: String { get }
     
     /// Тестирование клиентов.
-    public let requiredTests: [String]
+    var requiredTests: [String] { get }
     
     /// Валюта (обязательно и заполняется только для type = "ASSET_TYPE_CURRENCY").
-    public let currency: AssetCurrency?
+    var currency: AssetCurrency? { get }
     
     /// Ценная бумага (обязательно и заполняется только для type = "ASSET_TYPE_SECURITY").
-    public let security: AssetSecurity?
+    var security: AssetSecurity? { get }
     
     /// Номер государственной регистрации.
-    public let regCode: String
+    var regCode: String { get }
     
     /// Код CFI.
-    public let cfiCode: String
+    var cfiCode: String { get }
     
     /// Код НРД инструмента.
-    public let nsdCode: String
+    var nsdCode: String { get }
     
     /// Статус актива.
-    public let status: String
+    var status: String { get }
     
     /// Бренд.
-    public let brand: Brand
+    var brand: Brand { get }
     
     /// Код типа ценной бумаги по классификации Банка России.
-    public let brCode: String
+    var brCode: String { get }
     
     /// Наименование кода типа ценной бумаги по классификации Банка России.
-    public let brCodeName: String
+    var brCodeName: String { get }
     
     /// Идентификаторы инструментов.
-    public let instruments: [AssetInstrument]
+    var instruments: [AssetInstrument] { get }
     
     /// Дата и время последнего обновления записи.
-    public let updatedAt: Date
+    var updatedAt: Date { get }
     
     /// Дата и время удаления актива.
-    public let deletedAt: Date
+    var deletedAt: Date { get }
 }
 
-internal extension AssetFull {
+internal struct AssetFullModel: AssetFull {
+    let uid: String
+    
+    let type: AssetType
+    
+    let name: String
+    
+    let nameBrief: String
+    
+    let description: String
+    
+    let requiredTests: [String]
+    
+    let currency: AssetCurrency?
+    
+    let security: AssetSecurity?
+    
+    let regCode: String
+    
+    let cfiCode: String
+    
+    let nsdCode: String
+    
+    let status: String
+   
+    let brand: Brand
+    
+    let brCode: String
+    
+    let brCodeName: String
+    
+    let instruments: [AssetInstrument]
+    
+    let updatedAt: Date
+    
+    let deletedAt: Date
+}
+
+internal extension AssetFullModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetFull) throws {
         self.uid = grpcModel.uid
         self.type = try .new(rawValue: grpcModel.type.rawValue)
@@ -81,7 +119,7 @@ internal extension AssetFull {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetFull {
-    func toModel() throws -> AssetFull {
-        try AssetFull(grpcModel: self)
+    func toModel() throws -> AssetFullModel {
+        try AssetFullModel(grpcModel: self)
     }
 }

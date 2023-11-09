@@ -1,13 +1,19 @@
 /// Связь с другим инструментом.
-public struct InstrumentLink: Codable {
+public protocol InstrumentLink {
     /// Тип связи.
-    public let type: String
+    var type: String { get }
     
     /// Uid идентификатор связанного инструмента.
-    public let instrumentUid: String
+    var instrumentUid: String { get }
 }
 
-internal extension InstrumentLink {
+internal struct InstrumentLinkModel: InstrumentLink {
+    let type: String
+    
+    let instrumentUid: String
+}
+
+internal extension InstrumentLinkModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_InstrumentLink) {
         self.type = grpcModel.type
         self.instrumentUid = grpcModel.instrumentUid
@@ -15,7 +21,7 @@ internal extension InstrumentLink {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_InstrumentLink {
-    func toModel() -> InstrumentLink {
-        InstrumentLink(grpcModel: self)
+    func toModel() -> InstrumentLinkModel {
+        InstrumentLinkModel(grpcModel: self)
     }
 }

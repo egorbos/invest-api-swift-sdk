@@ -1,90 +1,146 @@
 import Foundation
 
 /// Элемент брокерского отчёта.
-public struct BrokerReportItem: Codable {
+public protocol BrokerReportItem {
     /// Номер сделки.
-    public let tradeId: String
+    var tradeId: String { get }
     
     /// Номер поручения.
-    public let orderId: String
+    var orderId: String { get }
     
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Признак исполнения.
-    public let executeSign: String
+    var executeSign: String { get }
     
     /// Дата и время заключения в часовом поясе UTC.
-    public let date: Date
+    var date: Date { get }
     
     /// Торговая площадка.
-    public let exchange: String
+    var exchange: String { get }
     
     /// Режим торгов.
-    public let classCode: String
+    var classCode: String { get }
     
     /// Вид сделки.
-    public let direction: String
+    var direction: String { get }
     
     /// Сокращённое наименование актива.
-    public let name: String
+    var name: String { get }
     
     /// Код актива.
-    public let ticker: String
+    var ticker: String { get }
     
     /// Цена за единицу.
-    public let price: MoneyValue
+    var price: MoneyValue { get }
     
     /// Количество.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Сумма (без накопленного купонного дохода).
-    public let orderAmount: MoneyValue
+    var orderAmount: MoneyValue { get }
     
     /// Накопленный купонный доход.
-    public let accumCouponValue: Quotation
+    var accumCouponValue: Quotation { get }
     
     /// Сумма сделки.
-    public let totalOrderAmount: MoneyValue
+    var totalOrderAmount: MoneyValue { get }
     
     /// Комиссия брокера.
-    public let brokerCommission: MoneyValue
+    var brokerCommission: MoneyValue { get }
     
     /// Комиссия биржи.
-    public let exchangeCommission: MoneyValue
+    var exchangeCommission: MoneyValue { get }
     
     /// Комиссия клирингового центра.
-    public let exchangeClearingCommission:  MoneyValue
+    var exchangeClearingCommission:  MoneyValue { get }
     
     /// Ставка РЕПО (%).
-    public let repoRate: Quotation
+    var repoRate: Quotation { get }
     
     /// Контрагент / Брокер.
-    public let party: String
+    var party: String { get }
     
     /// Дата расчётов в часовом поясе UTC.
-    public let clearValueDate: Date
+    var clearValueDate: Date { get }
     
     /// Дата поставки в часовом поясе UTC.
-    public let supplyValueDate: Date
+    var supplyValueDate: Date { get }
     
     /// Статус брокера.
-    public let brokerStatus: String
+    var brokerStatus: String { get }
     
     /// Тип договора.
-    public let separateAgreementType: String
+    var separateAgreementType: String { get }
     
     /// Номер договора.
-    public let separateAgreementNumber: String
+    var separateAgreementNumber: String { get }
     
     /// Дата договора.
-    public let separateAgreementDate: String
+    var separateAgreementDate: String { get }
     
     /// Тип расчёта по сделке.
-    public let deliveryType: String
+    var deliveryType: String { get }
 }
 
-internal extension BrokerReportItem {
+internal struct BrokerReportItemModel: BrokerReportItem {
+    let tradeId: String
+    
+    let orderId: String
+    
+    let figi: String
+    
+    let executeSign: String
+    
+    let date: Date
+    
+    let exchange: String
+    
+    let classCode: String
+    
+    let direction: String
+    
+    let name: String
+    
+    let ticker: String
+    
+    let price: MoneyValue
+    
+    let quantity: Int64
+    
+    let orderAmount: MoneyValue
+    
+    let accumCouponValue: Quotation
+    
+    let totalOrderAmount: MoneyValue
+    
+    let brokerCommission: MoneyValue
+    
+    let exchangeCommission: MoneyValue
+    
+    let exchangeClearingCommission: MoneyValue
+    
+    let repoRate: Quotation
+    
+    let party: String
+    
+    let clearValueDate: Date
+    
+    let supplyValueDate: Date
+    
+    let brokerStatus: String
+    
+    let separateAgreementType: String
+    
+    let separateAgreementNumber: String
+    
+    let separateAgreementDate: String
+    
+    let deliveryType: String
+}
+
+internal extension BrokerReportItemModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_BrokerReport) {
         self.tradeId = grpcModel.tradeID
         self.orderId = grpcModel.orderID
@@ -117,7 +173,7 @@ internal extension BrokerReportItem {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_BrokerReport {
-    func toModel() -> BrokerReportItem {
-        BrokerReportItem(grpcModel: self)
+    func toModel() -> BrokerReportItemModel {
+        BrokerReportItemModel(grpcModel: self)
     }
 }

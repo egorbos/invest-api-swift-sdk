@@ -1,30 +1,46 @@
 import Foundation
 
 /// Информация об исполнении торгового поручения.
-public struct TradeStreamItem: Codable {
+public protocol TradeStreamItem {
     /// Идентификатор торгового поручения.
-    public let orderId: String
+    var orderId: String { get }
     
     /// Идентификатор счёта.
-    public let accountId: String
+    var accountId: String { get }
     
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Направление сделки.
-    public let direction: OrderDirection
+    var direction: OrderDirection { get }
     
     /// Сделки.
-    public let trades: [OrderTrade]
+    var trades: [OrderTrade] { get }
     
     /// Дата и время создания сообщения в часовом поясе UTC.
-    public let createdAt: Date
+    var createdAt: Date { get }
 }
 
-internal extension TradeStreamItem {
+internal struct TradeStreamItemModel: TradeStreamItem {
+    let orderId: String
+    
+    let accountId: String
+    
+    let figi: String
+    
+    let uid: String
+    
+    let direction: OrderDirection
+    
+    let trades: [OrderTrade]
+    
+    let createdAt: Date
+}
+
+internal extension TradeStreamItemModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OrderTrades) {
         self.orderId = grpcModel.orderID
         self.accountId = grpcModel.accountID
@@ -37,7 +53,7 @@ internal extension TradeStreamItem {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OrderTrades {
-    func toModel() -> TradeStreamItem {
-        TradeStreamItem(grpcModel: self)
+    func toModel() -> TradeStreamItemModel {
+        TradeStreamItemModel(grpcModel: self)
     }
 }

@@ -150,14 +150,17 @@ public protocol SandboxService {
     /// Регистрирует счёт в песочнице.
     ///
     ///  - Returns: Идентификатор зарегистрированного счёта.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func openSandboxAccount() async throws -> String
     
     /// Получает счета в песочнице.
     ///
     ///  - Returns: Массив счетов песочницы `[Account]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxAccounts() async throws -> [Account]
     
     /// Закрывает счёт в песочнице.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func closeSandboxAccount(accountId id: String) async throws -> Void
     
     /// Выставляет заявку в песочнице.
@@ -172,6 +175,7 @@ public protocol SandboxService {
     ///     - quantity: Количество лотов.
     ///
     /// - Returns: Информация о выставлении поручения `OrderInfo`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func postSandboxOrder(
         accountId: String, instrumentId: String, orderRequestId: String?,
         type: OrderType, direction: OrderDirection, price: Quotation, quantity: Int64
@@ -188,6 +192,7 @@ public protocol SandboxService {
     ///     - quantity: Количество лотов.
     ///
     /// - Returns: Информация о выставлении поручения `OrderInfo`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func replaceSandboxOrder(
         accountId: String, orderId: String, orderRequestId: String?,
         price: Quotation, priceType: PriceType, quantity: Int64
@@ -198,6 +203,7 @@ public protocol SandboxService {
     /// - Parameter accountId: Идентификатор счёта песочницы.
     ///
     /// - Returns: Список активных торговых поручений `[OrderInfo]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxOrders(accountId: String) async throws -> [OrderInfo]
     
     /// Отменяет заявку выставленную в песочнице.
@@ -207,6 +213,7 @@ public protocol SandboxService {
     ///     - orderId: Идентификатор заявки.
     ///
     /// - Returns: Дата и время отмены заявки в часовом поясе UTC `Date`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func cancelSandboxOrder(accountId: String, orderId: String) async throws -> Date
     
     /// Получает статус заявки в песочнице.
@@ -216,6 +223,7 @@ public protocol SandboxService {
     ///     - orderId: Идентификатор заявки.
     ///
     /// - Returns: Информация о торговом поручении `OrderInfo`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxOrderState(accountId: String, orderId: String) async throws -> OrderInfo
     
     /// Получает список позиций в песочнице.
@@ -223,6 +231,7 @@ public protocol SandboxService {
     /// - Parameter accountId: Идентификатор счёта песочницы.
     ///
     /// - Returns: Позиции по счёту `PositionsCollection`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxPositions(accountId: String) async throws -> PositionsCollection
     
     /// Получает список операций по счёту песочницы.
@@ -237,6 +246,7 @@ public protocol SandboxService {
     ///     - figi: Figi идентификатор инструмента для фильтрации.
     ///
     /// - Returns: Список операций по счёту `[Operation]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxOperations(accountId: String, from: Date, to: Date, state: OperationState, figi: String) async throws -> [Operation]
     
     /// Получает список операций по счёту песочницы с пагинацией.
@@ -257,6 +267,7 @@ public protocol SandboxService {
     ///     - withOvernights: Вкличить overnight операции.
     ///
     /// - Returns: Список операций по счёту с пагинацией `OperationsByCursor`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxOperationsByCursor(
         accountId: String, instrumentId: String, from: Date, to: Date, cursor: String,
         limit: Int32, types: [OperationType], state: OperationState, withCommissions: Bool,
@@ -270,6 +281,7 @@ public protocol SandboxService {
     ///     - currency: Валюта представления портфеля.
     ///
     /// - Returns: Портфель по счёту `Portfolio`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxPortfolio(accountId: String, currency: CurrencyType) async throws -> Portfolio
     
     /// Пополняет счёт в песочнице.
@@ -279,6 +291,7 @@ public protocol SandboxService {
     ///      - amount: Сумма пополнения счёта в рублях.
     ///
     ///  - Returns: Текущий баланс счёта `MoneyValue`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func sandboxPayIn(accountId id: String, amount: MoneyValue) async throws -> MoneyValue
     
     /// Получает доступный остаток для вывода средств в песочнице.
@@ -286,6 +299,7 @@ public protocol SandboxService {
     ///  - Parameter accountId: Идентификатор счёта песочницы.
     ///
     ///  - Returns: Доступный остаток для вывода средств `WithdrawLimits`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getSandboxWithdrawLimits(accountId id: String) async throws -> WithdrawLimits
 #endif
 }

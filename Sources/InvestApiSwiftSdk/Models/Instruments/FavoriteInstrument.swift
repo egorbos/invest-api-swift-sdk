@@ -1,31 +1,49 @@
 /// Краткая информация об избранном инструменте.
-public struct FavoriteInstrument: Codable {
+public protocol FavoriteInstrument {
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Тикер инструмента.
-    public let ticker: String
+    var ticker: String { get }
     
     /// Класс-код (секция торгов).
-    public let classCode: String
+    var classCode: String { get }
     
     /// Isin-идентификатор инструмента.
-    public let isin: String
+    var isin: String { get }
     
     /// Тип инструмента.
-    public let instrumentType: InstrumentType
+    var instrumentType: InstrumentType { get }
     
     /// Вид инструмента.
-    public let instrumentKind: InstrumentKind
+    var instrumentKind: InstrumentKind { get }
     
     /// Признак внебиржевой ценной бумаги.
-    public let otcFlag: Bool
+    var otcFlag: Bool { get }
     
     /// Параметр указывает на возможность торговать инструментом через API.
-    public let apiTradeAvailableFlag: Bool
+    var apiTradeAvailableFlag: Bool { get }
 }
 
-internal extension FavoriteInstrument {
+internal struct FavoriteInstrumentModel: FavoriteInstrument {
+    let figi: String
+    
+    let ticker: String
+    
+    let classCode: String
+    
+    let isin: String
+    
+    let instrumentType: InstrumentType
+    
+    let instrumentKind: InstrumentKind
+    
+    let otcFlag: Bool
+    
+    let apiTradeAvailableFlag: Bool
+}
+
+internal extension FavoriteInstrumentModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_FavoriteInstrument) throws {
         self.figi = grpcModel.figi
         self.ticker = grpcModel.ticker
@@ -39,7 +57,7 @@ internal extension FavoriteInstrument {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_FavoriteInstrument {
-    func toModel() throws -> FavoriteInstrument {
-        try FavoriteInstrument(grpcModel: self)
+    func toModel() throws -> FavoriteInstrumentModel {
+        try FavoriteInstrumentModel(grpcModel: self)
     }
 }

@@ -1,28 +1,44 @@
 /// Баланс позиции.
-public struct PositionElement: Codable {
+public protocol PositionElement {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Тип инструмента.
-    public let instrumentType: InstrumentType
+    var instrumentType: InstrumentType { get }
     
     ///Уникальный идентификатор  инструмента.
-    public let instrumentUid: String
+    var instrumentUid: String { get }
     
     ///Уникальный идентификатор позиции.
-    public let positionUid: String
+    var positionUid: String { get }
     
     /// Текущий незаблокированный баланс.
-    public let balance: Int64
+    var balance: Int64 { get }
     
     /// Количество бумаг заблокированных выставленными заявками.
-    public let blocked: Int64
+    var blocked: Int64 { get }
     
     /// Заблокировано на бирже.
-    public let exchangeBlocked: Bool
+    var exchangeBlocked: Bool { get }
 }
 
-internal extension PositionElement {    
+internal struct PositionElementModel: PositionElement {
+    let figi: String
+    
+    let instrumentType: InstrumentType
+    
+    let instrumentUid: String
+    
+    let positionUid: String
+    
+    let balance: Int64
+    
+    let blocked: Int64
+    
+    let exchangeBlocked: Bool
+}
+
+internal extension PositionElementModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PositionsSecurities) {
         self.init(
             figi: grpcModel.figi,
@@ -61,19 +77,19 @@ internal extension PositionElement {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionsSecurities {
-    func toModel() -> PositionElement {
-        PositionElement(grpcModel: self)
+    func toModel() -> PositionElementModel {
+        PositionElementModel(grpcModel: self)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionsFutures {
-    func toModel() -> PositionElement {
-        PositionElement(grpcModel: self)
+    func toModel() -> PositionElementModel {
+        PositionElementModel(grpcModel: self)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionsOptions {
-    func toModel() -> PositionElement {
-        PositionElement(grpcModel: self)
+    func toModel() -> PositionElementModel {
+        PositionElementModel(grpcModel: self)
     }
 }

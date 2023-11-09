@@ -1,45 +1,71 @@
 import Foundation
 
 /// Стоп-заявка.
-public struct StopOrder: Codable {
+public protocol StopOrder {
     /// Идентификатор стоп-заявки.
-    public let stopOrderId: String
+    var stopOrderId: String { get }
     
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
 
     /// Направление операции.
-    public let direction: OrderDirection
+    var direction: OrderDirection { get }
     
     /// Тип стоп-заявки.
-    public let orderType: StopOrderType
+    var orderType: StopOrderType { get }
     
     /// Валюта стоп-заявки.
-    public let currency: CurrencyType
+    var currency: CurrencyType { get }
     
     /// Количество запрошенных лотов.
-    public let lotsRequested: Int64
+    var lotsRequested: Int64 { get }
     
     /// Цена заявки за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
-    public let price: MoneyValue
+    var price: MoneyValue { get }
     
     /// Цена активации стоп-заявки за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
-    public let stopPrice: MoneyValue
+    var stopPrice: MoneyValue { get }
     
     /// Дата и время конвертации стоп-заявки в биржевую в часовом поясе UTC.
-    public let activationDate: Date
+    var activationDate: Date { get }
     
     /// Дата и время снятия заявки в часовом поясе UTC.
-    public let expirationDate: Date
+    var expirationDate: Date { get }
     
     /// Дата и время выставления заявки в часовом поясе UTC.
-    public let creationDate: Date
+    var creationDate: Date { get }
 }
 
-internal extension StopOrder {
+internal struct StopOrderModel: StopOrder {
+    let stopOrderId: String
+    
+    let figi: String
+    
+    let uid: String
+
+    let direction: OrderDirection
+    
+    let orderType: StopOrderType
+    
+    let currency: CurrencyType
+    
+    let lotsRequested: Int64
+    
+    let price: MoneyValue
+    
+    let stopPrice: MoneyValue
+    
+    let activationDate: Date
+    
+    let expirationDate: Date
+    
+    let creationDate: Date
+}
+
+internal extension StopOrderModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_StopOrder) throws {
         self.stopOrderId = grpcModel.stopOrderID
         self.figi = grpcModel.figi
@@ -57,7 +83,7 @@ internal extension StopOrder {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_StopOrder {
-    func toModel() throws -> StopOrder {
-        try StopOrder(grpcModel: self)
+    func toModel() throws -> StopOrderModel {
+        try StopOrderModel(grpcModel: self)
     }
 }

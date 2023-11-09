@@ -1,20 +1,26 @@
 import Foundation
 
 /// Сообщение с информацией о цене последней сделки.
-public struct LastPricePayload: StreamData {
-    public typealias StreamDataType = LastPrice
-    
+public protocol LastPricePayload: StreamData where StreamDataType == LastPrice {
     /// Время поступления сообщения.
-    public let time: Date
+    var time: Date { get }
     
     /// Тип полезной нагрузки = .data
-    public let type: StreamPayloadType
+    var type: StreamPayloadType { get }
     
     /// Полезная нагрузка сообщения.
-    public let data: LastPrice
+    var data: LastPrice { get }
 }
 
-internal extension LastPricePayload {
+internal struct LastPricePayloadModel: LastPricePayload {
+    let time: Date
+    
+    let type: StreamPayloadType
+    
+    let data: LastPrice
+}
+
+internal extension LastPricePayloadModel {
     init(response: Tinkoff_Public_Invest_Api_Contract_V1_MarketDataResponse) {
         self.init(
             time: Date(),

@@ -1,30 +1,46 @@
 import Foundation
 
 /// Информация о свече.
-public struct HistoricalCandle: Codable {
+public protocol HistoricalCandle {
     /// Цена открытия (1 единица).
-    public let open: Quotation
+    var open: Quotation { get }
     
     /// Максимальная цена (1 единица).
-    public let high: Quotation
+    var high: Quotation { get }
     
     /// Минимальная цена (1 единица).
-    public let low: Quotation
+    var low: Quotation { get }
     
     /// Цена закрытия (1 единица).
-    public let close: Quotation
+    var close: Quotation { get }
     
     /// Объём торгов в лотах.
-    public let volume: Int64
+    var volume: Int64 { get }
     
     /// Время начала интервала свечи в часовом поясе UTC.
-    public let time: Date
+    var time: Date { get }
     
     /// Признак завершённости свечи.
-    public let isComplete: Bool
+    var isComplete: Bool { get }
 }
 
-internal extension HistoricalCandle {
+internal struct HistoricalCandleModel: HistoricalCandle {
+    let open: Quotation
+    
+    let high: Quotation
+    
+    let low: Quotation
+    
+    let close: Quotation
+    
+    let volume: Int64
+    
+    let time: Date
+    
+    let isComplete: Bool
+}
+
+internal extension HistoricalCandleModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_HistoricCandle) {
         self.open = grpcModel.open.toModel()
         self.high = grpcModel.high.toModel()
@@ -37,7 +53,7 @@ internal extension HistoricalCandle {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_HistoricCandle {
-    func toModel() -> HistoricalCandle {
-        HistoricalCandle(grpcModel: self)
+    func toModel() -> HistoricalCandleModel {
+        HistoricalCandleModel(grpcModel: self)
     }
 }

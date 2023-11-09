@@ -1,72 +1,116 @@
 import Foundation
 
 /// Облигация.
-public struct AssetBond: Codable {
+public protocol AssetBond {
     /// Текущий номинал.
-    public let currentNominal: Quotation
+    var currentNominal: Quotation { get }
     
     /// Наименование заемщика.
-    public let borrowName: String
+    var borrowName: String { get }
     
     /// Объем эмиссии облигации (стоимость).
-    public let issueSize: Quotation
+    var issueSize: Quotation { get }
     
     /// Номинал облигации.
-    public let nominal: Quotation
+    var nominal: Quotation { get }
     
     /// Валюта номинала.
-    public let nominalCurrency: String
+    var nominalCurrency: String { get }
     
     /// Форма выпуска облигации.
-    public let issueKind: String
+    var issueKind: String { get }
     
     /// Форма дохода облигации.
-    public let interestKind: String
+    var interestKind: String { get }
     
     /// Количество выплат в год.
-    public let couponQuantityPerYear: Int32
+    var couponQuantityPerYear: Int32 { get }
     
     /// Признак облигации с индексируемым номиналом.
-    public let indexedNominalFlag: Bool
+    var indexedNominalFlag: Bool { get }
     
     /// Признак субординированной облигации.
-    public let subordinatedFlag: Bool
+    var subordinatedFlag: Bool { get }
     
     /// Признак обеспеченной облигации.
-    public let collateralFlag: Bool
+    var collateralFlag: Bool { get }
     
     /// Признак показывает, что купоны облигации не облагаются налогом (для mass market).
-    public let taxFreeFlag: Bool
+    var taxFreeFlag: Bool { get }
     
     /// Признак облигации с амортизацией долга.
-    public let amortizationFlag: Bool
+    var amortizationFlag: Bool { get }
     
     /// Признак облигации с плавающим купоном.
-    public let floatingCouponFlag: Bool
+    var floatingCouponFlag: Bool { get }
     
     /// Признак бессрочной облигации.
-    public let perpetualFlag: Bool
+    var perpetualFlag: Bool { get }
     
     /// Дата погашения облигации.
-    public let maturityDate: Date
+    var maturityDate: Date { get }
     
     /// Описание и условия получения дополнительного дохода.
-    public let returnCondition: String
+    var returnCondition: String { get }
     
     /// Дата выпуска облигации.
-    public let stateRegDate: Date
+    var stateRegDate: Date { get }
     
     /// Дата размещения облигации.
-    public let placementDate: Date
+    var placementDate: Date { get }
     
     /// Цена размещения облигации.
-    public let placementPrice: Quotation
+    var placementPrice: Quotation { get }
     
     /// Объявленное количество (штук).
-    public let issueSizePlan: Quotation
+    var issueSizePlan: Quotation { get }
 }
 
-internal extension AssetBond {
+internal struct AssetBondModel: AssetBond {
+    let currentNominal: Quotation
+    
+    let borrowName: String
+    
+    let issueSize: Quotation
+    
+    let nominal: Quotation
+    
+    let nominalCurrency: String
+    
+    let issueKind: String
+    
+    let interestKind: String
+    
+    let couponQuantityPerYear: Int32
+    
+    let indexedNominalFlag: Bool
+    
+    let subordinatedFlag: Bool
+    
+    let collateralFlag: Bool
+    
+    let taxFreeFlag: Bool
+    
+    let amortizationFlag: Bool
+    
+    let floatingCouponFlag: Bool
+    
+    let perpetualFlag: Bool
+    
+    let maturityDate: Date
+    
+    let returnCondition: String
+    
+    let stateRegDate: Date
+    
+    let placementDate: Date
+    
+    let placementPrice: Quotation
+    
+    let issueSizePlan: Quotation
+}
+
+internal extension AssetBondModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetBond) {
         self.currentNominal = grpcModel.currentNominal.toModel()
         self.borrowName = grpcModel.borrowName
@@ -93,7 +137,7 @@ internal extension AssetBond {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetBond {
-    func toModel() -> AssetBond {
-        AssetBond(grpcModel: self)
+    func toModel() -> AssetBondModel {
+        AssetBondModel(grpcModel: self)
     }
 }

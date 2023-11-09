@@ -1,13 +1,19 @@
 /// Результат подписки.
-public struct CandlesSubscriptionResult: Codable {
+public protocol CandlesSubscriptionResult {
     /// Уникальный идентификатор запроса.
-    public let trackingId: String
+    var trackingId: String { get }
     
     /// Статусы подписок на свечи.
-    public let subscriptions: [CandleSubscription]
+    var subscriptions: [CandleSubscription] { get }
 }
 
-internal extension CandlesSubscriptionResult {
+internal struct CandlesSubscriptionResultModel: CandlesSubscriptionResult {
+    let trackingId: String
+    
+    let subscriptions: [CandleSubscription]
+}
+
+internal extension CandlesSubscriptionResultModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_SubscribeCandlesResponse) {
         self.init(
             trackingId: grpcModel.trackingID,
@@ -17,7 +23,7 @@ internal extension CandlesSubscriptionResult {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_SubscribeCandlesResponse {
-    func toModel() -> CandlesSubscriptionResult {
-        CandlesSubscriptionResult(grpcModel: self)
+    func toModel() -> CandlesSubscriptionResultModel {
+        CandlesSubscriptionResultModel(grpcModel: self)
     }
 }
