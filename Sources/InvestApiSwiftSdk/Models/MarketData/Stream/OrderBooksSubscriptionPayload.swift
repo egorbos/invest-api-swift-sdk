@@ -1,20 +1,26 @@
 import Foundation
 
 /// Сообщение с результатами подписки на стаканы.
-public struct OrderBooksSubscriptionPayload: StreamData {
-    public typealias StreamDataType = OrderBooksSubscriptionResult
-    
+public protocol OrderBooksSubscriptionPayload: StreamData where StreamDataType == OrderBooksSubscriptionResult {
     /// Время поступления сообщения.
-    public let time: Date
+    var time: Date { get }
     
     /// Тип полезной нагрузки = .subscriptionInfo
-    public let type: StreamPayloadType
+    var type: StreamPayloadType { get }
     
     /// Полезная нагрузка сообщения.
-    public let data: OrderBooksSubscriptionResult
+    var data: OrderBooksSubscriptionResult { get }
 }
 
-internal extension OrderBooksSubscriptionPayload {
+internal struct OrderBooksSubscriptionPayloadModel: OrderBooksSubscriptionPayload {
+    let time: Date
+    
+    let type: StreamPayloadType
+    
+    let data: OrderBooksSubscriptionResult
+}
+
+internal extension OrderBooksSubscriptionPayloadModel {
     init(response: Tinkoff_Public_Invest_Api_Contract_V1_MarketDataResponse) {
         self.init(
             time: Date(),

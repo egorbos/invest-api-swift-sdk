@@ -1,36 +1,56 @@
 import Foundation
 
 /// Информация о стакане.
-public struct OrderBook: Codable {
+public protocol OrderBook {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Уникальный идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Глубина стакана.
-    public let depth: Int32
+    var depth: Int32 { get }
     
     /// Флаг консистентности стакана (false означает, что не все заявки попали в стакан по причинам сетевых задержек или нарушения порядка доставки).
-    public let isConsistent: Bool
+    var isConsistent: Bool { get }
     
     /// Множество пар значений на покупку.
-    public let bids: [Order]
+    var bids: [Order] { get }
     
     /// Множество пар значений на продажу.
-    public let asks: [Order]
+    var asks: [Order] { get }
     
     /// Верхний лимит цены.
-    public let limitUp: Quotation
+    var limitUp: Quotation { get }
     
-    /// Нижний лимит цены.
-    public let limitDown: Quotation
+    /// Нижний лимит цены. { get }
+    var limitDown: Quotation { get }
     
     /// Время формирования стакана на бирже, в часовом поясе UTC.
-    public let time: Date
+    var time: Date { get }
 }
 
-internal extension OrderBook {
+internal struct OrderBookModel: OrderBook {
+    let figi: String
+    
+    let uid: String
+    
+    let depth: Int32
+    
+    let isConsistent: Bool
+    
+    let bids: [Order]
+    
+    let asks: [Order]
+    
+    let limitUp: Quotation
+    
+    let limitDown: Quotation
+    
+    let time: Date
+}
+
+internal extension OrderBookModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OrderBook) {
         self.figi = grpcModel.figi
         self.uid = grpcModel.instrumentUid
@@ -45,7 +65,7 @@ internal extension OrderBook {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OrderBook {
-    func toModel() -> OrderBook {
-        OrderBook(grpcModel: self)
+    func toModel() -> OrderBookModel {
+        OrderBookModel(grpcModel: self)
     }
 }

@@ -1,27 +1,41 @@
 import Foundation
 
 /// Информация о сделке.
-public struct Trade: Codable {
+public protocol Trade {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Уникальный идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Направление сделки.
-    public let direction: TradeDirection
+    var direction: TradeDirection { get }
     
     /// Цена (1 единица).
-    public let price: Quotation
+    var price: Quotation { get }
     
     /// Количество лотов.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Время сделки в часовом поясе UTC по времени биржи.
-    public let time: Date
+    var time: Date { get }
 }
 
-internal extension Trade {
+internal struct TradeModel: Trade {
+    let figi: String
+    
+    let uid: String
+    
+    let direction: TradeDirection
+    
+    let price: Quotation
+    
+    let quantity: Int64
+    
+    let time: Date
+}
+
+internal extension TradeModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Trade) {
         self.figi = grpcModel.figi
         self.uid = grpcModel.instrumentUid
@@ -33,7 +47,7 @@ internal extension Trade {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Trade {
-    func toModel() -> Trade {
-        Trade(grpcModel: self)
+    func toModel() -> TradeModel {
+        TradeModel(grpcModel: self)
     }
 }

@@ -1,16 +1,24 @@
 /// Статус подписки на поток обезличенных сделок.
-public struct TradeSubscription: Codable {
+public protocol TradeSubscription {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Статус подписки.
-    public let status: MarketDataStreamSubscriptionStatus
+    var status: MarketDataStreamSubscriptionStatus { get }
 }
 
-internal extension TradeSubscription {
+internal struct TradeSubscriptionModel: TradeSubscription {
+    let figi: String
+    
+    let uid: String
+    
+    let status: MarketDataStreamSubscriptionStatus
+}
+
+internal extension TradeSubscriptionModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_TradeSubscription) {
         self.init(
             figi: grpcModel.figi,
@@ -21,7 +29,7 @@ internal extension TradeSubscription {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_TradeSubscription {
-    func toModel() -> TradeSubscription {
-        TradeSubscription(grpcModel: self)
+    func toModel() -> TradeSubscriptionModel {
+        TradeSubscriptionModel(grpcModel: self)
     }
 }

@@ -1,39 +1,62 @@
 import Foundation
 
 /// Информация о выплате дивиденда.
-public struct Dividend: Codable {
+public protocol Dividend {
     /// Величина дивиденда на 1 ценную бумагу (включая валюту).
-    public let dividendNet: MoneyValue
+    var dividendNet: MoneyValue { get }
     
     /// Дата фактических выплат в часовом поясе UTC.
-    public let paymentDate: Date
+    var paymentDate: Date { get }
     
     /// Дата объявления дивидендов в часовом поясе UTC.
-    public let declaredDate: Date
+    var declaredDate: Date { get }
     
     /// Последний день (включительно) покупки для получения выплаты в часовом поясе UTC.
-    public let lastBuyDate: Date
+    var lastBuyDate: Date { get }
     
-    /// Тип выплаты. Возможные значения: Regular Cash – регулярные выплаты, Cancelled – выплата отменена, Daily Accrual – ежедневное начисление, Return of Capital – возврат капитала, прочие типы выплат.
-    public let dividendType: String
+    /// Тип выплаты. Возможные значения: Regular Cash – регулярные выплаты, Cancelled – выплата отменена,
+    /// Daily Accrual – ежедневное начисление, Return of Capital – возврат капитала, прочие типы выплат.
+    var dividendType: String { get }
     
     /// Дата фиксации реестра в часовом поясе UTC.
-    public let recordDate: Date
+    var recordDate: Date { get }
     
     /// Регулярность выплаты. Возможные значения: Annual – ежегодная, Semi-Anl – каждые полгода, прочие типы выплат.
-    public let regularity: String
+    var regularity: String { get }
     
     /// Цена закрытия инструмента на момент Ex-Dividend Date.
-    public let closePrice: MoneyValue
+    var closePrice: MoneyValue { get }
     
     /// Величина доходности.
-    public let yieldValue: Quotation
+    var yieldValue: Quotation { get }
     
     /// Дата и время создания записи в часовом поясе UTC.
-    public let createdAt: Date
+    var createdAt: Date { get }
 }
 
-internal extension Dividend {
+internal struct DividendModel: Dividend {
+    let dividendNet: MoneyValue
+    
+    let paymentDate: Date
+    
+    let declaredDate: Date
+    
+    let lastBuyDate: Date
+    
+    let dividendType: String
+    
+    let recordDate: Date
+    
+    let regularity: String
+    
+    let closePrice: MoneyValue
+    
+    let yieldValue: Quotation
+    
+    let createdAt: Date
+}
+
+internal extension DividendModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Dividend) {
         self.dividendNet = grpcModel.dividendNet.toModel()
         self.paymentDate = grpcModel.paymentDate.date
@@ -49,7 +72,7 @@ internal extension Dividend {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Dividend {
-    func toModel() -> Dividend {
-        Dividend(grpcModel: self)
+    func toModel() -> DividendModel {
+        DividendModel(grpcModel: self)
     }
 }

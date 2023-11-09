@@ -1,19 +1,29 @@
 /// Информация об активе.
-public struct Asset: Codable {
+public protocol Asset {
     /// Уникальный идентификатор актива.
-    public let uid: String
+    var uid: String { get }
     
     /// Тип актива.
-    public let type: AssetType
+    var type: AssetType { get }
     
     /// Наименование актива.
-    public let name: String
+    var name: String { get }
     
     /// Идентификаторы инструментов.
-    public let instruments: [AssetInstrument]
+    var instruments: [AssetInstrument] { get }
 }
 
-internal extension Asset {
+internal struct AssetModel: Asset {
+    let uid: String
+    
+    let type: AssetType
+    
+    let name: String
+    
+    let instruments: [AssetInstrument]
+}
+
+internal extension AssetModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Asset) throws {
         self.uid = grpcModel.uid
         self.type = try .new(rawValue: grpcModel.type.rawValue)
@@ -23,7 +33,7 @@ internal extension Asset {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Asset {
-    func toModel() throws -> Asset {
-        try Asset(grpcModel: self)
+    func toModel() throws -> AssetModel {
+        try AssetModel(grpcModel: self)
     }
 }

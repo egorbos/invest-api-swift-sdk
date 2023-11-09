@@ -1,13 +1,19 @@
 /// Результат подписки.
-public struct InfoSubscriptionResult: Codable {
+public protocol InfoSubscriptionResult {
     /// Уникальный идентификатор запроса.
-    public let trackingId: String
+    var trackingId: String { get }
     
     /// Статусы подписок на потоки торговых статусов.
-    public let subscriptions: [InfoSubscription]
+    var subscriptions: [InfoSubscription] { get }
 }
 
-internal extension InfoSubscriptionResult {
+internal struct InfoSubscriptionResultModel: InfoSubscriptionResult {
+    let trackingId: String
+    
+    let subscriptions: [InfoSubscription]
+}
+
+internal extension InfoSubscriptionResultModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_SubscribeInfoResponse) {
         self.init(
             trackingId: grpcModel.trackingID,
@@ -17,8 +23,8 @@ internal extension InfoSubscriptionResult {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_SubscribeInfoResponse {
-    func toModel() -> InfoSubscriptionResult {
-        InfoSubscriptionResult(grpcModel: self)
+    func toModel() -> InfoSubscriptionResultModel {
+        InfoSubscriptionResultModel(grpcModel: self)
     }
 }
 

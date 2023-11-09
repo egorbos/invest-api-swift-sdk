@@ -24,6 +24,7 @@ public protocol OperationsStreamService {
     /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
     ///
     /// - Returns: Асинхронный поток обновлений портфеля `PortfolioAsyncStream`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func portfolioStream(accounts: [String]) -> PortfolioAsyncStream
     
     /// Поток информации по изменению позиций портфеля.
@@ -31,6 +32,7 @@ public protocol OperationsStreamService {
     /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
     ///
     /// - Returns: Асинхронный поток информации по изменению позиций портфеля `PositionsAsyncStream`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func positionsStream(accounts: [String]) -> PositionsAsyncStream
 #endif
 }

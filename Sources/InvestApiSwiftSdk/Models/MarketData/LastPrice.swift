@@ -1,21 +1,31 @@
 import Foundation
 
 /// Информация о цене.
-public struct LastPrice: Codable {
+public protocol LastPrice {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Последняя цена (1 единица).
-    public let price: Quotation
+    var price: Quotation { get }
     
     /// Время получения последней цены в часовом поясе UTC по времени биржи.
-    public let time: Date
+    var time: Date { get }
 }
 
-internal extension LastPrice {
+internal struct LastPriceModel: LastPrice {
+    let figi: String
+    
+    let uid: String
+    
+    let price: Quotation
+    
+    let time: Date
+}
+
+internal extension LastPriceModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_LastPrice) {
         self.figi = grpcModel.figi
         self.uid = grpcModel.instrumentUid
@@ -25,7 +35,7 @@ internal extension LastPrice {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_LastPrice {
-    func toModel() -> LastPrice {
-        LastPrice(grpcModel: self)
+    func toModel() -> LastPriceModel {
+        LastPriceModel(grpcModel: self)
     }
 }

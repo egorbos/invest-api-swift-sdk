@@ -1,13 +1,19 @@
 /// Клиринговый сертификат участия.
-public struct AssetClearingCertificate: Codable {
+public protocol AssetClearingCertificate {
     /// Номинал.
-    public let nominal: Quotation
+    var nominal: Quotation { get }
     
     /// Валюта номинала.
-    public let nominalCurrency: String
+    var nominalCurrency: String { get }
 }
 
-internal extension AssetClearingCertificate {
+internal struct AssetClearingCertificateModel: AssetClearingCertificate {
+    let nominal: Quotation
+    
+    let nominalCurrency: String
+}
+
+internal extension AssetClearingCertificateModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetClearingCertificate) {
         self.nominal = grpcModel.nominal.toModel()
         self.nominalCurrency = grpcModel.nominalCurrency
@@ -15,7 +21,7 @@ internal extension AssetClearingCertificate {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetClearingCertificate {
-    func toModel() -> AssetClearingCertificate {
-        AssetClearingCertificate(grpcModel: self)
+    func toModel() -> AssetClearingCertificateModel {
+        AssetClearingCertificateModel(grpcModel: self)
     }
 }

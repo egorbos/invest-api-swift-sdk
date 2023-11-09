@@ -1,54 +1,86 @@
 import Foundation
 
 /// Акция.
-public struct AssetShare: Codable {
+public protocol AssetShare {
     /// Тип акции.
-    public let type: AssetShareType
+    var type: AssetShareType { get }
     
     /// Объем выпуска (штук).
-    public let issueSize: Quotation
+    var issueSize: Quotation { get }
     
     /// Номинал.
-    public let nominal: Quotation
+    var nominal: Quotation { get }
     
     /// Валюта номинала.
-    public let nominalCurrency: String
+    var nominalCurrency: String { get }
     
     /// Индекс (Bloomberg).
-    public let primaryIndex: String
+    var primaryIndex: String { get }
     
     /// Ставка дивиденда (для привилегированных акций).
-    public let dividendRate: Quotation
+    var dividendRate: Quotation { get }
     
     /// Тип привилегированных акций.
-    public let preferredShareType: String
+    var preferredShareType: String { get }
     
     /// Дата IPO.
-    public let ipoDate: Date
+    var ipoDate: Date { get }
     
     /// Дата регистрации.
-    public let registrationDate: Date
+    var registrationDate: Date { get }
     
     /// Признак наличия дивидендной доходности.
-    public let divYieldFlag: Bool
+    var divYieldFlag: Bool { get }
     
     /// Форма выпуска ФИ.
-    public let issueKind: String
+    var issueKind: String { get }
     
     /// Дата размещения акции.
-    public let placementDate: Date
+    var placementDate: Date { get }
     
     /// ISIN базового актива.
-    public let represIsin: String
+    var represIsin: String { get }
     
     /// Объявленное количество (штук).
-    public let issueSizePlan: Quotation
+    var issueSizePlan: Quotation { get }
     
     /// Количество акций в свободном обращении (штук).
-    public let totalFloat: Quotation
+    var totalFloat: Quotation { get }
 }
 
-internal extension AssetShare {
+internal struct AssetShareModel: AssetShare {
+    let type: AssetShareType
+    
+    let issueSize: Quotation
+    
+    let nominal: Quotation
+    
+    let nominalCurrency: String
+    
+    let primaryIndex: String
+    
+    let dividendRate: Quotation
+    
+    let preferredShareType: String
+    
+    let ipoDate: Date
+    
+    let registrationDate: Date
+    
+    let divYieldFlag: Bool
+    
+    let issueKind: String
+    
+    let placementDate: Date
+    
+    let represIsin: String
+    
+    let issueSizePlan: Quotation
+    
+    let totalFloat: Quotation
+}
+
+internal extension AssetShareModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetShare) throws {
         self.type = try .new(rawValue: grpcModel.type.rawValue)
         self.issueSize = grpcModel.issueSize.toModel()
@@ -69,7 +101,7 @@ internal extension AssetShare {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetShare {
-    func toModel() throws -> AssetShare {
-        try AssetShare(grpcModel: self)
+    func toModel() throws -> AssetShareModel {
+        try AssetShareModel(grpcModel: self)
     }
 }

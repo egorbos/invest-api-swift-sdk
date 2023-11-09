@@ -18,9 +18,17 @@ public struct MoneyValue: Codable {
         self.units = units
         self.nano = nano
     }
-    
-    public func toDecimal() -> Decimal {
+}
+
+public extension MoneyValue {
+    func toDecimal() -> Decimal {
         return Decimal(units) + Decimal(nano) / MoneyValue.nanoFactor;
+    }
+}
+
+public extension MoneyValue {
+    func toQuotation() -> Quotation {
+        Quotation(units: units, nano: nano)
     }
 }
 

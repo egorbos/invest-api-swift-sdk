@@ -1,54 +1,86 @@
 import Foundation
 
 /// Торговый / неторговый день.
-public struct TradingDay: Codable {
+public protocol TradingDay {
     /// Дата.
-    public let date: Date
+    var date: Date { get }
     
     /// Признак торгового дня на бирже.
-    public let isTradingDay: Bool
+    var isTradingDay: Bool { get }
     
     /// Время начала торгов по часовому поясу UTC.
-    public let startTime: Date
+    var startTime: Date { get }
     
     /// Время окончания торгов по часовому поясу UTC.
-    public let endTime: Date
+    var endTime: Date { get }
     
     /// Время начала аукциона открытия в часовом поясе UTC.
-    public let openingAuctionStartTime: Date
+    var openingAuctionStartTime: Date { get }
     
     /// Время окончания аукциона закрытия в часовом поясе UTC.
-    public let closingAuctionEndTime: Date
+    var closingAuctionEndTime: Date { get }
     
     /// Время начала аукциона открытия вечерней сессии в часовом поясе UTC.
-    public let eveningOpeningAuctionStartTime: Date
+    var eveningOpeningAuctionStartTime: Date { get }
     
     /// Время начала вечерней сессии в часовом поясе UTC.
-    public let eveningStartTime: Date
+    var eveningStartTime: Date { get }
     
     /// Время окончания вечерней сессии в часовом поясе UTC.
-    public let eveningEndTime: Date
+    var eveningEndTime: Date { get }
     
     /// Время начала основного клиринга в часовом поясе UTC.
-    public let clearingStartTime: Date
+    var clearingStartTime: Date { get }
     
     /// Время окончания основного клиринга в часовом поясе UTC.
-    public let clearingEndTime: Date
+    var clearingEndTime: Date { get }
     
     /// Время начала премаркета в часовом поясе UTC.
-    public let premarketStartTime: Date
+    var premarketStartTime: Date { get }
     
     /// Время окончания премаркета в часовом поясе UTC.
-    public let premarketEndTime: Date
+    var premarketEndTime: Date { get }
     
     /// Время начала аукциона закрытия в часовом поясе UTC.
-    public let closingAuctionStartTime: Date
+    var closingAuctionStartTime: Date { get }
     
     /// Время окончания аукциона открытия в часовом поясе UTC.
-    public let openingAuctionEndTime: Date
+    var openingAuctionEndTime: Date { get }
 }
 
-internal extension TradingDay {
+internal struct TradingDayModel: TradingDay {
+    let date: Date
+    
+    let isTradingDay: Bool
+    
+    let startTime: Date
+    
+    let endTime: Date
+    
+    let openingAuctionStartTime: Date
+    
+    let closingAuctionEndTime: Date
+    
+    let eveningOpeningAuctionStartTime: Date
+    
+    let eveningStartTime: Date
+    
+    let eveningEndTime: Date
+    
+    let clearingStartTime: Date
+    
+    let clearingEndTime: Date
+    
+    let premarketStartTime: Date
+    
+    let premarketEndTime: Date
+    
+    let closingAuctionStartTime: Date
+    
+    let openingAuctionEndTime: Date
+}
+
+internal extension TradingDayModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_TradingDay) {
         self.date = grpcModel.date.date
         self.isTradingDay = grpcModel.isTradingDay
@@ -69,7 +101,7 @@ internal extension TradingDay {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_TradingDay {
-    func toModel() -> TradingDay {
-        TradingDay(grpcModel: self)
+    func toModel() -> TradingDayModel {
+        TradingDayModel(grpcModel: self)
     }
 }

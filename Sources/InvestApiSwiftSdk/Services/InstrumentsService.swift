@@ -235,6 +235,7 @@ public protocol InstrumentsService {
     ///     - to: Окончание периода по часовому поясу UTC.
     ///
     /// - Returns: Список торговых площадок и режимов торгов `[TradingSchedule]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func tradingSchedules(exchange: String, from: Date, to: Date) async throws -> [TradingSchedule]
 
     /// Получает облигацию по её идентификатору.
@@ -245,6 +246,7 @@ public protocol InstrumentsService {
     ///     - id: Идентификатор запрашиваемого инструмента.
     ///
     /// - Returns: Информация об облигации `Bond`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func bondBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Bond
 
     /// Получает список облигаций.
@@ -252,6 +254,7 @@ public protocol InstrumentsService {
     /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
     ///
     /// - Returns: Список облигаций `[Bond]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func bonds(instrumentStatus: InstrumentStatus) async throws -> [Bond]
 
     /// Получает график выплат купонов по облигации.
@@ -262,6 +265,7 @@ public protocol InstrumentsService {
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC. Фильтрация по couponDate (дата выплаты купона).
     ///
     /// - Returns: Массив объектов содержащих информацию о купоне облигации `[Coupon]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getBondCoupons(figi: String, from: Date, to: Date) async throws -> [Coupon]
 
     /// Получает валюту по её идентификатору.
@@ -272,6 +276,7 @@ public protocol InstrumentsService {
     ///     - id: Идентификатор запрашиваемого инструмента.
     ///
     /// - Returns: Информация о валюте `Currency`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func currencyBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Currency
 
     /// Получает список валют.
@@ -279,6 +284,7 @@ public protocol InstrumentsService {
     /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
     ///
     /// - Returns: Список валют `[Currency]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func currencies(instrumentStatus: InstrumentStatus) async throws -> [Currency]
 
     /// Получает инвестиционный фонд по его идентификатору.
@@ -289,6 +295,7 @@ public protocol InstrumentsService {
     ///     - id: Идентификатор запрашиваемого инструмента.
     ///
     /// - Returns: Информация об инвестиционном фонде `Etf`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func etfBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Etf
 
     /// Получает список инвестиционных фондов.
@@ -296,6 +303,7 @@ public protocol InstrumentsService {
     /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
     ///
     /// - Returns: Список инвестиционных фондов `[Etf]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func etfs(instrumentStatus: InstrumentStatus) async throws -> [Etf]
 
     /// Получает фьючерсный контракт по его идентификатору.
@@ -306,6 +314,7 @@ public protocol InstrumentsService {
     ///     - id: Идентификатор запрашиваемого инструмента.
     ///
     /// - Returns: Информация о фьючерсном контракте `Future`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func futureBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Future
 
     /// Получает список фьючерсных контрактов.
@@ -313,6 +322,7 @@ public protocol InstrumentsService {
     /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
     ///
     /// - Returns: Список фьючерсных контрактов `[Future]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func futures(instrumentStatus: InstrumentStatus) async throws -> [Future]
 
     /// Получает опционный контракт по его идентификатору.
@@ -323,6 +333,7 @@ public protocol InstrumentsService {
     ///     - id: Идентификатор запрашиваемого инструмента.
     ///
     /// - Returns: Информация об опционном контракте `Option`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func optionBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Option
     
     /// Получает список опционных контрактов.
@@ -330,6 +341,7 @@ public protocol InstrumentsService {
     /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
     ///
     /// - Returns: Список опционных контрактов `[Option]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func options(instrumentStatus: InstrumentStatus) async throws -> [Option]
     
     /// Получает список опционных контрактов.
@@ -339,6 +351,7 @@ public protocol InstrumentsService {
     ///     - basicAssetPositionUid: Идентификатор позиции базового актива опционного контракта.
     ///
     /// - Returns: Список опционных контрактов `[Option]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func optionsBy(basicAssetUid: String, basicAssetPositionUid: String) async throws -> [Option]
 
     /// Получает акцию по её идентификатору.
@@ -349,6 +362,7 @@ public protocol InstrumentsService {
     ///     - id: Идентификатор запрашиваемого инструмента.
     ///
     /// - Returns: Информация об акции `Share`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func shareBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Share
     
     /// Получает список акций.
@@ -356,6 +370,7 @@ public protocol InstrumentsService {
     /// - Parameter instrumentStatus: Статус запрашиваемых инструментов.
     ///
     /// - Returns: Список акциий `[Share]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func shares(instrumentStatus: InstrumentStatus) async throws -> [Share]
 
     /// Получает накопленный купонный доход по облигации.
@@ -366,6 +381,7 @@ public protocol InstrumentsService {
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
     /// - Returns: Список операций начисления купона `[AccruedInterest]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getAccruedInterests(figi: String, from: Date, to: Date) async throws -> [AccruedInterest]
 
     /// Получает размер гарантийного обеспечения по фьючерсному контракту.
@@ -373,6 +389,7 @@ public protocol InstrumentsService {
     /// - Parameter figi: Figi-идентификатор инструмента.
     ///
     /// - Returns: Размер гарантийного обеспечения по фьючерсному контракту `FutureContractMargin`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getFutureContractMargin(figi: String) async throws -> FutureContractMargin
 
     /// Получает основную информацию об инструменте.
@@ -383,6 +400,7 @@ public protocol InstrumentsService {
     ///     - id: Идентификатор запрашиваемого инструмента.
     ///
     /// - Returns: Основная информация об инструменте `Instrument`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getInstrumentBy(idType: InstrumentIdType, classCode: String, id: String) async throws -> Instrument
     
     /// Получает события выплаты дивидендов по инструменту.
@@ -393,6 +411,7 @@ public protocol InstrumentsService {
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC (фильтрация происходит по параметру recordDate - дата фиксации реестра).
     ///
     /// - Returns: Список операций выплаты дивидендов `[Dividend]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getDividends(figi: String, from: Date, to: Date) async throws -> [Dividend]
 
     /// Получает актив по его идентификатору.
@@ -400,6 +419,7 @@ public protocol InstrumentsService {
     /// - Parameter uid: Uid идентификатор актива.
     ///
     /// - Returns: Информация об активе `AssetFull`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getAssetBy(uid: String) async throws -> AssetFull
 
     /// Получает список активов (метод работает для всех инструментов, за исключением срочных - опционов и фьючерсов).
@@ -407,11 +427,13 @@ public protocol InstrumentsService {
     /// - Parameter kind: Вид запрашиваемых инструментов.
     ///
     /// - Returns: Список активов `[Asset]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getAssets(kind: InstrumentKind) async throws -> [Asset]
 
     /// Получает список избранных инструментов.
     ///
     /// - Returns: Список избранных инструментов `[FavoriteInstrument]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getFavorites() async throws -> [FavoriteInstrument]
 
     /// Редактирует список избранных инструментов.
@@ -421,11 +443,13 @@ public protocol InstrumentsService {
     ///     - action: Тип действия со списком.
     ///
     /// - Returns: Результат редактирования списка избранных инструментов `[FavoriteInstrument]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func editFavorites(figis: [String], action: FavoriteActionType) async throws -> [FavoriteInstrument]
 
     /// Получает список стран.
     ///
     /// - Returns: Список стран `[Country]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getCountries() async throws -> [Country]
 
     /// Поиск инструмента.
@@ -436,6 +460,7 @@ public protocol InstrumentsService {
     ///     - apiTradeAvailableFlag: Фильтр для отображения только торговых инструментов.
     ///
     /// - Returns: Список инструментов `[InstrumentShort]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func findInstrument(query: String, kind: InstrumentKind, apiTradeAvailableFlag: Bool) async throws -> [InstrumentShort]
     
     /// Получает бренд по его идентификатору.
@@ -443,11 +468,13 @@ public protocol InstrumentsService {
     /// - Parameter uid: Uid идентификатор бренда.
     ///
     /// - Returns: Бренд `Brand`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getBrandBy(uid: String) async throws -> Brand
 
     /// Получает список брендов.
     ///
     /// - Returns: Список брендов `[Brand]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getBrands() async throws -> [Brand]
 #endif
 }

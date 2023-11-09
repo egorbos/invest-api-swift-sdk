@@ -1,16 +1,24 @@
 /// Статус подписки на цену последней сделки.
-public struct LastPriceSubscription: Codable {
+public protocol LastPriceSubscription {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Статус подписки.
-    public let status: MarketDataStreamSubscriptionStatus
+    var status: MarketDataStreamSubscriptionStatus { get }
 }
 
-internal extension LastPriceSubscription {
+internal struct LastPriceSubscriptionModel: LastPriceSubscription {
+    let figi: String
+    
+    let uid: String
+    
+    let status: MarketDataStreamSubscriptionStatus
+}
+
+internal extension LastPriceSubscriptionModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_LastPriceSubscription) {
         self.init(
             figi: grpcModel.figi,
@@ -21,7 +29,7 @@ internal extension LastPriceSubscription {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_LastPriceSubscription {
-    func toModel() -> LastPriceSubscription {
-        LastPriceSubscription(grpcModel: self)
+    func toModel() -> LastPriceSubscriptionModel {
+        LastPriceSubscriptionModel(grpcModel: self)
     }
 }

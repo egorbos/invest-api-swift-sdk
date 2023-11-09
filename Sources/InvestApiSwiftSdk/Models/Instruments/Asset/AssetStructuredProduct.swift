@@ -1,48 +1,76 @@
 import Foundation
 
 /// Структурная нота.
-public struct AssetStructuredProduct: Codable {
+public protocol AssetStructuredProduct {
     /// Наименование заемщика.
-    public let borrowName: String
+    var borrowName: String { get }
     
     /// Номинал.
-    public let nominal: Quotation
+    var nominal: Quotation { get }
     
     /// Валюта номинала.
-    public let nominalCurrency: String
+    var nominalCurrency: String { get }
     
     /// Тип структурной ноты.
-    public let type: StructuredProductType
+    var type: StructuredProductType { get }
     
     /// Стратегия портфеля.
-    public let logicPortfolio: String
+    var logicPortfolio: String { get }
     
     /// Тип базового актива.
-    public let assetType: AssetType
+    var assetType: AssetType { get }
     
     /// Вид базового актива в зависимости от типа базового актива.
-    public let basicAsset: String
+    var basicAsset: String { get }
     
     /// Барьер сохранности (в процентах).
-    public let safetyBarrier: Quotation
+    var safetyBarrier: Quotation { get }
     
     /// Дата погашения.
-    public let maturityDate: Date
+    var maturityDate: Date { get }
     
     /// Объявленное количество (штук).
-    public let issueSizePlan: Quotation
+    var issueSizePlan: Quotation { get }
     
     /// Объем размещения.
-    public let issueSize: Quotation
+    var issueSize: Quotation { get }
     
     /// Дата размещения ноты.
-    public let placementDate: Date
+    var placementDate: Date { get }
     
     /// Форма выпуска.
-    public let issueKind: String
+    var issueKind: String { get }
 }
 
-internal extension AssetStructuredProduct {
+internal struct AssetStructuredProductModel: AssetStructuredProduct {
+    let borrowName: String
+    
+    let nominal: Quotation
+    
+    let nominalCurrency: String
+    
+    let type: StructuredProductType
+    
+    let logicPortfolio: String
+    
+    let assetType: AssetType
+    
+    let basicAsset: String
+    
+    let safetyBarrier: Quotation
+    
+    let maturityDate: Date
+    
+    let issueSizePlan: Quotation
+    
+    let issueSize: Quotation
+    
+    let placementDate: Date
+    
+    let issueKind: String
+}
+
+internal extension AssetStructuredProductModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetStructuredProduct) throws {
         self.borrowName = grpcModel.borrowName
         self.nominal = grpcModel.nominal.toModel()
@@ -61,7 +89,7 @@ internal extension AssetStructuredProduct {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetStructuredProduct {
-    func toModel() throws -> AssetStructuredProduct {
-        try AssetStructuredProduct(grpcModel: self)
+    func toModel() throws -> AssetStructuredProductModel {
+        try AssetStructuredProductModel(grpcModel: self)
     }
 }

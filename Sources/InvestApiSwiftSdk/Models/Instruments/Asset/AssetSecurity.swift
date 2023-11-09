@@ -1,31 +1,49 @@
 /// Ценная бумага.
-public struct AssetSecurity: Codable {
+public protocol AssetSecurity {
     /// ISIN-идентификатор ценной бумаги.
-    public let isin: String
+    var isin: String { get }
     
     /// Тип ценной бумаги.
-    public let type: InstrumentType
+    var type: InstrumentType { get }
     
     /// Вид инструмента.
-    public let kind: InstrumentKind
+    var kind: InstrumentKind { get }
     
     /// Акция (значение присваивается только для акций, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = share).
-    public let share: AssetShare?
+    var share: AssetShare? { get }
     
     /// Облигация (значение присваивается только для облигаций, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = bond).
-    public let bond: AssetBond?
+    var bond: AssetBond? { get }
     
     /// Структурная нота (значение присваивается только для структурных продуктов, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = sp).
-    public let structuredProduct: AssetStructuredProduct?
+    var structuredProduct: AssetStructuredProduct? { get }
     
     /// Фонд (значение присваивается только для фондов, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = etf).
-    public let etf: AssetEtf?
+    var etf: AssetEtf? { get }
     
     /// Клиринговый сертификат участия (значение присваивается только для клиринговых сертификатов, тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = clearing_certificate).
-    public let clearingCertificate: AssetClearingCertificate?
+    var clearingCertificate: AssetClearingCertificate? { get }
 }
 
-internal extension AssetSecurity {
+internal struct AssetSecurityModel: AssetSecurity {
+    let isin: String
+    
+    let type: InstrumentType
+    
+    let kind: InstrumentKind
+    
+    let share: AssetShare?
+    
+    let bond: AssetBond?
+    
+    let structuredProduct: AssetStructuredProduct?
+    
+    let etf: AssetEtf?
+    
+    let clearingCertificate: AssetClearingCertificate?
+}
+
+internal extension AssetSecurityModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetSecurity) throws {
         self.isin = grpcModel.isin
         self.type = try .new(rawValue: grpcModel.type)
@@ -39,7 +57,7 @@ internal extension AssetSecurity {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetSecurity {
-    func toModel() throws -> AssetSecurity {
-        try AssetSecurity(grpcModel: self)
+    func toModel() throws -> AssetSecurityModel {
+        try AssetSecurityModel(grpcModel: self)
     }
 }

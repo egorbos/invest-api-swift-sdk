@@ -1,21 +1,31 @@
 import Foundation
 
 /// Сделка по операции.
-public struct OperationTrade: Codable {
+public protocol OperationTrade {
     /// Идентификатор сделки.
-    public let tradeId: String
+    var tradeId: String { get }
     
     /// Дата и время сделки в часовом поясе UTC.
-    public let date: Date
+    var date: Date { get }
     
     /// Количество инструментов.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Цена за 1 инструмент.
-    public let price: MoneyValue
+    var price: MoneyValue { get }
 }
 
-internal extension OperationTrade {
+internal struct OperationTradeModel: OperationTrade {
+    let tradeId: String
+    
+    let date: Date
+    
+    let quantity: Int64
+    
+    let price: MoneyValue
+}
+
+internal extension OperationTradeModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OperationTrade) {
         self.tradeId = grpcModel.tradeID
         self.date = grpcModel.dateTime.date
@@ -25,7 +35,7 @@ internal extension OperationTrade {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OperationTrade {
-    func toModel() -> OperationTrade {
-        OperationTrade(grpcModel: self)
+    func toModel() -> OperationTradeModel {
+        OperationTradeModel(grpcModel: self)
     }
 }

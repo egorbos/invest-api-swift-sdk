@@ -1,30 +1,46 @@
 import Foundation
 
 /// Информация о счёте.
-public struct Account: Codable {
+public protocol Account {
     /// Идентификатор счёта.
-    public let id: String
+    var id: String { get }
     
     /// Тип счёта.
-    public let type: AccountType
+    var type: AccountType { get }
     
     /// Название счёта.
-    public let name: String
+    var name: String { get }
     
     /// Статус счёта.
-    public let status: AccountStatus
+    var status: AccountStatus { get }
     
     /// Дата открытия счёта в часовом поясе UTC.
-    public let openedDate: Date
+    var openedDate: Date { get }
     
     /// Дата закрытия счёта в часовом поясе UTC.
-    public let closedDate: Date
+    var closedDate: Date { get }
     
     /// Уровень доступа к текущему счёту (определяется токеном).
-    public let accessLevel: AccessLevel
+    var accessLevel: AccessLevel { get }
 }
 
-internal extension Account {
+internal struct AccountModel: Account {
+    let id: String
+    
+    let type: AccountType
+    
+    let name: String
+    
+    let status: AccountStatus
+    
+    let openedDate: Date
+    
+    let closedDate: Date
+    
+    let accessLevel: AccessLevel
+}
+
+internal extension AccountModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Account) throws {
         self.id = grpcModel.id
         self.type = try .new(rawValue: grpcModel.type.rawValue)
@@ -37,7 +53,7 @@ internal extension Account {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Account {
-    func toModel() throws -> Account {
-        try Account(grpcModel: self)
+    func toModel() throws -> AccountModel {
+        try AccountModel(grpcModel: self)
     }
 }

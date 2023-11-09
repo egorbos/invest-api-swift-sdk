@@ -1,18 +1,26 @@
 import Foundation
 
 /// Цена закрытия торговой сессии по инструменту.
-public struct InstrumentClosePrice: Codable {
+public protocol InstrumentClosePrice {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Цена закрытия торговой сессии.
-    public let price: Quotation
+    var price: Quotation { get }
     
     /// Дата совершения торгов.
-    public let time: Date
+    var time: Date { get }
 }
 
-internal extension InstrumentClosePrice {
+internal struct InstrumentClosePriceModel: InstrumentClosePrice {
+    let figi: String
+    
+    let price: Quotation
+    
+    let time: Date
+}
+
+internal extension InstrumentClosePriceModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_InstrumentClosePriceResponse) {
         self.figi = grpcModel.figi
         self.price = grpcModel.price.toModel()
@@ -21,7 +29,7 @@ internal extension InstrumentClosePrice {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_InstrumentClosePriceResponse {
-    func toModel() -> InstrumentClosePrice {
-        InstrumentClosePrice(grpcModel: self)
+    func toModel() -> InstrumentClosePriceModel {
+        InstrumentClosePriceModel(grpcModel: self)
     }
 }

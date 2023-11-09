@@ -1,7 +1,7 @@
 import Foundation
 
 /// Сообщение получаемое из потока.
-public protocol StreamData: Codable {
+public protocol StreamData {
     associatedtype StreamDataType
     
     /// Время поступления сообщения.

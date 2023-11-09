@@ -1,20 +1,26 @@
 import Foundation
 
 /// Сообщение с информацией о совершенной сделке.
-public struct TradesStreamPayload: StreamData {
-    public typealias StreamDataType = TradeStreamItem
-    
+public protocol TradesStreamPayload: StreamData where StreamDataType == TradeStreamItem {
     /// Время поступления сообщения.
-    public let time: Date
+    var time: Date { get }
     
     /// Тип полезной нагрузки = .data
-    public let type: StreamPayloadType
+    var type: StreamPayloadType { get }
     
     /// Полезная нагрузка сообщения.
-    public let data: TradeStreamItem
+    var data: TradeStreamItem { get }
 }
 
-internal extension TradesStreamPayload {
+internal struct TradesStreamPayloadModel: TradesStreamPayload {
+    let time: Date
+    
+    let type: StreamPayloadType
+    
+    let data: TradeStreamItem
+}
+
+internal extension TradesStreamPayloadModel {
     init(response: Tinkoff_Public_Invest_Api_Contract_V1_TradesStreamResponse) {
         self.time = Date()
         self.type = .data

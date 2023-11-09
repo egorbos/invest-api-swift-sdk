@@ -1,13 +1,19 @@
 /// Результат подписки.
-public struct OperationsStreamSubscriptionResult: Codable {
+public protocol OperationsStreamSubscriptionResult {
     /// Идентификатор счёта.
-    public let accountId: String
+    var accountId: String { get }
     
     /// Статус подписки.
-    public let status: OperationsStreamSubscriptionStatus
+    var status: OperationsStreamSubscriptionStatus { get }
 }
 
-internal extension OperationsStreamSubscriptionResult {
+internal struct OperationsStreamSubscriptionResultModel: OperationsStreamSubscriptionResult {
+    let accountId: String
+    
+    let status: OperationsStreamSubscriptionStatus
+}
+
+internal extension OperationsStreamSubscriptionResultModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AccountSubscriptionStatus) {
         self.init(
             accountId: grpcModel.accountID,
@@ -24,13 +30,13 @@ internal extension OperationsStreamSubscriptionResult {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AccountSubscriptionStatus {
-    func toModel() -> OperationsStreamSubscriptionResult {
-        OperationsStreamSubscriptionResult(grpcModel: self)
+    func toModel() -> OperationsStreamSubscriptionResultModel {
+        OperationsStreamSubscriptionResultModel(grpcModel: self)
     }
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PositionsSubscriptionStatus {
-    func toModel() -> OperationsStreamSubscriptionResult {
-        OperationsStreamSubscriptionResult(grpcModel: self)
+    func toModel() -> OperationsStreamSubscriptionResultModel {
+        OperationsStreamSubscriptionResultModel(grpcModel: self)
     }
 }

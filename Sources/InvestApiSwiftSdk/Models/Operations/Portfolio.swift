@@ -1,45 +1,71 @@
 import Foundation
 
 /// Портфель по счёту.
-public struct Portfolio: Codable {
+public protocol Portfolio {
     /// Идентификатор счёта пользователя.
-    public let accountId: String
+    var accountId: String { get }
     
     /// Общая стоимость акций в портфеле в рублях.
-    public let totalAmountShares: MoneyValue
+    var totalAmountShares: MoneyValue { get }
     
     /// Общая стоимость облигаций в портфеле в рублях.
-    public let totalAmountBonds: MoneyValue
+    var totalAmountBonds: MoneyValue { get }
     
     /// Общая стоимость фондов в портфеле в рублях.
-    public let totalAmountEtf: MoneyValue
+    var totalAmountEtf: MoneyValue { get }
     
     /// Общая стоимость валют в портфеле в рублях.
-    public let totalAmountCurrencies: MoneyValue
+    var totalAmountCurrencies: MoneyValue { get }
     
     /// Общая стоимость фьючерсов в портфеле в рублях.
-    public let totalAmountFutures: MoneyValue
+    var totalAmountFutures: MoneyValue { get }
     
     /// Общая стоимость опционов в портфеле в рублях.
-    public let totalAmountOptions: MoneyValue
+    var totalAmountOptions: MoneyValue { get }
     
     /// Общая стоимость структурных нот в портфеле в рублях.
-    public let totalAmountStructuralNotes: MoneyValue
+    var totalAmountStructuralNotes: MoneyValue { get }
     
     /// Общая стоимость портфеля в рублях.
-    public let totalAmountPortfolio: MoneyValue
+    var totalAmountPortfolio: MoneyValue { get }
     
     /// Текущая относительная доходность портфеля в процентах.
-    public let expectedYield: Quotation
+    var expectedYield: Quotation { get }
     
     /// Список позиций портфеля.
-    public let positions: [PortfolioPosition]
+    var positions: [PortfolioPosition] { get }
     
     /// Список виртуальных позиций портфеля.
-    public let virtualPositions: [PortfolioVirtualPosition]
+    var virtualPositions: [PortfolioVirtualPosition] { get }
 }
 
-internal extension Portfolio {
+internal struct PortfolioModel: Portfolio {
+    let accountId: String
+    
+    let totalAmountShares: MoneyValue
+    
+    let totalAmountBonds: MoneyValue
+    
+    let totalAmountEtf: MoneyValue
+    
+    let totalAmountCurrencies: MoneyValue
+    
+    let totalAmountFutures: MoneyValue
+    
+    let totalAmountOptions: MoneyValue
+    
+    let totalAmountStructuralNotes: MoneyValue
+    
+    let totalAmountPortfolio: MoneyValue
+    
+    let expectedYield: Quotation
+    
+    let positions: [PortfolioPosition]
+    
+    let virtualPositions: [PortfolioVirtualPosition]
+}
+
+internal extension PortfolioModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_PortfolioResponse) {
         self.accountId = grpcModel.accountID
         self.totalAmountShares = grpcModel.totalAmountShares.toModel()
@@ -57,7 +83,7 @@ internal extension Portfolio {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_PortfolioResponse {
-    func toModel() -> Portfolio {
-        Portfolio(grpcModel: self)
+    func toModel() -> PortfolioModel {
+        PortfolioModel(grpcModel: self)
     }
 }

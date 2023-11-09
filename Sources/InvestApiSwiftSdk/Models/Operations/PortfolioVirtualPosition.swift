@@ -1,36 +1,56 @@
 import Foundation
 
 /// Виртуальная (подарочная) позиция портфеля.
-public struct PortfolioVirtualPosition: Codable {
+public protocol PortfolioVirtualPosition {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Тип инструмента.
-    public let instrumentType: InstrumentType
+    var instrumentType: InstrumentType { get }
     
     /// Количество инструмента в портфеле в штуках.
-    public let quantity: Quotation
+    var quantity: Quotation { get }
     
     /// Средневзвешенная цена позиции.
-    public let averagePositionPrice: MoneyValue
+    var averagePositionPrice: MoneyValue { get }
     
     /// Средняя цена позиции по методу FIFO.
-    public let averagePositionPriceFifo: MoneyValue
+    var averagePositionPriceFifo: MoneyValue { get }
     
     /// Текущая рассчитанная доходность позиции.
-    public let expectedYield: Quotation
+    var expectedYield: Quotation { get }
     
     /// Текущая рассчитанная доходность позиции.
-    public let expectedYieldFifo: Quotation
+    var expectedYieldFifo: Quotation { get }
     
     /// Дата до которой нужно продать виртуальные бумаги.
-    public let expirationDate: Date
+    var expirationDate: Date { get }
     
     /// Текущая цена за 1 инструмент.
-    public let currentPrice: MoneyValue
+    var currentPrice: MoneyValue { get }
 }
 
-internal extension PortfolioVirtualPosition {
+internal struct PortfolioVirtualPositionModel: PortfolioVirtualPosition {
+    let figi: String
+    
+    let instrumentType: InstrumentType
+    
+    let quantity: Quotation
+    
+    let averagePositionPrice: MoneyValue
+    
+    let averagePositionPriceFifo: MoneyValue
+    
+    let expectedYield: Quotation
+    
+    let expectedYieldFifo: Quotation
+    
+    let expirationDate: Date
+    
+    let currentPrice: MoneyValue
+}
+
+internal extension PortfolioVirtualPositionModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_VirtualPortfolioPosition) {
         self.figi = grpcModel.figi
         self.instrumentType = InstrumentType(rawValue: grpcModel.instrumentType) ?? .unspecified
@@ -45,7 +65,7 @@ internal extension PortfolioVirtualPosition {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_VirtualPortfolioPosition {
-    func toModel() -> PortfolioVirtualPosition {
-        PortfolioVirtualPosition(grpcModel: self)
+    func toModel() -> PortfolioVirtualPositionModel {
+        PortfolioVirtualPositionModel(grpcModel: self)
     }
 }

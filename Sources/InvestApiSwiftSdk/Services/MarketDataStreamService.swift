@@ -11,6 +11,7 @@ public protocol MarketDataStreamService {
     /// Поток предоставления биржевой информации.
     ///
     /// - Returns: Асинхронный поток биржевой информации `MarketDataAsyncStream`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func stream() -> MarketDataAsyncStream
 #endif
 }

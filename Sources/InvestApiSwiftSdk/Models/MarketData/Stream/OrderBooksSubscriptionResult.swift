@@ -1,13 +1,19 @@
 /// Результат подписки.
-public struct OrderBooksSubscriptionResult: Codable {
+public protocol OrderBooksSubscriptionResult {
     /// Уникальный идентификатор запроса.
-    public let trackingId: String
+    var trackingId: String { get }
     
     /// Статусы подписок на стаканы.
-    public let subscriptions: [OrderBookSubscription]
+    var subscriptions: [OrderBookSubscription] { get }
 }
 
-internal extension OrderBooksSubscriptionResult {
+internal struct OrderBooksSubscriptionResultModel: OrderBooksSubscriptionResult {
+    let trackingId: String
+    
+    let subscriptions: [OrderBookSubscription]
+}
+
+internal extension OrderBooksSubscriptionResultModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_SubscribeOrderBookResponse) {
         self.init(
             trackingId: grpcModel.trackingID,
@@ -17,7 +23,7 @@ internal extension OrderBooksSubscriptionResult {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_SubscribeOrderBookResponse {
-    func toModel() -> OrderBooksSubscriptionResult {
-        OrderBooksSubscriptionResult(grpcModel: self)
+    func toModel() -> OrderBooksSubscriptionResultModel {
+        OrderBooksSubscriptionResultModel(grpcModel: self)
     }
 }

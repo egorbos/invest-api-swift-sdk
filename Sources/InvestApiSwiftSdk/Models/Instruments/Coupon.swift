@@ -1,36 +1,56 @@
 import Foundation
 
 /// Объект содержащий информацию о купоне облигации.
-public struct Coupon: Codable {
+public protocol Coupon {
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Дата выплаты купона.
-    public let couponDate: Date
+    var couponDate: Date { get }
     
     /// Номер купона.
-    public let couponNumber: Int64
+    var couponNumber: Int64 { get }
     
     /// Дата фиксации реестра для выплаты купона (опционально).
-    public let fixDate: Date
+    var fixDate: Date { get }
     
     /// Выплата на одну облигацию.
-    public let payOneBond: MoneyValue
+    var payOneBond: MoneyValue { get }
     
     /// Тип купона.
-    public let couponType: CouponType
+    var couponType: CouponType { get }
     
     /// Начало купонного периода.
-    public let couponStartDate: Date
+    var couponStartDate: Date { get }
     
     /// Окончание купонного периода.
-    public let couponEndDate: Date
+    var couponEndDate: Date { get }
     
     /// Купонный период в днях.
-    public let couponPeriod: Int32
+    var couponPeriod: Int32 { get }
 }
 
-internal extension Coupon {
+internal struct CouponModel: Coupon {
+    let figi: String
+    
+    let couponDate: Date
+    
+    let couponNumber: Int64
+    
+    let fixDate: Date
+    
+    let payOneBond: MoneyValue
+    
+    let couponType: CouponType
+    
+    let couponStartDate: Date
+    
+    let couponEndDate: Date
+    
+    let couponPeriod: Int32
+}
+
+internal extension CouponModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Coupon) throws {
         self.figi = grpcModel.figi
         self.couponDate = grpcModel.couponDate.date
@@ -45,7 +65,7 @@ internal extension Coupon {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Coupon {
-    func toModel() throws -> Coupon {
-        try Coupon(grpcModel: self)
+    func toModel() throws -> CouponModel {
+        try CouponModel(grpcModel: self)
     }
 }

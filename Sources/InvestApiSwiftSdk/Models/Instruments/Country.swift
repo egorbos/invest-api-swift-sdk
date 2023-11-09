@@ -1,19 +1,29 @@
 /// Данные о стране.
-public struct Country: Codable {
+public protocol Country {
     /// Двухбуквенный код страны.
-    public let alfaTwo: String
+    var alfaTwo: String { get }
     
     /// Трёхбуквенный код страны.
-    public let alfaThree: String
+    var alfaThree: String { get }
     
     /// Наименование страны.
-    public let name: String
+    var name: String { get }
     
     /// Краткое наименование страны.
-    public let nameBrief: String
+    var nameBrief: String { get }
 }
 
-internal extension Country {
+internal struct CountryModel: Country {
+    let alfaTwo: String
+    
+    let alfaThree: String
+    
+    let name: String
+    
+    let nameBrief: String
+}
+
+internal extension CountryModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_CountryResponse) {
         self.alfaTwo = grpcModel.alfaTwo
         self.alfaThree = grpcModel.alfaThree
@@ -23,7 +33,7 @@ internal extension Country {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_CountryResponse {
-    func toModel() -> Country {
-        Country(grpcModel: self)
+    func toModel() -> CountryModel {
+        CountryModel(grpcModel: self)
     }
 }

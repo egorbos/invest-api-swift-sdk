@@ -1,19 +1,29 @@
 ///  Размер гарантийного обеспечения по фьючерсному контракту.
-public struct FutureContractMargin: Codable {
+public protocol FutureContractMargin {
     /// Гарантийное обеспечение при покупке.
-    public let initialMarginOnBuy: MoneyValue
+    var initialMarginOnBuy: MoneyValue { get }
     
     /// Гарантийное обеспечение при продаже.
-    public let initialMarginOnSell: MoneyValue
+    var initialMarginOnSell: MoneyValue { get }
     
     /// Шаг цены.
-    public let minPriceIncrement: Quotation
+    var minPriceIncrement: Quotation { get }
     
     /// Стоимость шага цены.
-    public let minPriceIncrementAmount: Quotation
+    var minPriceIncrementAmount: Quotation { get }
 }
 
-internal extension FutureContractMargin {
+internal struct FutureContractMarginModel: FutureContractMargin {
+    let initialMarginOnBuy: MoneyValue
+    
+    let initialMarginOnSell: MoneyValue
+    
+    let minPriceIncrement: Quotation
+    
+    let minPriceIncrementAmount: Quotation
+}
+
+internal extension FutureContractMarginModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetFuturesMarginResponse) {
         self.initialMarginOnBuy = grpcModel.initialMarginOnBuy.toModel()
         self.initialMarginOnSell = grpcModel.initialMarginOnSell.toModel()
@@ -23,7 +33,7 @@ internal extension FutureContractMargin {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetFuturesMarginResponse {
-    func toModel() -> FutureContractMargin {
-        FutureContractMargin(grpcModel: self)
+    func toModel() -> FutureContractMarginModel {
+        FutureContractMarginModel(grpcModel: self)
     }
 }

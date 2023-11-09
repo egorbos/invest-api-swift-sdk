@@ -1,159 +1,261 @@
 import Foundation
 
 /// Информация об облигации.
-public struct Bond: Codable {
+public protocol Bond {
     /// Figi-идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Уникальный идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Тикер инструмента.
-    public let ticker: String
+    var ticker: String { get }
     
     /// Класс-код (секция торгов).
-    public let classCode: String
+    var classCode: String { get }
     
     /// Isin-идентификатор инструмента.
-    public let isin: String
+    var isin: String { get }
     
     /// Лотность инструмента (возможно совершение операций только на количества ценной бумаги, кратные параметру lot).
-    public let lot: Int32
+    var lot: Int32 { get }
     
     /// Название инструмента.
-    public let name: String
+    var name: String { get }
     
     /// Валюта расчётов.
-    public let currency: CurrencyType
+    var currency: CurrencyType { get }
     
     /// Коэффициент ставки риска длинной позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    public let klong: Quotation
+    var klong: Quotation { get }
     
     /// Коэффициент ставки риска короткой позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    public let kshort: Quotation
+    var kshort: Quotation { get }
     
     /// Ставка риска начальной маржи для КСУР лонг.
-    public let dlong: Quotation
+    var dlong: Quotation { get }
     
     /// Ставка риска начальной маржи для КСУР шорт.
-    public let dshort: Quotation
+    var dshort: Quotation { get }
     
     /// Ставка риска начальной маржи для КПУР лонг.
-    public let dlongMin: Quotation
+    var dlongMin: Quotation { get }
     
     /// Ставка риска начальной маржи для КПУР шорт.
-    public let dshortMin: Quotation
+    var dshortMin: Quotation { get }
     
     /// Признак доступности для операций в шорт.
-    public let shortEnabledFlag: Bool
+    var shortEnabledFlag: Bool { get }
     
     /// Tорговая площадка (секция биржи).
-    public let exchange: String
+    var exchange: String { get }
     
     /// Количество выплат по купонам в год.
-    public let couponQuantityPerYear: Int32
+    var couponQuantityPerYear: Int32 { get }
     
     /// Дата погашения облигации в часовом поясе UTC.
-    public let maturityDate: Date
+    var maturityDate: Date { get }
     
     /// Номинал.
-    public let nominal: MoneyValue
+    var nominal: MoneyValue { get }
     
     /// Первоначальный номинал облигации.
-    public let initialNominal: MoneyValue
+    var initialNominal: MoneyValue { get }
     
     /// Дата выпуска облигации в часовом поясе UTC.
-    public let stateRegDate: Date
+    var stateRegDate: Date { get }
     
     /// Дата размещения в часовом поясе UTC.
-    public let placementDate: Date
+    var placementDate: Date { get }
     
     /// Цена размещения.
-    public let placementPrice: MoneyValue
+    var placementPrice: MoneyValue { get }
     
     /// Значение НКД (накопленного купонного дохода) на дату.
-    public let accumCouponValue: MoneyValue
+    var accumCouponValue: MoneyValue { get }
     
     /// Код страны риска (в которой компания ведёт основной бизнес).
-    public let countryOfRisk: String
+    var countryOfRisk: String { get }
     
     /// Наименование страны риска (в которой компания ведёт основной бизнес).
-    public let countryOfRiskName: String
+    var countryOfRiskName: String { get }
     
     /// Сектор экономики.
-    public let sector: String
+    var sector: String { get }
     
     /// Форма выпуска.
-    public let issueKind: IssueKindType
+    var issueKind: IssueKindType { get }
     
     /// Размер выпуска.
-    public let issueSize: Int64
+    var issueSize: Int64 { get }
     
     /// Плановый размер выпуска.
-    public let issueSizePlan: Int64
+    var issueSizePlan: Int64 { get }
     
     /// Текущий режим торгов инструмента.
-    public let tradingStatus: SecurityTradingStatus
+    var tradingStatus: SecurityTradingStatus { get }
     
     /// Признак внебиржевой ценной бумаги.
-    public let otcFlag: Bool
+    var otcFlag: Bool { get }
     
     /// Признак доступности для покупки.
-    public let buyAvailableFlag: Bool
+    var buyAvailableFlag: Bool { get }
     
     /// Признак доступности для продажи.
-    public let sellAvailableFlag: Bool
+    var sellAvailableFlag: Bool { get }
     
     /// Признак облигации с плавающим купоном.
-    public let floatingCouponFlag: Bool
+    var floatingCouponFlag: Bool { get }
     
     /// Признак бессрочной облигации.
-    public let perpetualFlag: Bool
+    var perpetualFlag: Bool { get }
     
     /// Признак облигации с амортизацией долга.
-    public let amortizationFlag: Bool
+    var amortizationFlag: Bool { get }
     
     /// Шаг цены.
-    public let minPriceIncrement: Quotation
+    var minPriceIncrement: Quotation { get }
     
     /// Параметр указывает на возможность торговать инструментом через API.
-    public let apiTradeAvailableFlag: Bool
+    var apiTradeAvailableFlag: Bool { get }
     
     /// Реальная площадка исполнения расчётов (биржа).
-    public let realExchange: RealExchange
+    var realExchange: RealExchange { get }
     
     /// Уникальный идентификатор позиции инструмента.
-    public let positionUid: String
+    var positionUid: String { get }
     
     /// Признак доступности для ИИС.
-    public let forIisFlag: Bool
+    var forIisFlag: Bool { get }
     
     /// Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов.
-    public let forQualInvestorFlag: Bool
+    var forQualInvestorFlag: Bool { get }
     
     /// Флаг отображающий доступность торговли инструментом по выходным.
-    public let weekendFlag: Bool
+    var weekendFlag: Bool { get }
     
     /// Флаг заблокированного ТКС.
-    public let blockedTcaFlag: Bool
+    var blockedTcaFlag: Bool { get }
     
     /// Признак субординированной облигации.
-    public let subordinatedFlag: Bool
+    var subordinatedFlag: Bool { get }
     
     /// Флаг достаточной ликвидности.
-    public let liquidityFlag: Bool
+    var liquidityFlag: Bool { get }
     
     /// Дата первой минутной свечи.
-    public let firstOneMinCandleDate: Date
+    var firstOneMinCandleDate: Date { get }
     
     /// Дата первой дневной свечи.
-    public let firstOneDayCandleDate: Date
+    var firstOneDayCandleDate: Date { get }
     
     /// Уровень риска.
-    public let riskLevel: RiskLevel
+    var riskLevel: RiskLevel { get }
 }
 
-internal extension Bond {
+internal struct BondModel: Bond {
+    let figi: String
+    
+    let uid: String
+    
+    let ticker: String
+    
+    let classCode: String
+    
+    let isin: String
+    
+    let lot: Int32
+    
+    let name: String
+    
+    let currency: CurrencyType
+    
+    let klong: Quotation
+    
+    let kshort: Quotation
+    
+    let dlong: Quotation
+    
+    let dshort: Quotation
+    
+    let dlongMin: Quotation
+    
+    let dshortMin: Quotation
+    
+    let shortEnabledFlag: Bool
+    
+    let exchange: String
+    
+    let couponQuantityPerYear: Int32
+    
+    let maturityDate: Date
+    
+    let nominal: MoneyValue
+    
+    let initialNominal: MoneyValue
+    
+    let stateRegDate: Date
+    
+    let placementDate: Date
+    
+    let placementPrice: MoneyValue
+    
+    let accumCouponValue: MoneyValue
+    
+    let countryOfRisk: String
+    
+    let countryOfRiskName: String
+    
+    let sector: String
+    
+    let issueKind: IssueKindType
+    
+    let issueSize: Int64
+    
+    let issueSizePlan: Int64
+    
+    let tradingStatus: SecurityTradingStatus
+    
+    let otcFlag: Bool
+    
+    let buyAvailableFlag: Bool
+    
+    let sellAvailableFlag: Bool
+    
+    let floatingCouponFlag: Bool
+    
+    let perpetualFlag: Bool
+    
+    let amortizationFlag: Bool
+    
+    let minPriceIncrement: Quotation
+    
+    let apiTradeAvailableFlag: Bool
+    
+    let realExchange: RealExchange
+    
+    let positionUid: String
+    
+    let forIisFlag: Bool
+    
+    let forQualInvestorFlag: Bool
+    
+    let weekendFlag: Bool
+    
+    let blockedTcaFlag: Bool
+    
+    let subordinatedFlag: Bool
+    
+    let liquidityFlag: Bool
+    
+    let firstOneMinCandleDate: Date
+    
+    let firstOneDayCandleDate: Date
+    
+    let riskLevel: RiskLevel
+}
+
+internal extension BondModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Bond) throws {
         self.figi = grpcModel.figi
         self.uid = grpcModel.uid
@@ -209,7 +311,7 @@ internal extension Bond {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Bond {
-    func toModel() throws -> Bond {
-        try Bond(grpcModel: self)
+    func toModel() throws -> BondModel {
+        try BondModel(grpcModel: self)
     }
 }

@@ -1,4 +1,3 @@
-import GRPC
 import NIOCore
 
 /// Протокол для взаимодействия с Tinkoff API (канал песочницы).

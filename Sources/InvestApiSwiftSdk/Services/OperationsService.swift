@@ -115,6 +115,7 @@ public protocol OperationsService {
     ///     - figi: Figi идентификатор инструмента для фильтрации.
     ///
     /// - Returns: Список операций по счёту `[Operation]`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getOperations(accountId: String, from: Date, to: Date, state: OperationState, figi: String) async throws -> [Operation]
     
     /// Получает портфель по счёту.
@@ -124,6 +125,7 @@ public protocol OperationsService {
     ///     - currency: Валюта представления портфеля.
     ///
     /// - Returns: Портфель по счёту `Portfolio`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getPortfolio(accountId: String, currency: CurrencyType) async throws -> Portfolio
     
     /// Получает список позиций по счёту.
@@ -131,6 +133,7 @@ public protocol OperationsService {
     /// - Parameter accountId: Идентификатор счёта.
     ///
     /// - Returns: Позиции по счёту `PositionsCollection`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getPositions(accountId: String) async throws -> PositionsCollection
     
     /// Получает доступный остаток для вывода средств.
@@ -138,6 +141,7 @@ public protocol OperationsService {
     /// - Parameter accountId: Идентификатор счёта.
     ///
     /// - Returns: Доступный остаток для вывода средств `WithdrawLimits`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getWithdrawLimits(accountId: String) async throws -> WithdrawLimits
     
     /// Отправляет запрос на формирование брокерского отчёта.
@@ -148,6 +152,7 @@ public protocol OperationsService {
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
     /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func generateBrokerReport(accountId: String, from: Date, to: Date) async throws -> String
     
     /// Получает брокерский отчёт.
@@ -157,6 +162,7 @@ public protocol OperationsService {
     ///     - page: Номер страницы отчета (начинается с 0), значение по умолчанию: 0.
     ///
     /// - Returns: Брокерский отчёт `BrokerReport`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getBrokerReport(taskId: String, page: Int32) async throws -> BrokerReport
     
     /// Отправляет запрос на формирование отчёта "Справка о доходах за пределами РФ".
@@ -167,6 +173,7 @@ public protocol OperationsService {
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
     /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) async throws -> String
     
     /// Получает отчёт "Справка о доходах за пределами РФ".
@@ -176,6 +183,7 @@ public protocol OperationsService {
     ///     - page: Номер страницы отчета (начинается с 0), значение по умолчанию: 0.
     ///
     /// - Returns: Отчёт "Справка о доходах за пределами РФ" `DividendsForeignIssuerReport`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getDivForeignIssuerReport(taskId: String, page: Int32) async throws -> DividendsForeignIssuerReport
     
     /// Получает список операций по счёту с пагинацией.
@@ -196,6 +204,7 @@ public protocol OperationsService {
     ///     - withOvernights: Вкличить overnight операции.
     ///
     /// - Returns: Список операций по счёту с пагинацией `OperationsByCursor`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func getOperationsByCursor(
         accountId: String, instrumentId: String, from: Date, to: Date, cursor: String,
         limit: Int32, types: [OperationType], state: OperationState, withCommissions: Bool,

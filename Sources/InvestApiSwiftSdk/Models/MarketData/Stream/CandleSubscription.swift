@@ -1,19 +1,29 @@
 /// Статус подписки на свечи.
-public struct CandleSubscription: Codable {
+public protocol CandleSubscription {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Интервал свечей.
-    public let interval: SubscriptionInterval
+    var interval: SubscriptionInterval { get }
     
     /// Статус подписки.
-    public let status: MarketDataStreamSubscriptionStatus
+    var status: MarketDataStreamSubscriptionStatus { get }
 }
 
-internal extension CandleSubscription {
+internal struct CandleSubscriptionModel: CandleSubscription {
+    let figi: String
+    
+    let uid: String
+    
+    let interval: SubscriptionInterval
+    
+    let status: MarketDataStreamSubscriptionStatus
+}
+
+internal extension CandleSubscriptionModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_CandleSubscription) {
         self.init(
             figi: grpcModel.figi,
@@ -25,7 +35,7 @@ internal extension CandleSubscription {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_CandleSubscription {
-    func toModel() -> CandleSubscription {
-        CandleSubscription(grpcModel: self)
+    func toModel() -> CandleSubscriptionModel {
+        CandleSubscriptionModel(grpcModel: self)
     }
 }

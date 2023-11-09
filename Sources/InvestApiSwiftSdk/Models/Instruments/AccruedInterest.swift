@@ -1,21 +1,31 @@
 import Foundation
 
 /// Информация о накопленном купонном доходе.
-public struct AccruedInterest: Codable {
+public protocol AccruedInterest {
     /// Дата и время в часовом поясе UTC.
-    public let date: Date
+    var date: Date { get }
     
     /// Величина НКД.
-    public let value: Quotation
+    var value: Quotation { get }
     
     /// Величина НКД в процентах от номинала.
-    public let valuePercent: Quotation
+    var valuePercent: Quotation { get }
     
     /// Номинал облигации.
-    public let nominal: Quotation
+    var nominal: Quotation { get }
 }
 
-internal extension AccruedInterest {
+internal struct AccruedInterestModel: AccruedInterest {
+    let date: Date
+    
+    let value: Quotation
+    
+    let valuePercent: Quotation
+    
+    let nominal: Quotation
+}
+
+internal extension AccruedInterestModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AccruedInterest) {
         self.date = grpcModel.date.date
         self.value = grpcModel.value.toModel()
@@ -25,7 +35,7 @@ internal extension AccruedInterest {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AccruedInterest {
-    func toModel() -> AccruedInterest {
-        AccruedInterest(grpcModel: self)
+    func toModel() -> AccruedInterestModel {
+        AccruedInterestModel(grpcModel: self)
     }
 }

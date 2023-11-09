@@ -1,5 +1,3 @@
-import Foundation
-
 internal extension RawRepresentable {
     /// Создаёт объект по его чистому значению.
     ///

@@ -2,27 +2,27 @@ internal extension Tinkoff_Public_Invest_Api_Contract_V1_MarketDataResponse {
     func transform() -> any StreamData {
         switch self.payload {
         case .subscribeCandlesResponse:
-            return CandlesSubscriptionPayload(response: self)
+            return CandlesSubscriptionPayloadModel(response: self)
         case .subscribeOrderBookResponse:
-            return OrderBooksSubscriptionPayload(response: self)
+            return OrderBooksSubscriptionPayloadModel(response: self)
         case .subscribeTradesResponse:
-            return TradesSubscriptionPayload(response: self)
+            return TradesSubscriptionPayloadModel(response: self)
         case .subscribeInfoResponse:
-            return InfoSubscriptionPayload(response: self)
+            return InfoSubscriptionPayloadModel(response: self)
         case .subscribeLastPriceResponse:
-            return LastPricesSubscriptionPayload(response: self)
+            return LastPricesSubscriptionPayloadModel(response: self)
         case .candle:
-            return CandlePayload(response: self)
+            return CandlePayloadModel(response: self)
         case .orderbook:
-            return OrderBookPayload(response: self)
+            return OrderBookPayloadModel(response: self)
         case .trade:
-            return TradePayload(response: self)
+            return TradePayloadModel(response: self)
         case .tradingStatus:
-            return TradingStatusPayload(response: self)
+            return TradingStatusPayloadModel(response: self)
         case .lastPrice:
-            return LastPricePayload(response: self)
+            return LastPricePayloadModel(response: self)
         default:
-            return PingStreamPayload(sendedAt: self.ping.time.date)
+            return PingStreamPayloadModel(sendedAt: self.ping.time.date)
         }
     }
 }

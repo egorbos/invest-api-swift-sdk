@@ -1,42 +1,66 @@
 import Foundation
 
 /// Информация о стакане.
-public struct OrderBookInfo: Codable {
+public protocol OrderBookInfo {
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Глубина стакана.
-    public let depth: Int32
+    var depth: Int32 { get }
     
     /// Множество пар значений на покупку.
-    public let bids: [Order]
+    var bids: [Order] { get }
     
     /// Множество пар значений на продажу.
-    public let asks: [Order]
+    var asks: [Order] { get }
     
     /// Цена последней сделки.
-    public let lastPrice: Quotation
+    var lastPrice: Quotation { get }
     
     /// Цена закрытия.
-    public let closePrice: Quotation
+    var closePrice: Quotation { get }
     
     /// Верхний лимит цены.
-    public let limitUp: Quotation
+    var limitUp: Quotation { get }
     
     /// Нижний лимит цены.
-    public let limitDown: Quotation
+    var limitDown: Quotation { get }
     
     /// Время получения цены последней сделки.
-    public let lastPriceTime: Date
+    var lastPriceTime: Date { get }
     
     /// Время получения цены закрытия.
-    public let closePriceTime: Date
+    var closePriceTime: Date { get }
     
     /// Время формирования стакана на бирже.
-    public let time: Date
+    var time: Date { get }
 }
 
-internal extension OrderBookInfo {
+internal struct OrderBookInfoModel: OrderBookInfo {
+    let figi: String
+    
+    let depth: Int32
+    
+    let bids: [Order]
+    
+    let asks: [Order]
+    
+    let lastPrice: Quotation
+    
+    let closePrice: Quotation
+    
+    let limitUp: Quotation
+    
+    let limitDown: Quotation
+    
+    let lastPriceTime: Date
+    
+    let closePriceTime: Date
+    
+    let time: Date
+}
+
+internal extension OrderBookInfoModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_GetOrderBookResponse) {
         self.figi = grpcModel.figi
         self.depth = grpcModel.depth
@@ -53,7 +77,7 @@ internal extension OrderBookInfo {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_GetOrderBookResponse {
-    func toModel() -> OrderBookInfo {
-        OrderBookInfo(grpcModel: self)
+    func toModel() -> OrderBookInfoModel {
+        OrderBookInfoModel(grpcModel: self)
     }
 }

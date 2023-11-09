@@ -1,31 +1,49 @@
 /// Бренд.
-public struct Brand: Codable {
+public protocol Brand {
     /// Uid идентификатор бренда.
-    public let uid: String
+    var uid: String { get }
     
     /// Наименование бренда.
-    public let name: String
+    var name: String { get }
     
     /// Описание.
-    public let description: String
+    var description: String { get }
     
     /// Информация о бренде.
-    public let info: String
+    var info: String { get }
     
     /// Компания.
-    public let company: String
+    var company: String { get }
     
     /// Сектор.
-    public let sector: String
+    var sector: String { get }
     
     /// Код страны риска.
-    public let countryOfRisk: String
+    var countryOfRisk: String { get }
     
     /// Наименование страны риска.
-    public let countryOfRiskName: String
+    var countryOfRiskName: String { get }
 }
 
-internal extension Brand {
+internal struct BrandModel: Brand {
+    let uid: String
+    
+    let name: String
+    
+    let description: String
+    
+    let info: String
+    
+    let company: String
+    
+    let sector: String
+    
+    let countryOfRisk: String
+    
+    let countryOfRiskName: String
+}
+
+internal extension BrandModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Brand) {
         self.uid = grpcModel.uid
         self.name = grpcModel.name
@@ -39,7 +57,7 @@ internal extension Brand {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Brand {
-    func toModel() -> Brand {
-        Brand(grpcModel: self)
+    func toModel() -> BrandModel {
+        BrandModel(grpcModel: self)
     }
 }

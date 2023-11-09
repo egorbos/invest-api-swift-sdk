@@ -1,141 +1,231 @@
 import Foundation
 
 /// Информация об опционном контракте.
-public struct Option: Codable {
+public protocol Option {
     /// Уникальный идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Уникальный идентификатор позиции инструмента.
-    public let positionUid: String
+    var positionUid: String { get }
     
     /// Тикер инструмента.
-    public let ticker: String
+    var ticker: String { get }
     
     /// Класс-код (секция торгов).
-    public let classCode: String
+    var classCode: String { get }
     
     /// Уникальный идентификатор позиции базового актива.
-    public let basicAssetPositionUid: String
+    var basicAssetPositionUid: String { get }
     
     /// Текущий режим торгов инструмента.
-    public let tradingStatus: SecurityTradingStatus
+    var tradingStatus: SecurityTradingStatus { get }
     
     /// Реальная площадка исполнения расчётов (биржа).
-    public let realExchange: RealExchange
+    var realExchange: RealExchange { get }
     
     /// Направление контракта.
-    public let direction: OptionDirection
+    var direction: OptionDirection { get }
     
     /// Тип расчетов по контракту.
-    public let paymentType: OptionPaymentType
+    var paymentType: OptionPaymentType { get }
     
     /// Стиль контракта.
-    public let style: OptionStyle
+    var style: OptionStyle { get }
     
     /// Тип опционного контракта.
-    public let contractType: OptionContractType
+    var contractType: OptionContractType { get }
     
     /// Название инструмента.
-    public let name: String
+    var name: String { get }
     
     /// Валюта расчётов.
-    public let currency: CurrencyType
+    var currency: CurrencyType { get }
     
     /// Валюта, в которой оценивается контракт.
-    public let settlementCurrency: String
+    var settlementCurrency: String { get }
     
     /// Тип базового актива.
-    public let assetType: ContractAssetType
+    var assetType: ContractAssetType { get }
     
     /// Базовый актив.
-    public let basicAsset: String
+    var basicAsset: String { get }
     
     /// Размер базового актива.
-    public let basicAssetSize: Quotation
+    var basicAssetSize: Quotation { get }
     
     /// Tорговая площадка (секция биржи).
-    public let exchange: String
+    var exchange: String { get }
     
     /// Код страны риска (в которой компания ведёт основной бизнес).
-    public let countryOfRisk: String
+    var countryOfRisk: String { get }
     
     /// Наименование страны риска (в которой компания ведёт основной бизнес).
-    public let countryOfRiskName: String
+    var countryOfRiskName: String { get }
     
     /// Сектор экономики.
-    public let sector: String
+    var sector: String { get }
     
     /// Лотность инструмента (возможно совершение операций только на количества ценной бумаги, кратные параметру lot).
-    public let lot: Int32
+    var lot: Int32 { get }
     
     /// Коэффициент ставки риска длинной позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    public let klong: Quotation
+    var klong: Quotation { get }
     
     /// Коэффициент ставки риска короткой позиции по клиенту: 1 – клиент с повышенным уровнем риска (КПУР), 2 – клиент со стандартным уровнем риска (КСУР).
-    public let kshort: Quotation
+    var kshort: Quotation { get }
     
     /// Ставка риска начальной маржи для КСУР лонг.
-    public let dlong: Quotation
+    var dlong: Quotation { get }
     
     /// Ставка риска начальной маржи для КСУР шорт.
-    public let dshort: Quotation
+    var dshort: Quotation { get }
     
     /// Ставка риска начальной маржи для КПУР лонг.
-    public let dlongMin: Quotation
+    var dlongMin: Quotation { get }
     
     /// Ставка риска начальной маржи для КПУР шорт.
-    public let dshortMin: Quotation
+    var dshortMin: Quotation { get }
     
     /// Шаг цены.
-    public let minPriceIncrement: Quotation
+    var minPriceIncrement: Quotation { get }
     
     /// Цена страйка (по которой покупатель опциона может купить 'колл' или продать 'пут' базовый актив).
-    public let strikePrice: MoneyValue
+    var strikePrice: MoneyValue { get }
     
     /// Дата экспирации контракта в часов поясе UTC.
-    public let expirationDate: Date
+    var expirationDate: Date { get }
     
     /// Дата начала обращения контракта в часовом поясе UTC.
-    public let firstTradeDate: Date
+    var firstTradeDate: Date { get }
     
     /// Дата исполнения контракта в часовом поясе UTC.
-    public let lastTradeDate: Date
+    var lastTradeDate: Date { get }
     
     /// Признак доступности для операций в шорт.
-    public let shortEnabledFlag: Bool
+    var shortEnabledFlag: Bool { get }
     
     /// Признак доступности для ИИС.
-    public let forIisFlag: Bool
+    var forIisFlag: Bool { get }
     
     /// Признак внебиржевой ценной бумаги.
-    public let otcFlag: Bool
+    var otcFlag: Bool { get }
     
     /// Признак доступности для покупки.
-    public let buyAvailableFlag: Bool
+    var buyAvailableFlag: Bool { get }
     
     /// Признак доступности для продажи.
-    public let sellAvailableFlag: Bool
+    var sellAvailableFlag: Bool { get }
     
     /// Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов.
-    public let forQualInvestorFlag: Bool
+    var forQualInvestorFlag: Bool { get }
     
     /// Флаг отображающий доступность торговли инструментом по выходным.
-    public let weekendFlag: Bool
+    var weekendFlag: Bool { get }
     
     /// Флаг заблокированного ТКС.
-    public let blockedTcaFlag: Bool
+    var blockedTcaFlag: Bool { get }
     
     /// Параметр указывает на возможность торговать инструментом через API.
-    public let apiTradeAvailableFlag: Bool
+    var apiTradeAvailableFlag: Bool { get }
    
     /// Дата первой минутной свечи.
-    public let firstOneMinCandleDate: Date
+    var firstOneMinCandleDate: Date { get }
     
     /// Дата первой дневной свечи.
-    public let firstOneDayCandleDate: Date
+    var firstOneDayCandleDate: Date { get }
 }
 
-internal extension Option {
+internal struct OptionModel: Option {
+    let uid: String
+    
+    let positionUid: String
+    
+    let ticker: String
+    
+    let classCode: String
+    
+    let basicAssetPositionUid: String
+    
+    let tradingStatus: SecurityTradingStatus
+    
+    let realExchange: RealExchange
+    
+    let direction: OptionDirection
+    
+    let paymentType: OptionPaymentType
+    
+    let style: OptionStyle
+    
+    let contractType: OptionContractType
+    
+    let name: String
+    
+    let currency: CurrencyType
+    
+    let settlementCurrency: String
+    
+    let assetType: ContractAssetType
+    
+    let basicAsset: String
+    
+    let basicAssetSize: Quotation
+    
+    let exchange: String
+    
+    let countryOfRisk: String
+    
+    let countryOfRiskName: String
+    
+    let sector: String
+    
+    let lot: Int32
+    
+    let klong: Quotation
+    
+    let kshort: Quotation
+    
+    let dlong: Quotation
+    
+    let dshort: Quotation
+    
+    let dlongMin: Quotation
+    
+    let dshortMin: Quotation
+    
+    let minPriceIncrement: Quotation
+    
+    let strikePrice: MoneyValue
+    
+    let expirationDate: Date
+    
+    let firstTradeDate: Date
+    
+    let lastTradeDate: Date
+    
+    let shortEnabledFlag: Bool
+    
+    let forIisFlag: Bool
+    
+    let otcFlag: Bool
+    
+    let buyAvailableFlag: Bool
+    
+    let sellAvailableFlag: Bool
+    
+    let forQualInvestorFlag: Bool
+    
+    let weekendFlag: Bool
+    
+    let blockedTcaFlag: Bool
+    
+    let apiTradeAvailableFlag: Bool
+    
+    let firstOneMinCandleDate: Date
+    
+    let firstOneDayCandleDate: Date
+}
+
+internal extension OptionModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_Option) throws {
         self.uid = grpcModel.uid
         self.positionUid = grpcModel.positionUid
@@ -185,7 +275,7 @@ internal extension Option {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_Option {
-    func toModel() throws -> Option {
-        try Option(grpcModel: self)
+    func toModel() throws -> OptionModel {
+        try OptionModel(grpcModel: self)
     }
 }

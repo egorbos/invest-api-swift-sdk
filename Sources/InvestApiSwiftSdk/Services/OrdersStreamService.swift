@@ -15,6 +15,7 @@ public protocol OrdersStreamService {
     /// - Parameter accounts: Идентификаторы счетов на обновления которых необходимо подписаться.
     ///
     /// - Returns: Асинхронный поток сделок пользователя `OrdersAsyncStream`.
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     func tradesStream(accounts: [String]) -> OrdersAsyncStream
 #endif
 }

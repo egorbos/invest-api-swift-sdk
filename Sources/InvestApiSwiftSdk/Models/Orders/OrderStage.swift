@@ -1,16 +1,24 @@
 /// Сделка в рамках торгового поручения.
-public struct OrderStage: Codable {
+public protocol OrderStage {
     /// Цена за 1 инструмент (для получения стоимости лота требуется умножить на лотность инструмента).
-    public let price: MoneyValue
+    var price: MoneyValue { get }
     
     /// Количество лотов.
-    public let quantity: Int64
+    var quantity: Int64 { get }
     
     /// Идентификатор сделки.
-    public let tradeId: String
+    var tradeId: String { get }
 }
 
-internal extension OrderStage {
+internal struct OrderStageModel: OrderStage {
+    let price: MoneyValue
+    
+    let quantity: Int64
+    
+    let tradeId: String
+}
+
+internal extension OrderStageModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_OrderStage) {
         self.price = grpcModel.price.toModel()
         self.quantity = grpcModel.quantity
@@ -19,7 +27,7 @@ internal extension OrderStage {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_OrderStage {
-    func toModel() -> OrderStage {
-        OrderStage(grpcModel: self)
+    func toModel() -> OrderStageModel {
+        OrderStageModel(grpcModel: self)
     }
 }

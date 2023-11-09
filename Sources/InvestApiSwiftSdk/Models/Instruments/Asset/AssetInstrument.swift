@@ -1,31 +1,49 @@
 /// Идентификаторы инструмента.
-public struct AssetInstrument: Codable {
+public protocol AssetInstrument {
     /// Uid идентификатор инструмента.
-    public let uid: String
+    var uid: String { get }
     
     /// Figi идентификатор инструмента.
-    public let figi: String
+    var figi: String { get }
     
     /// Тип инструмента.
-    public let type: InstrumentType
+    var type: InstrumentType { get }
     
     /// Вид инструмента.
-    public let kind: InstrumentKind
+    var kind: InstrumentKind { get }
     
     /// Тикер инструмента.
-    public let ticker: String
+    var ticker: String { get }
     
     /// Класс-код (секция торгов).
-    public let classCode: String
+    var classCode: String { get }
     
     /// Связанные инструменты.
-    public let links: [InstrumentLink]
+    var links: [InstrumentLink] { get }
     
     /// Uid позиции.
-    public let positionUid: String
+    var positionUid: String { get }
 }
 
-internal extension AssetInstrument {
+internal struct AssetInstrumentModel: AssetInstrument {
+    let uid: String
+    
+    let figi: String
+    
+    let type: InstrumentType
+    
+    let kind: InstrumentKind
+    
+    let ticker: String
+    
+    let classCode: String
+    
+    let links: [InstrumentLink]
+    
+    let positionUid: String
+}
+
+internal extension AssetInstrumentModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_AssetInstrument) throws {
         self.uid = grpcModel.uid
         self.figi = grpcModel.figi
@@ -39,7 +57,7 @@ internal extension AssetInstrument {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_AssetInstrument {
-    func toModel() throws -> AssetInstrument {
-        try AssetInstrument(grpcModel: self)
+    func toModel() throws -> AssetInstrumentModel {
+        try AssetInstrumentModel(grpcModel: self)
     }
 }

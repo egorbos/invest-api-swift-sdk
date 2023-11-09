@@ -1,20 +1,26 @@
 import Foundation
 
 /// Сообщение для проверки (поддержания) соединения.
-public struct PingStreamPayload: StreamData {
-    public typealias StreamDataType = Date
-    
+public protocol PingStreamPayload: StreamData where StreamDataType == Date {
     /// Время поступления сообщения.
-    public let time: Date
+    var time: Date { get }
     
     /// Тип полезной нагрузки = .ping
-    public let type: StreamPayloadType
+    var type: StreamPayloadType { get }
     
     /// Время отправки сообщения.
-    public let data: Date
+    var data: Date { get }
 }
 
-internal extension PingStreamPayload {
+internal struct PingStreamPayloadModel: PingStreamPayload {
+    let time: Date
+    
+    let type: StreamPayloadType
+    
+    let data: Date
+}
+
+internal extension PingStreamPayloadModel {
     init(sendedAt: Date) {
         self.time = Date()
         self.type = .ping

@@ -1,13 +1,19 @@
 /// Лимит stream-соединений.
-public struct StreamLimit: Codable {
+public protocol StreamLimit {
     /// Максимальное количество stream-соединений.
-    public let limit: Int32
+    var limit: Int32 { get }
     
     /// Названия stream-методов.
-    public let streams: [String]
+    var streams: [String] { get }
 }
 
-internal extension StreamLimit {
+internal struct StreamLimitModel: StreamLimit {
+    let limit: Int32
+    
+    let streams: [String]
+}
+
+internal extension StreamLimitModel {
     fileprivate init(grpcModel: Tinkoff_Public_Invest_Api_Contract_V1_StreamLimit) {
         self.limit = grpcModel.limit
         self.streams = grpcModel.streams
@@ -15,7 +21,7 @@ internal extension StreamLimit {
 }
 
 internal extension Tinkoff_Public_Invest_Api_Contract_V1_StreamLimit {
-    func toModel() -> StreamLimit {
-        StreamLimit(grpcModel: self)
+    func toModel() -> StreamLimitModel {
+        StreamLimitModel(grpcModel: self)
     }
 }
