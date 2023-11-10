@@ -502,7 +502,8 @@ public final class CommonApiRequest<Result>: ApiRequest<CommonApiClient, Result>
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
     /// - Returns: Экземпляр `CommonApiRequest`.
-    public static func generateBrokerReport(accountId: String, from: Date, to: Date) -> CommonApiRequest<String> {
+    public static func generateBrokerReport(accountId: String, from: Date, to: Date) ->
+    CommonApiRequest<OperationsService.GenerateBrokerReportResult> {
         .init {
             try $0.operations.generateBrokerReport(accountId: accountId, from: from, to: to)
         }
@@ -529,7 +530,8 @@ public final class CommonApiRequest<Result>: ApiRequest<CommonApiClient, Result>
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
     /// - Returns: Экземпляр `CommonApiRequest`.
-    public static func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) -> CommonApiRequest<String> {
+    public static func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) ->
+    CommonApiRequest<OperationsService.GenerateDividendsForeignIssuerReportResult> {
         .init {
             try $0.operations.generateDivForeignIssuerReport(accountId: accountId, from: from, to: to)
         }

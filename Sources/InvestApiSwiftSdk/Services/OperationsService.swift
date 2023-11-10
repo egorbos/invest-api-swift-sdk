@@ -3,6 +3,11 @@ import Foundation
 
 /// Сервис получения списка операций, портфеля, позиций ценных бумаг и т.д.
 public protocol OperationsService {
+    
+    typealias GenerateBrokerReportResult = (id: String, report: BrokerReport)
+    
+    typealias GenerateDividendsForeignIssuerReportResult = (id: String, report: DividendsForeignIssuerReport)
+    
     /// Получает список операций по счёту.
     ///
     /// - Attention: https://tinkoff.github.io/investAPI/operations_problems/
@@ -47,8 +52,8 @@ public protocol OperationsService {
     ///     - from: Начало запрашиваемого периода в часовом поясе UTC.
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
-    /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`.
-    func generateBrokerReport(accountId: String, from: Date, to: Date) throws -> EventLoopFuture<String>
+    /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`, или отчёт `BrokerReport`, если за данный период запрашивался ранее.
+    func generateBrokerReport(accountId: String, from: Date, to: Date) throws -> EventLoopFuture<GenerateBrokerReportResult>
     
     /// Получает брокерский отчёт.
     ///
@@ -66,8 +71,9 @@ public protocol OperationsService {
     ///     - from: Начало запрашиваемого периода в часовом поясе UTC.
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
-    /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`.
-    func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) throws -> EventLoopFuture<String>
+    /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`, или отчёт `DividendsForeignIssuerReport`, если за данный период запрашивался ранее.
+    func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) throws ->
+    EventLoopFuture<GenerateDividendsForeignIssuerReportResult>
     
     /// Получает отчёт "Справка о доходах за пределами РФ".
     ///
@@ -151,9 +157,9 @@ public protocol OperationsService {
     ///     - from: Начало запрашиваемого периода в часовом поясе UTC.
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
-    /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`.
+    /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`, или отчёт `BrokerReport`, если за данный период запрашивался ранее.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-    func generateBrokerReport(accountId: String, from: Date, to: Date) async throws -> String
+    func generateBrokerReport(accountId: String, from: Date, to: Date) async throws -> GenerateBrokerReportResult
     
     /// Получает брокерский отчёт.
     ///
@@ -172,9 +178,10 @@ public protocol OperationsService {
     ///     - from: Начало запрашиваемого периода в часовом поясе UTC.
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
-    /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`.
+    /// - Returns: Идентификатор задачи формирования брокерского отчёта `String`, или отчёт `DividendsForeignIssuerReport`, если за данный период запрашивался ранее.
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
-    func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) async throws -> String
+    func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) async throws ->
+    GenerateDividendsForeignIssuerReportResult
     
     /// Получает отчёт "Справка о доходах за пределами РФ".
     ///
@@ -250,11 +257,16 @@ internal struct GrpcOperationsService: OperationsService {
             .map { $0.toModel() }
     }
     
-    func generateBrokerReport(accountId: String, from: Date, to: Date) throws -> EventLoopFuture<String> {
+    func generateBrokerReport(accountId: String, from: Date, to: Date) throws -> EventLoopFuture<GenerateBrokerReportResult> {
         self.client
             .getBrokerReport(.generate(accountId: accountId, from: from, to: to))
             .response
-            .map { $0.generateBrokerReportResponse.taskID }
+            .map {
+                GenerateBrokerReportResult(
+                    id: $0.generateBrokerReportResponse.taskID,
+                    report: $0.getBrokerReportResponse.toModel()
+                )
+            }
     }
     
     func getBrokerReport(taskId: String, page: Int32) throws -> EventLoopFuture<BrokerReport> {
@@ -264,11 +276,17 @@ internal struct GrpcOperationsService: OperationsService {
             .map { $0.getBrokerReportResponse.toModel() }
     }
     
-    func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) throws -> EventLoopFuture<String> {
+    func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) throws ->
+    EventLoopFuture<GenerateDividendsForeignIssuerReportResult> {
         self.client
             .getDividendsForeignIssuer(.generate(accountId: accountId, from: from, to: to))
             .response
-            .map { $0.generateDivForeignIssuerReportResponse.taskID }
+            .map {
+                GenerateDividendsForeignIssuerReportResult(
+                    id: $0.generateDivForeignIssuerReportResponse.taskID,
+                    report: $0.divForeignIssuerReport.toModel()
+                )
+            }
     }
     
     func getDivForeignIssuerReport(taskId: String, page: Int32) throws -> EventLoopFuture<DividendsForeignIssuerReport> {
@@ -321,11 +339,13 @@ internal struct GrpcOperationsService: OperationsService {
             .toModel()
     }
     
-    func generateBrokerReport(accountId: String, from: Date, to: Date) async throws -> String {
-        try await self.client
+    func generateBrokerReport(accountId: String, from: Date, to: Date) async throws -> GenerateBrokerReportResult {
+        let response = try await self.client
             .getBrokerReport(.generate(accountId: accountId, from: from, to: to))
-            .generateBrokerReportResponse
-            .taskID
+        return GenerateBrokerReportResult(
+            id: response.generateBrokerReportResponse.taskID,
+            report: response.getBrokerReportResponse.toModel()
+        )
     }
     
     func getBrokerReport(taskId: String, page: Int32) async throws -> BrokerReport {
@@ -335,11 +355,14 @@ internal struct GrpcOperationsService: OperationsService {
             .toModel()
     }
     
-    func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) async throws -> String {
-        try await self.client
+    func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) async throws ->
+    GenerateDividendsForeignIssuerReportResult {
+        let response = try await self.client
             .getDividendsForeignIssuer(.generate(accountId: accountId, from: from, to: to))
-            .generateDivForeignIssuerReportResponse
-            .taskID
+        return GenerateDividendsForeignIssuerReportResult(
+            id: response.generateDivForeignIssuerReportResponse.taskID,
+            report: response.divForeignIssuerReport.toModel()
+        )
     }
     
     func getDivForeignIssuerReport(taskId: String, page: Int32) async throws -> DividendsForeignIssuerReport {

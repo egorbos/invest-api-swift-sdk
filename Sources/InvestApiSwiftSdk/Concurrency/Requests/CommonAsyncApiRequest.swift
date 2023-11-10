@@ -504,7 +504,8 @@ public final class CommonAsyncApiRequest<Result>: AsyncApiRequest<CommonApiClien
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
     /// - Returns: Экземпляр `CommonAsyncApiRequest`.
-    public static func generateBrokerReport(accountId: String, from: Date, to: Date) -> CommonAsyncApiRequest<String> {
+    public static func generateBrokerReport(accountId: String, from: Date, to: Date) ->
+    CommonAsyncApiRequest<OperationsService.GenerateBrokerReportResult> {
         .init {
             try await $0.operations.generateBrokerReport(accountId: accountId, from: from, to: to)
         }
@@ -531,7 +532,8 @@ public final class CommonAsyncApiRequest<Result>: AsyncApiRequest<CommonApiClien
     ///     - to: Окончание запрашиваемого периода в часовом поясе UTC.
     ///
     /// - Returns: Экземпляр `CommonAsyncApiRequest`.
-    public static func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) -> CommonAsyncApiRequest<String> {
+    public static func generateDivForeignIssuerReport(accountId: String, from: Date, to: Date) ->
+    CommonAsyncApiRequest<OperationsService.GenerateDividendsForeignIssuerReportResult> {
         .init {
             try await $0.operations.generateDivForeignIssuerReport(accountId: accountId, from: from, to: to)
         }
